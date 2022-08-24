@@ -52,11 +52,13 @@
     "react-select": "^3.1.1",
     "react-text-mask-hoc": "^0.11.0",
     "redux": "~4.0.5",
+    "sass": "^1.54.5",
     "spinkit": "~2.0.1",
     "yup": "^0.32.8"
   },
   "devDependencies": {
     "auto-changelog": "2.2.0",
+    "gulp-sass": "^5.1.0",
     "mutationobserver-shim": "^0.3.7",
     "react-scripts": "^4.0.1"
   },
