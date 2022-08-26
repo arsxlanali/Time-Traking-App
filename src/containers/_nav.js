@@ -24,15 +24,21 @@ const _nav = [
     _children: [
       {
         _tag: "CSidebarNavItem",
-        name: "Add Employee",
-        to: "/addemployee",
-      },
-      {
-        _tag: "CSidebarNavItem",
         name: "List Employees",
         to: "/listemployee",
       },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Add Employee",
+        to: "/addemployee",
+      },
     ],
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Reports",
+    to: "/reports",
+    icon: "cil-pencil",
   },
   {
     _tag: "CSidebarNavTitle",

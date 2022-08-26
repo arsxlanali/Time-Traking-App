@@ -5,6 +5,7 @@ const addEmployee = React.lazy(() =>
 const listEmployee = React.lazy(() =>
   import("./views/pages/Employees/ViewEmployees/viewTable")
 );
+const reports = React.lazy(() => import("./views/pages/reports/viewTable"));
 const CodeEditors = React.lazy(() =>
   import("./views/editors/code-editors/CodeEditors")
 );
@@ -105,6 +106,12 @@ const routes = [
     path: "/listemployee",
     name: "List Employee",
     component: listEmployee,
+    exact: true,
+  },
+  {
+    path: "/reports",
+    name: "Reports",
+    component: reports,
     exact: true,
   },
   { path: "/theme", name: "Theme", component: Colors, exact: true },
