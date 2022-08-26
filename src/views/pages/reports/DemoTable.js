@@ -8,15 +8,31 @@ import {
   CRow,
   CCol,
   CCard,
+  CCardHeader,
 } from "@coreui/react";
 import usersData from "./Data/UsersData";
+import usersData2 from "./Data/UsersData2";
 import { TextMask, InputAdapter } from "react-text-mask-hoc";
 
 // React DateRangePicker
 import { DateRangePicker } from "react-dates";
 import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
-
+const getBadge = (status) => {
+  switch (status) {
+    case "Active":
+      return "success";
+    case "Inactive":
+      return "secondary";
+    case "Pending":
+      return "warning";
+    case "Banned":
+      return "danger";
+    default:
+      return "primary";
+  }
+};
+const fields2 = ["taskName", "role", "date", "status"];
 const DemoTable = () => {
   const [details, setDetails] = useState([]);
   const [date, setDate] = React.useState({ startDate: null, endDate: null });
@@ -98,14 +114,23 @@ const DemoTable = () => {
             return (
               <CCollapse show={details.includes(item.id)}>
                 <CCardBody>
-                  <h4>{item.username}</h4>
-                  {/* <p className="text-muted">User since: {item.description}</p> */}
-                  {/* <CButton size="sm" color="info">
-                    Eidit
-                  </CButton>
-                  <CButton size="sm" color="danger" className="ml-1">
-                    Delete
-                  </CButton> */}
+                  <h4>{item.projectName}</h4>
+                  <CDataTable
+                    items={usersData2}
+                    fields={fields2}
+                    size="sm"
+                    itemsPerPage={5}
+                    pagination
+                    scopedSlots={{
+                      status: (item) => (
+                        <td>
+                          <CBadge color={getBadge(item.status)}>
+                            {item.status}
+                          </CBadge>
+                        </td>
+                      ),
+                    }}
+                  />
                 </CCardBody>
               </CCollapse>
             );
