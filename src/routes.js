@@ -6,8 +6,15 @@ const listEmployee = React.lazy(() =>
   import("./views/pages/Employees/ViewEmployees/viewTable")
 );
 const reports = React.lazy(() => import("./views/pages/reports/viewTable"));
+
 const CodeEditors = React.lazy(() =>
   import("./views/editors/code-editors/CodeEditors")
+);
+const addProject = React.lazy(() =>
+  import("./views/pages/project/addProject/addProject")
+);
+const viewProject = React.lazy(() =>
+  import("./views/pages/project/viewProject/projectAdvancedTable/projectTable")
 );
 const TextEditors = React.lazy(() =>
   import("./views/editors/text-editors/TextEditors")
@@ -95,7 +102,18 @@ const User = React.lazy(() => import("./views/users/User"));
 
 const routes = [
   { path: "/", exact: true, name: "Home" },
-  { path: "/dashboard", name: "Dashboard", component: Dashboard },
+  {
+    path: "/addproject",
+    name: "Add Project",
+    component: addProject,
+    exact: true,
+  },
+  {
+    path: "/viewproject",
+    name: "View Projects",
+    component: viewProject,
+    exact: true,
+  },
   {
     path: "/addemployee",
     name: "Add Employee",
@@ -114,6 +132,7 @@ const routes = [
     component: reports,
     exact: true,
   },
+  { path: "/dashboard", name: "Dashboard", component: Dashboard },
   { path: "/theme", name: "Theme", component: Colors, exact: true },
   { path: "/theme/colors", name: "Colors", component: Colors },
   { path: "/theme/typography", name: "Typography", component: Typography },

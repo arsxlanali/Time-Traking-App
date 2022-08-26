@@ -18,6 +18,23 @@ const _nav = [
   },
   {
     _tag: "CSidebarNavDropdown",
+    name: "Projects",
+    icon: "cil-drop",
+    _children: [
+      {
+        _tag: "CSidebarNavItem",
+        name: "Add Project",
+        to: "/addproject",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "View Project",
+        to: "/viewproject",
+      },
+    ],
+  },
+  {
+    _tag: "CSidebarNavDropdown",
     name: "Employee",
     route: "/base",
     icon: "cil-puzzle",
@@ -44,7 +61,6 @@ const _nav = [
     _tag: "CSidebarNavTitle",
     _children: ["Theme"],
   },
-
   {
     _tag: "CSidebarNavItem",
     name: "Colors",
