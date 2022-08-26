@@ -5,12 +5,22 @@ import {
   CButton,
   CCollapse,
   CDataTable,
+  CRow,
+  CCol,
+  CCard,
 } from "@coreui/react";
 import usersData from "./Data/UsersData";
+import { TextMask, InputAdapter } from "react-text-mask-hoc";
+
+// React DateRangePicker
+import { DateRangePicker } from "react-dates";
+import "react-dates/initialize";
+import "react-dates/lib/css/_datepicker.css";
 
 const DemoTable = () => {
   const [details, setDetails] = useState([]);
   const [date, setDate] = React.useState({ startDate: null, endDate: null });
+  const [focused, setFocused] = React.useState();
   const toggleDetails = (index) => {
     const position = details.indexOf(index);
     let newDetails = details.slice();
@@ -25,17 +35,31 @@ const DemoTable = () => {
   const fields = [
     { key: "projectName", _style: { width: "20%" } },
     "description",
-    { key: "assignedby", _style: { width: "20%" } },
-    { key: "doneby", _style: { width: "20%" } },
+    { key: "assignedby", _style: { width: "15%" } },
+    { key: "doneby", _style: { width: "15%" } },
     {
       key: "show_details",
       label: "",
-      _style: { width: "1%" },
+      _style: { width: "10%" },
       filter: false,
     },
   ];
   return (
     <CCardBody>
+      <div className="text-right">
+        <DateRangePicker
+          // className="sm"
+          startDate={date.startDate}
+          startDateId="startDate"
+          endDate={date.endDate}
+          endDateId="endDate"
+          onDatesChange={(value) => setDate(value)}
+          focusedInput={focused}
+          onFocusChange={(focusedInput) => setFocused(focusedInput)}
+          orientation="horizontal"
+          openDirection="down"
+        />
+      </div>
       <CDataTable
         items={usersData}
         fields={fields}
@@ -47,15 +71,6 @@ const DemoTable = () => {
         hover
         sorter
         pagination
-        // loading
-        // onRowClick={(item,index,col,e) => console.log(item,index,col,e)}
-        // onPageChange={(val) => console.log('new page:', val)}
-        // onPagesChange={(val) => console.log('new pages:', val)}
-        // onPaginationChange={(val) => console.log('new pagination:', val)}
-        // onFilteredItemsChange={(val) => console.log('new filtered items:', val)}
-        // onSorterValueChange={(val) => console.log('new sorter value:', val)}
-        // onTableFilterChange={(val) => console.log('new table filter:', val)}
-        // onColumnFilterChange={(val) => console.log('new column filter:', val)}
         scopedSlots={{
           doneby: (item) => (
             <td>
@@ -74,7 +89,7 @@ const DemoTable = () => {
                     toggleDetails(item.id);
                   }}
                 >
-                  {details.includes(item.id) ? "Hide" : "Show"}
+                  {details.includes(item.id) ? "Hide Tasks" : "Show Tasks"}
                 </CButton>
               </td>
             );
