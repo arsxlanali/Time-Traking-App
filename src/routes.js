@@ -1,10 +1,13 @@
 import React from 'react';
 
 const CodeEditors = React.lazy(() => import('./views/editors/code-editors/CodeEditors'));
+
+const addProject = React.lazy(() => import('./views/pages/project/addProject/addProject'));
+const viewProject = React.lazy(() => import('./views/pages/project/viewProject/projectAdvancedTable/projectTable'));
+const viewSheet = React.lazy(() => import('./views/pages/timeSheet/viewTimeSheet/timeSheetAdvancedTable/sheetTable'));
+
 const TextEditors = React.lazy(() => import('./views/editors/text-editors/TextEditors'));
-
 const Invoice = React.lazy(() => import('./views/apps/invoicing/Invoice'));
-
 const AdvancedForms = React.lazy(() => import('./views/forms/advanced-forms/AdvancedForms'));
 const BasicForms = React.lazy(() => import('./views/forms/basic-forms/BasicForms'));
 const ValidationForms = React.lazy(() => import('./views/forms/validation-forms/ValidationForms'));
@@ -14,7 +17,7 @@ const Calendar = React.lazy(() => import('./views/plugins/calendar/Calendar'));
 const Draggable = React.lazy(() => import('./views/plugins/draggable/Draggable'));
 const Spinners = React.lazy(() => import('./views/plugins/spinners/Spinners'));
 const AdvancedTables = React.lazy(() => import('./views/tables/advanced-tables/AdvancedTables'));
-const Tables = React.lazy(() => import('./views/tables/tables/Tables'));
+const Tables = React.lazy(() => import('./views/pages/project/viewProject/projectTable/Tables'));
 //const LoadingButtons = React.lazy(() => import('./views/buttons/loading-buttons'));
 
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'));
@@ -54,7 +57,11 @@ const User = React.lazy(() => import('./views/users/User'));
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
-  { path: '/theme', name: 'Theme', component: Colors, exact: true },
+  
+  { path: '/addproject', name: 'Add Project', component: addProject, exact: true },
+  { path: '/viewproject', name: 'View Projects', component: viewProject, exact: true },
+  { path: '/viewsheet', name: 'View Timesheet', component: viewSheet, exact: true },
+  
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },
   { path: '/base', name: 'Base', component: Cards, exact: true },
@@ -106,7 +113,7 @@ const routes = [
   { path: '/apps', name: 'Apps', component: Invoice, exact: true },
   { path: '/apps/invoicing', name: 'Invoice', component: Invoice, exact: true },
   { path: '/apps/invoicing/invoice', name: 'Invoice', component: Invoice },
-  { path: '/users', exact: true,  name: 'Users', component: Users },
+  { path: '/users', exact: true, name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
   { path: '/apps/email/inbox', exact: true, name: 'Inbox' },
   { path: '/apps/email/compose', exact: true, name: 'Compose' },
