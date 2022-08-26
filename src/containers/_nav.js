@@ -188,6 +188,7 @@ const _nav = [
       },
     ],
   },
+
   {
     _tag: "CSidebarNavItem",
     name: "Charts",
