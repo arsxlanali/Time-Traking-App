@@ -13,7 +13,8 @@ const AdvancedTables = () => {
       <CCol sm="12">
         <CCard>
           <CCardHeader>
-            <CIcon name="cil-grid" /> View Employees
+            {/* <CIcon name="cil-grid" />  */}
+            Reports
             <DocsLink name="CDataTable" />
           </CCardHeader>
           <DemoTable />

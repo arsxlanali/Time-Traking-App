@@ -10,6 +10,7 @@ import usersData from "./Data/UsersData";
 
 const DemoTable = () => {
   const [details, setDetails] = useState([]);
+  const [date, setDate] = React.useState({ startDate: null, endDate: null });
   const toggleDetails = (index) => {
     const position = details.indexOf(index);
     let newDetails = details.slice();
@@ -22,10 +23,10 @@ const DemoTable = () => {
   };
 
   const fields = [
-    { key: "name", _style: { width: "40%" } },
-    "desingnation",
-    { key: "role", _style: { width: "20%" } },
-    { key: "email", _style: { width: "20%" } },
+    { key: "projectName", _style: { width: "20%" } },
+    "description",
+    { key: "assignedby", _style: { width: "20%" } },
+    { key: "doneby", _style: { width: "20%" } },
     {
       key: "show_details",
       label: "",
@@ -56,9 +57,9 @@ const DemoTable = () => {
         // onTableFilterChange={(val) => console.log('new table filter:', val)}
         // onColumnFilterChange={(val) => console.log('new column filter:', val)}
         scopedSlots={{
-          email: (item) => (
+          doneby: (item) => (
             <td>
-              <CBadge>{item.email}</CBadge>
+              <CBadge>{item.doneby}</CBadge>
             </td>
           ),
           show_details: (item) => {
@@ -83,13 +84,13 @@ const DemoTable = () => {
               <CCollapse show={details.includes(item.id)}>
                 <CCardBody>
                   <h4>{item.username}</h4>
-                  {/* <p className="text-muted">User since: {item.desingnation}</p> */}
-                  <CButton size="sm" color="info">
+                  {/* <p className="text-muted">User since: {item.description}</p> */}
+                  {/* <CButton size="sm" color="info">
                     Eidit
                   </CButton>
                   <CButton size="sm" color="danger" className="ml-1">
                     Delete
-                  </CButton>
+                  </CButton> */}
                 </CCardBody>
               </CCollapse>
             );
