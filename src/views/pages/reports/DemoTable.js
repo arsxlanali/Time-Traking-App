@@ -5,14 +5,14 @@ import {
   CButton,
   CCollapse,
   CDataTable,
-  CRow,
-  CCol,
-  CCard,
-  CCardHeader,
+  //  CRow,
+  //  CCol,
+  //  CCard,
+  //  CCardHeader,
 } from "@coreui/react";
 import usersData from "./Data/UsersData";
 import usersData2 from "./Data/UsersData2";
-import { TextMask, InputAdapter } from "react-text-mask-hoc";
+//import { TextMask, InputAdapter } from "react-text-mask-hoc";
 
 // React DateRangePicker
 import { DateRangePicker } from "react-dates";
