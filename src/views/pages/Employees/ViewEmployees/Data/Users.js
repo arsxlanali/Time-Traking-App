@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import {
-  CBadge,
+  // CBadge,
   CCard,
   CCardBody,
   CCardHeader,
@@ -13,20 +13,20 @@ import {
 
 import usersData from "./UsersData";
 
-const getBadge = (status) => {
-  switch (status) {
-    case "Active":
-      return "success";
-    case "Inactive":
-      return "secondary";
-    case "Pending":
-      return "warning";
-    case "Banned":
-      return "danger";
-    default:
-      return "primary";
-  }
-};
+// const getBadge = (status) => {
+//   switch (status) {
+//     case "Active":
+//       return "success";
+//     case "Inactive":
+//       return "secondary";
+//     case "Pending":
+//       return "warning";
+//     case "Banned":
+//       return "danger";
+//     default:
+//       return "primary";
+//   }
+// };
 
 const Users = () => {
   const history = useHistory();
@@ -52,23 +52,23 @@ const Users = () => {
               items={usersData}
               fields={[
                 { key: "name", _classes: "font-weight-bold" },
-                "registered",
+                "desingnation",
                 "role",
-                "status",
+                "email",
               ]}
               hover
               striped
-              itemsPerPage={5}
+              itemsPerPage={10}
               activePage={page}
               clickableRows
               onRowClick={(item) => history.push(`/users/${item.id}`)}
-              scopedSlots={{
-                status: (item) => (
-                  <td>
-                    <CBadge color={getBadge(item.status)}>{item.status}</CBadge>
-                  </td>
-                ),
-              }}
+              // scopedSlots={{
+              //   email: (item) => (
+              //     <td>
+              //       {/* <CBadge color={getBadge(item.email)}>{item.email}</CBadge> */}
+              //     </td>
+              //   ),
+              // }}
             />
             <CPagination
               activePage={page}

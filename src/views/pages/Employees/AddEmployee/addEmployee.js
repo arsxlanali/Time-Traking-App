@@ -31,31 +31,20 @@ const validationSchema = function (values) {
       .min(2, `Name has to be at least 2 characters`)
       .required("Name is required"),
     address: Yup.string()
-      .min(1, `Address has to be at least 1 character`)
+      .min(10, `Address has to be at least 12 character`)
       .required("Address is required"),
     phone: Yup.string()
-      .min(5, `phone has to be at least 5 characters`)
+      .min(12, `Phone has to be at least 5 characters`)
       .required("phone is required"),
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required!"),
-    password: Yup.string()
-      .min(6, `Password has to be at least ${6} characters!`)
-      .matches(
-        /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/,
-        "Password must contain: numbers, uppercase and lowercase letters\n"
-      )
-      .required("Password is required"),
-    confirmPassword: Yup.string()
-      .oneOf([values.password], "Passwords must match")
-      .required("Password confirmation is required"),
+    department: Yup.string().required("Department is required!"),
+    position: Yup.string().required("Position is required!"),
+    role: Yup.string().required("Role is required!"),
     accept: Yup.bool()
       .required("* required")
-      .test(
-        "accept",
-        "You have to accept our Terms and Conditions!",
-        (value) => value === true
-      ),
+      .test("accept", "You have to check the box!", (value) => value === true),
   });
 };
 
@@ -86,8 +75,11 @@ const initialValues = {
   address: "",
   phone: "",
   email: "",
-  password: "",
-  confirmPassword: "",
+  department: "0",
+  position: "0",
+  role: "0",
+  // password: "",
+  // confirmPassword: "",
   accept: false,
 };
 
@@ -121,8 +113,11 @@ const touchAll = (setTouched, errors) => {
     address: true,
     phone: true,
     email: true,
-    password: true,
-    confirmPassword: true,
+    department: true,
+    position: true,
+    role: true,
+    // password: true,
+    // confirmPassword: true,
     accept: true,
   });
   validateForm(errors);
@@ -153,7 +148,7 @@ const ValidationForms = () => {
             setTouched,
           }) => (
             <CRow>
-              <CCol lg="6">
+              <CCol lg="12">
                 <CForm onSubmit={handleSubmit} noValidate name="simpleForm">
                   <CFormGroup>
                     <CLabel htmlFor="name">Name</CLabel>
@@ -211,7 +206,7 @@ const ValidationForms = () => {
                   <CFormGroup>
                     <CLabel htmlFor="phone">Phone</CLabel>
                     <CInput
-                      type="text"
+                      type="number"
                       name="phone"
                       id="phone"
                       placeholder="Phone"
@@ -231,9 +226,59 @@ const ValidationForms = () => {
                       <CLabel htmlFor="select">Department</CLabel>
                     </CCol>
                     <CCol xs="12" md="12">
-                      <CSelect custom name="select" id="select">
+                      <CSelect
+                        custom
+                        name="department"
+                        id="department"
+                        required
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.department}
+                      >
                         <option value="0">Please select</option>
                         <option value="1">Management</option>
+                        <option value="2">Development</option>
+                        <option value="3">Desining</option>
+                      </CSelect>
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol md="12">
+                      <CLabel htmlFor="select">Position</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="12">
+                      <CSelect
+                        custom
+                        name="position"
+                        id="position"
+                        required
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.position}
+                      >
+                        <option value="0">Please select</option>
+                        <option value="1">Backend</option>
+                        <option value="2">Frontend</option>
+                        <option value="3">SQA</option>
+                      </CSelect>
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol md="12">
+                      <CLabel htmlFor="select">Role</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="12">
+                      <CSelect
+                        custom
+                        name="role"
+                        id="role"
+                        required
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.role}
+                      >
+                        <option value="0">Please select</option>
+                        <option value="1">Backend </option>
                         <option value="2">Development</option>
                         <option value="3">Desining</option>
                       </CSelect>
@@ -250,7 +295,7 @@ const ValidationForms = () => {
                       onBlur={handleBlur}
                     />
                     <CLabel variant="custom-checkbox" htmlFor="accept">
-                      I accept the terms of use
+                      I confrim the data is correct
                     </CLabel>
                     <CInvalidFeedback>{errors.accept}</CInvalidFeedback>
                   </CFormGroup>
@@ -258,12 +303,12 @@ const ValidationForms = () => {
                     <CButton
                       type="submit"
                       color="primary"
-                      className="mr-1"
+                      className="mr-3"
                       disabled={isSubmitting || !isValid}
                     >
                       {isSubmitting ? "Wait..." : "Submit"}
                     </CButton>
-                    <CButton
+                    {/* <CButton
                       type="button"
                       color="success"
                       className="mr-1"
@@ -271,7 +316,7 @@ const ValidationForms = () => {
                       disabled={isValid}
                     >
                       Validate
-                    </CButton>
+                    </CButton> */}
                     <CButton
                       type="reset"
                       color="danger"
@@ -283,7 +328,7 @@ const ValidationForms = () => {
                   </CFormGroup>
                 </CForm>
               </CCol>
-              <CCol lg="6">
+              {/* <CCol lg="6">
                 <CCard color={isValid ? "gradient-info" : "gradient-secondary"}>
                   <CCardBody>
                     <pre>values: {JSON.stringify(values, null, 2)}</pre>
@@ -291,7 +336,7 @@ const ValidationForms = () => {
                     <pre>touched: {JSON.stringify(touched, null, 2)}</pre>
                   </CCardBody>
                 </CCard>
-              </CCol>
+              </CCol> */}
             </CRow>
           )}
         </Formik>
