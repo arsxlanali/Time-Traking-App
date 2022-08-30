@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   CCardBody,
   CBadge,
@@ -6,9 +6,19 @@ import {
   CCollapse,
   CDataTable,
 } from "@coreui/react";
-import usersData from "./Data/UsersData";
+// import usersData from "./Data/UsersData";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  deleteEmployee,
+  editEmployee,
+} from "../../../../redux/actions/Slice/employeeSlice";
+// import { values } from "core-js/core/array";
 
+// import ReactReduxContext from
 const DemoTable = () => {
+  const { employeesView, isLoading } = useSelector((state) => state.employees);
+  const dispatch = useDispatch();
+  // console.log("jksdfjs", employeesView, isLoading);
   const [details, setDetails] = useState([]);
   const toggleDetails = (index) => {
     const position = details.indexOf(index);
@@ -36,7 +46,7 @@ const DemoTable = () => {
   return (
     <CCardBody>
       <CDataTable
-        items={usersData}
+        items={employeesView}
         fields={fields}
         columnFilter
         tableFilter
@@ -84,10 +94,23 @@ const DemoTable = () => {
                 <CCardBody>
                   <h4>{item.username}</h4>
                   {/* <p className="text-muted">User since: {item.desingnation}</p> */}
-                  <CButton size="sm" color="info">
+                  <CButton
+                    size="sm"
+                    color="info"
+                    onClick={() => {
+                      dispatch(editEmployee(item.id));
+                    }}
+                  >
                     Eidit
                   </CButton>
-                  <CButton size="sm" color="danger" className="ml-1">
+                  <CButton
+                    size="sm"
+                    color="danger"
+                    className="ml-1"
+                    onClick={() => {
+                      dispatch(deleteEmployee(item.id));
+                    }}
+                  >
                     Delete
                   </CButton>
                 </CCardBody>

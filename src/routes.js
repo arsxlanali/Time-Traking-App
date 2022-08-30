@@ -1,4 +1,21 @@
 import React from "react";
+const addProject = React.lazy(() =>
+  import("./views/pages/project/addProject/addProject")
+);
+const editProject = React.lazy(() =>
+  import("./views/pages/project/editProject/editProject")
+);
+const viewProject = React.lazy(() =>
+  import("./views/pages/project/viewProject/projectAdvancedTable/projectTable")
+);
+const viewSheet = React.lazy(() =>
+  import(
+    "./views/pages/timeSheet/viewTimeSheet/timeSheetAdvancedTable/sheetTable"
+  )
+);
+const addTask = React.lazy(() =>
+  import("./views/pages/timeSheet/viewTimeSheet/addTask/Modals")
+);
 const addEmployee = React.lazy(() =>
   import("./views/pages/Employees/AddEmployee/addEmployee")
 );
@@ -10,23 +27,9 @@ const reports = React.lazy(() => import("./views/pages/reports/viewTable"));
 const CodeEditors = React.lazy(() =>
   import("./views/editors/code-editors/CodeEditors")
 );
-const addProject = React.lazy(() =>
-  import("./views/pages/project/addProject/addProject")
-);
-const viewProject = React.lazy(() =>
-  import("./views/pages/project/viewProject/projectAdvancedTable/projectTable")
-);
 const TextEditors = React.lazy(() =>
   import("./views/editors/text-editors/TextEditors")
 );
-
-const addProject = React.lazy(() => import('./views/pages/project/addProject/addProject'));
-const editProject = React.lazy(() => import('./views/pages/project/editProject/editProject'));
-const viewProject = React.lazy(() => import('./views/pages/project/viewProject/projectAdvancedTable/projectTable'));
-const viewSheet = React.lazy(() => import('./views/pages/timeSheet/viewTimeSheet/timeSheetAdvancedTable/sheetTable'));
-const addTask = React.lazy(() => import('./views/pages/timeSheet/viewTimeSheet/addTask/Modals'));
-
-
 const AdvancedForms = React.lazy(() =>
   import("./views/forms/advanced-forms/AdvancedForms")
 );
@@ -106,71 +109,146 @@ const Users = React.lazy(() => import("./views/users/Users"));
 const User = React.lazy(() => import("./views/users/User"));
 
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
-  { path: '/dashboard', name: 'Dashboard', component: Dashboard },
-  
-  { path: '/addproject', name: 'Add Project', component: addProject, exact: true },
-  { path: '/editproject', name: 'Edit Project', component: editProject, exact: true },
-  { path: '/viewproject', name: 'View Projects', component: viewProject, exact: true },
-  { path: '/viewsheet', name: 'View Timesheet', component: viewSheet, exact: true },
-  { path: '/addTask', name: 'Add Task', component: addTask, exact: true },
+  { path: "/", exact: true, name: "Home" },
+  { path: "/dashboard", name: "Dashboard", component: Dashboard },
 
-  { path: '/theme/colors', name: 'Colors', component: Colors },
-  { path: '/theme/typography', name: 'Typography', component: Typography },
-  { path: '/base', name: 'Base', component: Cards, exact: true },
-  { path: '/base/breadcrumbs', name: 'Breadcrumbs', component: Breadcrumbs },
-  { path: '/base/cards', name: 'Cards', component: Cards },
-  { path: '/base/carousels', name: 'Carousel', component: Carousels },
-  { path: '/base/collapses', name: 'Collapse', component: Collapses },
-  { path: '/base/jumbotrons', name: 'Jumbotrons', component: Jumbotrons },
-  { path: '/base/list-groups', name: 'List Groups', component: ListGroups },
-  { path: '/base/navbars', name: 'Navbars', component: Navbars },
-  { path: '/base/navs', name: 'Navs', component: Navs },
-  { path: '/base/paginations', name: 'Paginations', component: Paginations },
-  { path: '/base/popovers', name: 'Popovers', component: Popovers },
-  { path: '/base/progress-bar', name: 'Progress Bar', component: ProgressBar },
-  { path: '/base/switches', name: 'Switches', component: Switches },
-  { path: '/base/tabs', name: 'Tabs', component: Tabs },
-  { path: '/base/tooltips', name: 'Tooltips', component: Tooltips },
-  { path: '/buttons', name: 'Buttons', component: Buttons, exact: true },
-  { path: '/buttons/buttons', name: 'Buttons', component: Buttons },
-  { path: '/buttons/button-dropdowns', name: 'Dropdowns', component: ButtonDropdowns },
-  { path: '/buttons/button-groups', name: 'Button Groups', component: ButtonGroups },
-  { path: '/buttons/brand-buttons', name: 'Brand Buttons', component: BrandButtons },
-  { path: '/charts', name: 'Charts', component: Charts },
-  { path: '/editors', name: 'Editors', component: CodeEditors, exact: true },
-  { path: '/editors/code-editors', name: 'Code Editors', component: CodeEditors },
-  { path: '/editors/text-editors', name: 'Text Editors', component: TextEditors },
-  { path: '/forms', name: 'Forms', component: BasicForms, exact: true },
-  { path: '/forms/advanced-forms', name: 'Advanced Forms', component: AdvancedForms },
-  { path: '/forms/basic-forms', name: 'Basic Forms', component: BasicForms },
-  { path: '/forms/validation-forms', name: 'Form Validation', component: ValidationForms },
-  { path: '/google-maps', name: 'Google Maps', component: GoogleMaps },
-  { path: '/icons', exact: true, name: 'Icons', component: CoreUIIcons },
-  { path: '/icons/coreui-icons', name: 'CoreUI Icons', component: CoreUIIcons },
-  { path: '/icons/flags', name: 'Flags', component: Flags },
-  { path: '/icons/brands', name: 'Brands', component: Brands },
-  { path: '/notifications', name: 'Notifications', component: Alerts, exact: true },
-  { path: '/notifications/alerts', name: 'Alerts', component: Alerts },
-  { path: '/notifications/badges', name: 'Badges', component: Badges },
-  { path: '/notifications/modals', name: 'Modals', component: Modals },
-  { path: '/notifications/toaster', name: 'Toaster', component: Toaster },
-  { path: '/plugins', name: 'Plugins', component: Calendar, exact: true },
-  { path: '/plugins/calendar', name: 'Calendar', component: Calendar },
-  { path: '/plugins/draggable', name: 'Draggable Cards', component: Draggable },
-  { path: '/plugins/spinners', name: 'Spinners', component: Spinners },
-  { path: '/tables', name: 'Tables', component: Tables, exact: true },
-  { path: '/tables/advanced-tables', name: 'Advanced Tables', component: AdvancedTables },
-  { path: '/tables/tables', name: 'Tables', component: Tables },
-  { path: '/widgets', name: 'Widgets', component: Widgets },
-  { path: '/apps', name: 'Apps', component: Invoice, exact: true },
-  { path: '/apps/invoicing', name: 'Invoice', component: Invoice, exact: true },
-  { path: '/apps/invoicing/invoice', name: 'Invoice', component: Invoice },
-  { path: '/users', exact: true, name: 'Users', component: Users },
-  { path: '/users/:id', exact: true, name: 'User Details', component: User },
-  { path: '/apps/email/inbox', exact: true, name: 'Inbox' },
-  { path: '/apps/email/compose', exact: true, name: 'Compose' },
-  { path: '/apps/email/message', exact: true, name: 'Message' }
-]
+  {
+    path: "/addproject",
+    name: "Add Project",
+    component: addProject,
+    exact: true,
+  },
+  {
+    path: "/editproject",
+    name: "Edit Project",
+    component: editProject,
+    exact: true,
+  },
+  {
+    path: "/viewproject",
+    name: "View Projects",
+    component: viewProject,
+    exact: true,
+  },
+  {
+    path: "/viewsheet",
+    name: "View Timesheet",
+    component: viewSheet,
+    exact: true,
+  },
+  { path: "/addTask", name: "Add Task", component: addTask, exact: true },
+  {
+    path: "/listemployee",
+    name: "View Eployees",
+    component: listEmployee,
+    exact: true,
+  },
+  {
+    path: "/addemployee",
+    name: "Add Eployees",
+    component: addEmployee,
+    exact: true,
+  },
+  {
+    path: "/reports",
+    name: "Reports",
+    component: reports,
+    exact: true,
+  },
+
+  { path: "/theme/colors", name: "Colors", component: Colors },
+  { path: "/theme/typography", name: "Typography", component: Typography },
+  { path: "/base", name: "Base", component: Cards, exact: true },
+  { path: "/base/breadcrumbs", name: "Breadcrumbs", component: Breadcrumbs },
+  { path: "/base/cards", name: "Cards", component: Cards },
+  { path: "/base/carousels", name: "Carousel", component: Carousels },
+  { path: "/base/collapses", name: "Collapse", component: Collapses },
+  { path: "/base/jumbotrons", name: "Jumbotrons", component: Jumbotrons },
+  { path: "/base/list-groups", name: "List Groups", component: ListGroups },
+  { path: "/base/navbars", name: "Navbars", component: Navbars },
+  { path: "/base/navs", name: "Navs", component: Navs },
+  { path: "/base/paginations", name: "Paginations", component: Paginations },
+  { path: "/base/popovers", name: "Popovers", component: Popovers },
+  { path: "/base/progress-bar", name: "Progress Bar", component: ProgressBar },
+  { path: "/base/switches", name: "Switches", component: Switches },
+  { path: "/base/tabs", name: "Tabs", component: Tabs },
+  { path: "/base/tooltips", name: "Tooltips", component: Tooltips },
+  { path: "/buttons", name: "Buttons", component: Buttons, exact: true },
+  { path: "/buttons/buttons", name: "Buttons", component: Buttons },
+  {
+    path: "/buttons/button-dropdowns",
+    name: "Dropdowns",
+    component: ButtonDropdowns,
+  },
+  {
+    path: "/buttons/button-groups",
+    name: "Button Groups",
+    component: ButtonGroups,
+  },
+  {
+    path: "/buttons/brand-buttons",
+    name: "Brand Buttons",
+    component: BrandButtons,
+  },
+  { path: "/charts", name: "Charts", component: Charts },
+  { path: "/editors", name: "Editors", component: CodeEditors, exact: true },
+  {
+    path: "/editors/code-editors",
+    name: "Code Editors",
+    component: CodeEditors,
+  },
+  {
+    path: "/editors/text-editors",
+    name: "Text Editors",
+    component: TextEditors,
+  },
+  { path: "/forms", name: "Forms", component: BasicForms, exact: true },
+  {
+    path: "/forms/advanced-forms",
+    name: "Advanced Forms",
+    component: AdvancedForms,
+  },
+  { path: "/forms/basic-forms", name: "Basic Forms", component: BasicForms },
+  {
+    path: "/forms/validation-forms",
+    name: "Form Validation",
+    component: ValidationForms,
+  },
+  { path: "/google-maps", name: "Google Maps", component: GoogleMaps },
+  { path: "/icons", exact: true, name: "Icons", component: CoreUIIcons },
+  { path: "/icons/coreui-icons", name: "CoreUI Icons", component: CoreUIIcons },
+  { path: "/icons/flags", name: "Flags", component: Flags },
+  { path: "/icons/brands", name: "Brands", component: Brands },
+  {
+    path: "/notifications",
+    name: "Notifications",
+    component: Alerts,
+    exact: true,
+  },
+  { path: "/notifications/alerts", name: "Alerts", component: Alerts },
+  { path: "/notifications/badges", name: "Badges", component: Badges },
+  { path: "/notifications/modals", name: "Modals", component: Modals },
+  { path: "/notifications/toaster", name: "Toaster", component: Toaster },
+  { path: "/plugins", name: "Plugins", component: Calendar, exact: true },
+  { path: "/plugins/calendar", name: "Calendar", component: Calendar },
+  { path: "/plugins/draggable", name: "Draggable Cards", component: Draggable },
+  { path: "/plugins/spinners", name: "Spinners", component: Spinners },
+  { path: "/tables", name: "Tables", component: Tables, exact: true },
+  {
+    path: "/tables/advanced-tables",
+    name: "Advanced Tables",
+    component: AdvancedTables,
+  },
+  { path: "/tables/tables", name: "Tables", component: Tables },
+  { path: "/widgets", name: "Widgets", component: Widgets },
+  // { path: "/apps", name: "Apps", component: Invoice, exact: true },
+  // { path: "/apps/invoicing", name: "Invoice", component: Invoice, exact: true },
+  // { path: "/apps/invoicing/invoice", name: "Invoice", component: Invoice },
+  { path: "/users", exact: true, name: "Users", component: Users },
+  { path: "/users/:id", exact: true, name: "User Details", component: User },
+  { path: "/apps/email/inbox", exact: true, name: "Inbox" },
+  { path: "/apps/email/compose", exact: true, name: "Compose" },
+  { path: "/apps/email/message", exact: true, name: "Message" },
+];
 
 export default routes;

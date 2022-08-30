@@ -34,6 +34,19 @@ const _nav = [
     ],
   },
   {
+    _tag: "CSidebarNavItem",
+    name: "Time Sheet",
+    to: "/viewsheet",
+    icon: "cil-pencil",
+  },
+
+  {
+    _tag: "CSidebarNavItem",
+    name: "Add Task",
+    to: "/addtask",
+    icon: "cil-pencil",
+  },
+  {
     _tag: "CSidebarNavDropdown",
     name: "Employee",
     route: "/base",
@@ -51,18 +64,12 @@ const _nav = [
       },
     ],
   },
-  {
-    _tag: 'CSidebarNavItem',
-    name: 'Time Sheet',
-    to: '/viewsheet',
-    icon: 'cil-pencil',
-    
-  },
 
   {
-    _tag: 'CSidebarNavItem',
-    name: 'Add Task',
-    to: '/addtask',
+    _tag: "CSidebarNavItem",
+    name: "Reports",
+    to: "/reports",
+    icon: "cil-puzzle",
   },
 
   {

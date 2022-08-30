@@ -2,6 +2,9 @@ const usersData = [
   {
     id: 0,
     name: "John Doe",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Senior",
     role: "Development",
     email: "arslanali@gmail.com",
@@ -9,6 +12,9 @@ const usersData = [
   {
     id: 1,
     name: "Samppa Nori",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Senior",
     role: "Management",
     email: "arslanali@gmail.com",
@@ -16,6 +22,9 @@ const usersData = [
   {
     id: 2,
     name: "Estavan Lykos",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Junior",
     role: "Development",
     email: "arslanali@gmail.com",
@@ -23,6 +32,9 @@ const usersData = [
   {
     id: 3,
     name: "Chetan Mohamed",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Junior",
     role: "HR",
     email: "arslanali@gmail.com",
@@ -30,6 +42,9 @@ const usersData = [
   {
     id: 4,
     name: "Derick Maximinus",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Junior",
     role: "Management",
     email: "arslanali@gmail.com",
@@ -37,6 +52,9 @@ const usersData = [
   {
     id: 5,
     name: "Friderik Dávid",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Junior",
     role: "Development",
     email: "arslanali@gmail.com",
@@ -44,6 +62,9 @@ const usersData = [
   {
     id: 6,
     name: "Yiorgos Avraamu",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Senior",
     role: "Management",
     email: "arslanali@gmail.com",
@@ -51,6 +72,9 @@ const usersData = [
   {
     id: 7,
     name: "Avram Tarasios",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Junior",
     role: "Development",
     email: "arslanali@gmail.com",
@@ -58,6 +82,9 @@ const usersData = [
   {
     id: 8,
     name: "Quintin Ed",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Junior",
     role: "HR",
     email: "arslanali@gmail.com",
@@ -65,6 +92,9 @@ const usersData = [
   {
     id: 9,
     name: "Enéas Kwadwo",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Junior",
     role: "Management",
     email: "arslanali@gmail.com",
@@ -72,6 +102,9 @@ const usersData = [
   {
     id: 10,
     name: "Agapetus Tadeáš",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Junior",
     role: "Development",
     email: "arslanali@gmail.com",
@@ -79,6 +112,9 @@ const usersData = [
   {
     id: 11,
     name: "Carwyn Fachtna",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Senior",
     role: "Management",
     email: "arslanali@gmail.com",
@@ -86,6 +122,9 @@ const usersData = [
   {
     id: 12,
     name: "Nehemiah Tatius",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Junior",
     role: "Development",
     email: "arslanali@gmail.com",
@@ -93,6 +132,9 @@ const usersData = [
   {
     id: 13,
     name: "Ebbe Gemariah",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Junior",
     role: "HR",
     email: "arslanali@gmail.com",
@@ -100,6 +142,9 @@ const usersData = [
   {
     id: 14,
     name: "Eustorgios Amulius",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Junior",
     role: "Management",
     email: "arslanali@gmail.com",
@@ -107,6 +152,9 @@ const usersData = [
   {
     id: 15,
     name: "Leopold Gáspár",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Junior",
     role: "Development",
     email: "arslanali@gmail.com",
@@ -114,6 +162,9 @@ const usersData = [
   {
     id: 16,
     name: "Pompeius René",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Senior",
     role: "Management",
     email: "arslanali@gmail.com",
@@ -121,6 +172,9 @@ const usersData = [
   {
     id: 17,
     name: "Paĉjo Jadon",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Junior",
     role: "Development",
     email: "arslanali@gmail.com",
@@ -128,6 +182,9 @@ const usersData = [
   {
     id: 18,
     name: "Micheal Mercurius",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Junior",
     role: "Admin",
     email: "arslanali@gmail.com",
@@ -135,6 +192,9 @@ const usersData = [
   {
     id: 19,
     name: "Ganesha Dubhghall",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Junior",
     role: "Management",
     email: "arslanali@gmail.com",
@@ -142,6 +202,9 @@ const usersData = [
   {
     id: 20,
     name: "Hiroto Šimun",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Junior",
     role: "Development",
     email: "arslanali@gmail.com",
@@ -149,6 +212,9 @@ const usersData = [
   {
     id: 21,
     name: "Vishnu Serghei",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Senior",
     role: "Management",
     email: "arslanali@gmail.com",
@@ -156,6 +222,9 @@ const usersData = [
   {
     id: 22,
     name: "Zbyněk Phoibos",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Junior",
     role: "Development",
     email: "arslanali@gmail.com",
@@ -163,6 +232,9 @@ const usersData = [
   {
     id: 23,
     name: "Aulus Agmundr",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Senior",
     role: "Management",
     email: "arslanali@gmail.com",
@@ -170,6 +242,9 @@ const usersData = [
   {
     id: 42,
     name: "Ford Prefect",
+    address: "Lahore ,Pakistan",
+    phone: "03001234567",
+    department: "Management",
     desingnation: "Junior",
     role: "Development",
     email: "arslanali@gmail.com",
