@@ -1,10 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation, useHistory } from "react-router-dom";
+// import { useEffect } from "react";
 import {
   CCardBody,
   CBadge,
   CButton,
   CCollapse,
   CDataTable,
+  CPagination,
 } from "@coreui/react";
 // import usersData from "./Data/UsersData";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,13 +15,21 @@ import {
   deleteEmployee,
   editEmployee,
 } from "../../../../redux/actions/Slice/employeeSlice";
-// import { values } from "core-js/core/array";
 
-// import ReactReduxContext from
 const DemoTable = () => {
-  const { employeesView, isLoading } = useSelector((state) => state.employees);
+  const history = useHistory();
+  const queryPage = useLocation().search.match(/page=([0-9]+)/, "");
+  const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1);
+  const [page, setPage] = useState(currentPage);
+  const pageChange = (newPage) => {
+    currentPage !== newPage && history.push(`/listemployee?page=${newPage}`);
+  };
+  useEffect(() => {
+    currentPage !== page && setPage(currentPage);
+  }, [currentPage, page]);
+
+  const { employeesView } = useSelector((state) => state.employees);
   const dispatch = useDispatch();
-  // console.log("jksdfjs", employeesView, isLoading);
   const [details, setDetails] = useState([]);
   const toggleDetails = (index) => {
     const position = details.indexOf(index);
@@ -52,10 +63,13 @@ const DemoTable = () => {
         tableFilter
         cleaner
         itemsPerPageSelect
-        itemsPerPage={10}
+        striped
+        itemsPerPage={5}
+        activePage={page}
         hover
         sorter
-        pagination
+        // onRowClick={(item) => history.push(`/users/${item.id}`)}
+        // pagination
         // loading
         // onRowClick={(item,index,col,e) => console.log(item,index,col,e)}
         // onPageChange={(val) => console.log('new page:', val)}
@@ -92,8 +106,6 @@ const DemoTable = () => {
             return (
               <CCollapse show={details.includes(item.id)}>
                 <CCardBody>
-                  <h4>{item.username}</h4>
-                  {/* <p className="text-muted">User since: {item.desingnation}</p> */}
                   <CButton
                     size="sm"
                     color="info"
@@ -101,7 +113,7 @@ const DemoTable = () => {
                       dispatch(editEmployee(item.id));
                     }}
                   >
-                    Eidit
+                    Edit
                   </CButton>
                   <CButton
                     size="sm"
@@ -113,11 +125,28 @@ const DemoTable = () => {
                   >
                     Delete
                   </CButton>
+                  <CButton
+                    size="sm"
+                    color="primary"
+                    className="ml-1"
+                    onClick={() => {
+                      history.push(`/listemployee/${item.id}`);
+                    }}
+                  >
+                    View
+                  </CButton>
                 </CCardBody>
               </CCollapse>
             );
           },
         }}
+      />
+      <CPagination
+        activePage={page}
+        onActivePageChange={pageChange}
+        pages={5}
+        doubleArrows={false}
+        align="center"
       />
     </CCardBody>
   );
