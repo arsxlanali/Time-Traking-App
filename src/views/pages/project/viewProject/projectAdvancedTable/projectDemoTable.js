@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useNavigate } from 'react'
 import {
   CCardBody,
   CBadge,
@@ -19,18 +19,18 @@ const DemoTable = () => {
       newDetails.splice(position, 1)
     } else {
       newDetails = [...details, index]
-    } 
+    }
     setDetails(newDetails)
   }
 
 
   const fields = [
-    { key: 'no', _style: { width: '10%'} },
-    { key: 'name', _style: { width: '40%'} },
+    { key: 'no', _style: { width: '10%' } },
+    { key: 'name', _style: { width: '40%' } },
     'type',
-    { key: 'description', _style: { width: '20%'} },
-    { key: 'duration', _style: { width: '20%'} },
-    { key: 'status', _style: { width: '20%'} },
+    { key: 'description', _style: { width: '20%' } },
+    { key: 'duration', _style: { width: '20%' } },
+    { key: 'status', _style: { width: '20%' } },
     {
       key: 'show_details',
       label: '',
@@ -39,7 +39,7 @@ const DemoTable = () => {
     }
   ]
 
-  const getBadge = (status)=>{
+  const getBadge = (status) => {
     switch (status) {
       case 'Active': return 'success'
       case 'Inactive': return 'secondary'
@@ -71,16 +71,16 @@ const DemoTable = () => {
         // onSorterValueChange={(val) => console.log('new sorter value:', val)}
         // onTableFilterChange={(val) => console.log('new table filter:', val)}
         // onColumnFilterChange={(val) => console.log('new column filter:', val)}
-        scopedSlots = {{
+        scopedSlots={{
           'status':
-            (item)=>(
+            (item) => (
               <td>
                 <CBadge color={getBadge(item.status)}>
                   {item.status}
                 </CBadge>
               </td>
             ),
-            'edit':
+          'edit':
             item => {
               return (
                 <td className="py-2">
@@ -91,11 +91,11 @@ const DemoTable = () => {
                     size="sm"
                     onClick={() => { toggleDetails(item.id) }}
                   >
-                    { details.includes(item.id) ? 'Hide' : <i class="cil"></i>}
+                    {details.includes(item.id) ? 'Hide' : <i class="cil"></i>}
                   </CButton>
                 </td>
               )
-            },  
+            },
           'show_details':
             item => {
               return (
@@ -107,14 +107,15 @@ const DemoTable = () => {
                     size="sm"
                     onClick={() => { toggleDetails(item.id) }}
                   >
-                    { details.includes(item.id) ? 'Hide' : 'Show' }
+                    {details.includes(item.id) ? 'Hide' : 'Show'}
                   </CButton>
                 </td>
               )
             },
           'details':
-              item => {
-                return (
+            item => {
+              return (
+                <>
                 <CCollapse show={details.includes(item.id)}>
                   <CCardBody>
                     <h4>
@@ -122,14 +123,17 @@ const DemoTable = () => {
                     </h4>
                     <p className="text-muted">User since: {item.registered}</p>
                     <CButton size="sm" color="info">
-                      User Settings
+                      Edit
                     </CButton>
                     <CButton size="sm" color="danger" className="ml-1">
                       Delete
                     </CButton>
                   </CCardBody>
-                  
+
                 </CCollapse>
+
+                
+</>
               )
             }
         }}

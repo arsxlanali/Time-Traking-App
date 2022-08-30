@@ -37,9 +37,17 @@ const _nav = [
   {
     _tag: 'CSidebarNavItem',
     name: 'Time Sheet',
-    to: '/Timesheet/advanced',
+    to: '/viewsheet',
     icon: 'cil-pencil',
+    
   },
+
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Add Task',
+    to: '/addtask',
+  },
+
   {
     _tag: 'CSidebarNavTitle',
     _children: ['Components']

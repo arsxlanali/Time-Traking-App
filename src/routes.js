@@ -3,8 +3,11 @@ import React from 'react';
 const CodeEditors = React.lazy(() => import('./views/editors/code-editors/CodeEditors'));
 
 const addProject = React.lazy(() => import('./views/pages/project/addProject/addProject'));
+const editProject = React.lazy(() => import('./views/pages/project/editProject/editProject'));
 const viewProject = React.lazy(() => import('./views/pages/project/viewProject/projectAdvancedTable/projectTable'));
 const viewSheet = React.lazy(() => import('./views/pages/timeSheet/viewTimeSheet/timeSheetAdvancedTable/sheetTable'));
+const addTask = React.lazy(() => import('./views/pages/timeSheet/viewTimeSheet/addTask/Modals'));
+
 
 const TextEditors = React.lazy(() => import('./views/editors/text-editors/TextEditors'));
 const Invoice = React.lazy(() => import('./views/apps/invoicing/Invoice'));
@@ -59,9 +62,11 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   
   { path: '/addproject', name: 'Add Project', component: addProject, exact: true },
+  { path: '/editproject', name: 'Edit Project', component: editProject, exact: true },
   { path: '/viewproject', name: 'View Projects', component: viewProject, exact: true },
   { path: '/viewsheet', name: 'View Timesheet', component: viewSheet, exact: true },
-  
+  { path: '/addTask', name: 'Add Task', component: addTask, exact: true },
+
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },
   { path: '/base', name: 'Base', component: Cards, exact: true },
