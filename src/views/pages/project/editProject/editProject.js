@@ -2,6 +2,7 @@ import React from 'react'
 import {
   CButton,
   CCard,
+  CCardHeader,
   CCardBody,
   CCol,
   CForm,
@@ -11,6 +12,7 @@ import {
   CInput,
   CRow
 } from '@coreui/react'
+import { ProBadge, DocsLink } from 'src/reusable'
 
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -18,18 +20,16 @@ import * as Yup from 'yup'
 const validationSchema = function (values) {
   return Yup.object().shape({
     projectName: Yup.string()
-    .min(2, `Project name has to be at least 2 characters`)
+    .min(2, `First name has to be at least 2 characters`)
     .required('Project name is required'),
     projectType: Yup.string()
-    .min(1, `Project Type has to be at least 1 character`)
+    .min(1, `Last name has to be at least 1 character`)
     .required('Project Type is required'),
     description: Yup.string()
-    .min(5, `Description has to be at least 5 characters`)
+    .min(5, `Username has to be at least 5 characters`)
     .required('Description is required'),
     duration: Yup.string()
     .required('Duration is required!'),
-    assignTo: Yup.string()
-    .required('Assignment is required!'),
     })
 }
 
@@ -60,7 +60,6 @@ const initialValues = {
   projectType: "",
   description: "",
   duration: "",
-  assignTo:"",
   
 }
 
@@ -88,11 +87,37 @@ const validateForm = (errors) => {
   })
 }
 
+const touchAll = (setTouched, errors) => {
+  setTouched({
+    projectName: true,
+    projectType: true,
+    description: true,
+    duration: true,
+  })
+  validateForm(errors)
+}
 
 const ValidationForms = () =>  {
   return (
     <CCard>
+      <CCardHeader>
+        Form Validation
+        <ProBadge/>
+        <DocsLink href="https://github.com/jaredpalmer/formik"/>
+      </CCardHeader>
       <CCardBody>
+        <a 
+          href="https://github.com/jaredpalmer/formik" 
+          target="_blank" rel="noreferrer noopener"
+        >Formik</a> <cite>Build forms in React, without the tears</cite> with 
+          
+        <a 
+          href="https://github.com/jquense/yup" 
+          target="_blank" 
+          rel="noreferrer noopener"
+        >Yup</a> <cite>Dead simple Object schema
+        validation</cite>
+        <hr />
         <Formik
           initialValues={initialValues}
           validate={validate(validationSchema)}
@@ -103,11 +128,15 @@ const ValidationForms = () =>  {
               values,
               errors,
               touched,
+              status,
+              dirty,
               handleChange,
               handleBlur,
               handleSubmit,
               isSubmitting,
               isValid,
+              handleReset,
+              setTouched
             }) => (
               <CRow>
                 <CCol lg="6">
@@ -174,12 +203,12 @@ const ValidationForms = () =>  {
                       <CInvalidFeedback>{errors.duration}</CInvalidFeedback>
                     </CFormGroup>
                     <CFormGroup>
-                      <CLabel htmlFor="assignTo">Assign To</CLabel>
-                      <CInput type="assignTo"
-                              name="assignTo"
-                              id="assignTo"
+                      <CLabel htmlFor="assignto">Assign To</CLabel>
+                      <CInput type="assignto"
+                              name="assignto"
+                              id="assignto"
                               placeholder="Employee Name"
-                              autoComplete="assignTo"
+                              autoComplete="assignto"
                               valid={!errors.assignto}
                               invalid={touched.assignto && !!errors.assignto}
                               required
@@ -190,9 +219,18 @@ const ValidationForms = () =>  {
                     </CFormGroup>
                     
                     <CFormGroup>
-                      <CButton type="submit" color="primary" className="mr-1" disabled={isSubmitting || !isValid}>{isSubmitting ? 'Wait...' : 'Add Project'}</CButton>
+                      <CButton type="submit" color="primary" className="mr-1" disabled={isSubmitting || !isValid}>{isSubmitting ? 'Wait...' : 'Edit Project'}</CButton>
                     </CFormGroup>
                   </CForm>
+                </CCol>
+                <CCol lg="6">
+                  <CCard color={isValid ? 'gradient-info' : 'gradient-secondary'}>
+                    <CCardBody>
+                      <pre>values: {JSON.stringify(values, null, 2)}</pre>
+                      <pre>errors: {JSON.stringify(errors, null, 2)}</pre>
+                      <pre>touched: {JSON.stringify(touched, null, 2)}</pre>
+                    </CCardBody>
+                  </CCard>
                 </CCol>
               </CRow>
             )}

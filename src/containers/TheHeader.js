@@ -24,10 +24,10 @@ import {
 } from "./index";
 
 const TheHeader = () => {
-  const dispatch = useDispatch();
-  const asideShow = useSelector((state) => state.asideShow);
-  const darkMode = useSelector((state) => state.darkMode);
-  const sidebarShow = useSelector((state) => state.sidebarShow);
+  const dispatch = useDispatch()
+  const asideShow = useSelector(state => state.slideBar.asideShow)
+  const darkMode = useSelector(state => state.darkMode)
+  const sidebarShow = useSelector(state => state.sidebarShow)
 
   const toggleSidebar = () => {
     const val = [true, "responsive"].includes(sidebarShow)

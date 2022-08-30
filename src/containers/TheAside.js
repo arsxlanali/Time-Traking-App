@@ -18,9 +18,10 @@ import {
 import CIcon from "@coreui/icons-react";
 
 const TheAside = () => {
-  const show = useSelector((state) => state.asideShow);
-  const dispatch = useDispatch();
-  const setState = (state) => dispatch({ type: "set", asideShow: state });
+  const show = useSelector(state => state?.slideBar?.asideShow)
+
+  const dispatch = useDispatch()
+  const setState = (state) => dispatch({ type: 'set', asideShow: state })
 
   return (
     <CSidebar
