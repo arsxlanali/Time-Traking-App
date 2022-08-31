@@ -1,21 +1,5 @@
 import React from "react";
-const addProject = React.lazy(() =>
-  import("./views/pages/project/addProject/addProject")
-);
-const editProject = React.lazy(() =>
-  import("./views/pages/project/editProject/editProject")
-);
-const viewProject = React.lazy(() =>
-  import("./views/pages/project/viewProject/projectAdvancedTable/projectTable")
-);
-const viewSheet = React.lazy(() =>
-  import(
-    "./views/pages/timeSheet/viewTimeSheet/timeSheetAdvancedTable/sheetTable"
-  )
-);
-const addTask = React.lazy(() =>
-  import("./views/pages/timeSheet/viewTimeSheet/addTask/Modals")
-);
+
 const addEmployee = React.lazy(() =>
   import("./views/pages/Employees/AddEmployee/addEmployee")
 );
@@ -48,6 +32,12 @@ const viewSheet = React.lazy(() =>
   import(
     "./views/pages/timeSheet/viewTimeSheet/timeSheetAdvancedTable/sheetTable"
   )
+);
+const employee = React.lazy(() =>
+  import("./views/pages//Employees/ViewEmployees/User")
+);
+const editEmployee = React.lazy(() =>
+  import("./views/pages//Employees/editEmployee/editEmployee")
 );
 const addTask = React.lazy(() =>
   import("./views/pages/timeSheet/viewTimeSheet/addTask/Modals")
