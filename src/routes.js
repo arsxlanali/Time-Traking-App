@@ -22,12 +22,6 @@ const addEmployee = React.lazy(() =>
 const listEmployee = React.lazy(() =>
   import("./views/pages/Employees/ViewEmployees/viewTable")
 );
-const employee = React.lazy(() =>
-  import("./views/pages/Employees/ViewEmployees/User")
-);
-const editEmployee = React.lazy(() =>
-  import("./views/pages/Employees/editEmployee/editEmployee")
-);
 const reports = React.lazy(() => import("./views/pages/reports/viewTable"));
 
 const CodeEditors = React.lazy(() =>
@@ -36,6 +30,29 @@ const CodeEditors = React.lazy(() =>
 const TextEditors = React.lazy(() =>
   import("./views/editors/text-editors/TextEditors")
 );
+
+const loginApp = React.lazy(() =>
+  import("./views/pages/loginTimeTrack/LoginApp")
+);
+
+const addProject = React.lazy(() =>
+  import("./views/pages/project/addProject/addProject")
+);
+const editProject = React.lazy(() =>
+  import("./views/pages/project/editProject/editProject")
+);
+const viewProject = React.lazy(() =>
+  import("./views/pages/project/viewProject/projectAdvancedTable/projectTable")
+);
+const viewSheet = React.lazy(() =>
+  import(
+    "./views/pages/timeSheet/viewTimeSheet/timeSheetAdvancedTable/sheetTable"
+  )
+);
+const addTask = React.lazy(() =>
+  import("./views/pages/timeSheet/viewTimeSheet/addTask/Modals")
+);
+
 const AdvancedForms = React.lazy(() =>
   import("./views/forms/advanced-forms/AdvancedForms")
 );

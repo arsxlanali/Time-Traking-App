@@ -15,8 +15,8 @@ import {
   deleteEmployee,
   // editEmployee,
   getEmployees,
-} from "../../../../redux/actions/Slice/employeesSlice";
-import { getEmployee } from "src/redux/actions/Slice/employeeSllice";
+} from "../../../../redux/Slice/employeesSlice";
+import { getEmployee } from "src/redux/Slice/employeeSllice";
 
 const DemoTable = () => {
   const history = useHistory();

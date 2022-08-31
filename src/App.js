@@ -15,7 +15,7 @@ const TheLayout = React.lazy(() => import("./containers/TheLayout"));
 const TheEmailApp = React.lazy(() => import("./views/apps/email/TheEmailApp"));
 
 // Pages
-const Login = React.lazy(() => import("./views/pages/login/Login"));
+const Login = React.lazy(() => import("./views/pages/loginTimeTrack/LoginApp"));
 const Register = React.lazy(() => import("./views/pages/register/Register"));
 const Page404 = React.lazy(() => import("./views/pages/page404/Page404"));
 
@@ -30,7 +30,7 @@ class App extends Component {
             <Route
               exact
               path="/login"
-              name="Login Page"
+              name="Login"
               render={(props) => <Login {...props} />}
             />
             <Route

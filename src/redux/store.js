@@ -1,12 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import slideBarSliceReducer from "./actions/Slice/sideBarSlice";
-import viewEmployees from "./actions/Slice/employeesSlice";
-import employee from "./actions/Slice/employeeSllice";
-// import projectSliceReducer from  './projectSlice';
+import slideBarSliceReducer from "./Slice/sideBarSlice";
+import viewEmployees from "./Slice/employeesSlice";
+import employee from "./Slice/employeeSllice";
+import loginSliceReducer from "./Slice/loginSlice";
+import viewTimeSheetReducer from "./Slice/loginSlice";
 export default configureStore({
   reducer: {
     slideBar: slideBarSliceReducer,
     employees: viewEmployees,
     employee: employee,
+    login: loginSliceReducer,
+    viewTimeSheet: viewTimeSheetReducer,
   },
 });

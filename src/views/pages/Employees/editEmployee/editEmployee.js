@@ -18,7 +18,7 @@ import {
 import { useSelector } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { editEmployee } from "../../../../redux/actions/Slice/employeesSlice";
+import { editEmployee } from "../../../../redux/Slice/employeesSlice";
 import { useDispatch } from "react-redux";
 
 const validationSchema = function (values) {

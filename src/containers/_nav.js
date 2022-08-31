@@ -16,6 +16,7 @@ const _nav = [
     _tag: "CSidebarNavTitle",
     _children: ["Essentials"],
   },
+
   {
     _tag: "CSidebarNavDropdown",
     name: "Projects",
