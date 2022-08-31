@@ -10,15 +10,12 @@ const reports = React.lazy(() => import("./views/pages/reports/viewTable"));
 const CodeEditors = React.lazy(() =>
   import("./views/editors/code-editors/CodeEditors")
 );
-const addProject = React.lazy(() =>
-  import("./views/pages/project/addProject/addProject")
-);
-const viewProject = React.lazy(() =>
-  import("./views/pages/project/viewProject/projectAdvancedTable/projectTable")
-);
 const TextEditors = React.lazy(() =>
   import("./views/editors/text-editors/TextEditors")
 );
+
+const loginApp = React.lazy(() => import('./views/pages/loginTimeTrack/LoginApp'));
+
 
 const addProject = React.lazy(() => import('./views/pages/project/addProject/addProject'));
 const editProject = React.lazy(() => import('./views/pages/project/editProject/editProject'));
@@ -108,6 +105,9 @@ const User = React.lazy(() => import("./views/users/User"));
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+
+  { path: '/loginApp', name: 'login', component: loginApp, exact: true },
+
   
   { path: '/addproject', name: 'Add Project', component: addProject, exact: true },
   { path: '/editproject', name: 'Edit Project', component: editProject, exact: true },
@@ -163,9 +163,9 @@ const routes = [
   { path: '/tables/advanced-tables', name: 'Advanced Tables', component: AdvancedTables },
   { path: '/tables/tables', name: 'Tables', component: Tables },
   { path: '/widgets', name: 'Widgets', component: Widgets },
-  { path: '/apps', name: 'Apps', component: Invoice, exact: true },
-  { path: '/apps/invoicing', name: 'Invoice', component: Invoice, exact: true },
-  { path: '/apps/invoicing/invoice', name: 'Invoice', component: Invoice },
+  //{ path: '/apps', name: 'Apps', component: Invoice, exact: true },
+ // { path: '/apps/invoicing', name: 'Invoice', component: Invoice, exact: true },
+  //{ path: '/apps/invoicing/invoice', name: 'Invoice', component: Invoice },
   { path: '/users', exact: true, name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
   { path: '/apps/email/inbox', exact: true, name: 'Inbox' },

@@ -16,6 +16,7 @@ const _nav = [
     _tag: "CSidebarNavTitle",
     _children: ["Essentials"],
   },
+  
   {
     _tag: "CSidebarNavDropdown",
     name: "Projects",
@@ -59,12 +60,7 @@ const _nav = [
     
   },
 
-  {
-    _tag: 'CSidebarNavItem',
-    name: 'Add Task',
-    to: '/addtask',
-  },
-
+  
   {
     _tag: "CSidebarNavTitle",
     _children: ["Theme"],
