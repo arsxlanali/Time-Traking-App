@@ -9,7 +9,7 @@ import {
   CRow
 } from '@coreui/react'
 import { DocsLink } from 'src/reusable'
-
+import { useSelector } from 'react-redux';
 import usersData from '../../viewTimeSheet/sheetData/UsersData.js'
 
 const getBadge = status => {
@@ -24,7 +24,9 @@ const getBadge = status => {
 const fields = ['p #No', 'name', 'status', 'edit', 'remove']
 
 const Tables = () => {
+  const {viewTimeSheet} = useSelector((state) => state.entities) 
   return (
+    
     <>
       <CRow>
         <CCol xs="12" lg="6">
@@ -35,7 +37,7 @@ const Tables = () => {
             </CCardHeader>
             <CCardBody>
               <CDataTable
-                items={usersData}
+                items={viewTimeSheet}
                 fields={fields}
                 itemsPerPage={5}
                 pagination
