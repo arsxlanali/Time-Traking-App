@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { login } from 'src/redux/loginSlice'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState, useEffect } from "react";
+import { login } from "src/redux/Slice/loginSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import {
@@ -15,14 +15,11 @@ import {
   CInputGroup,
   CInputGroupPrepend,
   CInputGroupText,
-  CRow
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-
-
+  CRow,
+} from "@coreui/react";
+import CIcon from "@coreui/icons-react";
 
 function LoginApp() {
-
   const history = useHistory();
 
   const [email, setEmail] = useState();
@@ -36,25 +33,23 @@ function LoginApp() {
     setPassword(event.target.value);
   }
 
-  const dispatch = useDispatch()
-  const { entities, loading } = useSelector((state) => state.login)
+  const dispatch = useDispatch();
+  const { entities, loading } = useSelector((state) => state.login);
 
-
-  if (loading) return <p>Loading...</p>
+  if (loading) return <p>Loading...</p>;
 
   const navigate = () => {
-    history.push('/dashboard')
-  }
-  
+    history.push("/dashboard");
+  };
+
   const onSubmit = () => {
     let data = {
       email,
-      password
-    }
-      dispatch(login({ data,navigate }))
-  }
+      password,
+    };
+    dispatch(login({ data, navigate }));
+  };
   return (
-
     <div className="c-app c-default-layout flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">
@@ -71,7 +66,13 @@ function LoginApp() {
                           <CIcon name="cil-user" />
                         </CInputGroupText>
                       </CInputGroupPrepend>
-                      <CInput type="text" placeholder="Email" autoComplete="email" onChange={handleEmail} required />
+                      <CInput
+                        type="text"
+                        placeholder="Email"
+                        autoComplete="email"
+                        onChange={handleEmail}
+                        required
+                      />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupPrepend>
@@ -79,14 +80,28 @@ function LoginApp() {
                           <CIcon name="cil-lock-locked" />
                         </CInputGroupText>
                       </CInputGroupPrepend>
-                      <CInput type="password" placeholder="Password" autoComplete="current-password" onChange={handlePas} required />
+                      <CInput
+                        type="password"
+                        placeholder="Password"
+                        autoComplete="current-password"
+                        onChange={handlePas}
+                        required
+                      />
                     </CInputGroup>
                     <CRow>
                       <CCol xs="6">
-                        <CButton color="primary" className="px-4" onClick={onSubmit}>Login</CButton>
+                        <CButton
+                          color="primary"
+                          className="px-4"
+                          onClick={onSubmit}
+                        >
+                          Login
+                        </CButton>
                       </CCol>
                       <CCol xs="6" className="text-right">
-                        <CButton color="link" className="px-0">Forgot password?</CButton>
+                        <CButton color="link" className="px-0">
+                          Forgot password?
+                        </CButton>
                       </CCol>
                     </CRow>
                   </CForm>
@@ -97,8 +112,7 @@ function LoginApp() {
         </CRow>
       </CContainer>
     </div>
-
-  )
+  );
 }
 
-export default LoginApp
+export default LoginApp;

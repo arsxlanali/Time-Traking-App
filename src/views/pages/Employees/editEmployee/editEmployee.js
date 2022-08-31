@@ -15,10 +15,10 @@ import {
   CRow,
   CFormText,
 } from "@coreui/react";
-
+import { useSelector } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { addEmployee } from "../../../../redux/Slice/employeesSlice";
+import { editEmployee } from "../../../../redux/Slice/employeesSlice";
 import { useDispatch } from "react-redux";
 
 const validationSchema = function (values) {
@@ -66,17 +66,6 @@ const getErrorsFromValidationError = (validationError) => {
   }, {});
 };
 
-const initialValues = {
-  name: "",
-  address: "",
-  phone: "",
-  email: "",
-  department: "",
-  position: "",
-  role: "",
-  accept: false,
-};
-
 const findFirstError = (formName, hasError) => {
   const form = document.forms[formName];
   for (let i = 0; i < form.length; i++) {
@@ -108,8 +97,23 @@ const touchAll = (setTouched, errors) => {
   validateForm(errors);
 };
 
-const ValidationForms = () => {
+const EditEmployee = ({ match }) => {
   const dispatch = useDispatch();
+  const { employeesView } = useSelector((state) => state.employees);
+  const user = employeesView.find(
+    (user) => user.id.toString() === match.params.id
+  );
+  console.log(user);
+  const initialValues = {
+    name: user.name,
+    address: user.address,
+    phone: user.phone,
+    email: user.email,
+    department: user.department,
+    position: user.position,
+    role: user.role,
+    accept: false,
+  };
   const onSubmit = (values, { setSubmitting, setErrors }) => {
     setTimeout(() => {
       alert(JSON.stringify(values, null, 2));
@@ -118,7 +122,7 @@ const ValidationForms = () => {
       setSubmitting(false);
     }, 2000);
     //console.log(values);
-    dispatch(addEmployee(values));
+    dispatch(editEmployee(values));
   };
   return (
     <CCard>
@@ -133,8 +137,6 @@ const ValidationForms = () => {
             values,
             errors,
             touched,
-            // status,
-            // dirty,
             handleChange,
             handleBlur,
             handleSubmit,
@@ -333,4 +335,4 @@ const ValidationForms = () => {
   );
 };
 
-export default ValidationForms;
+export default EditEmployee;
