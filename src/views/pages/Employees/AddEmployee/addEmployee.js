@@ -1,6 +1,4 @@
 import React from "react";
-
-// import { TextMask, InputAdapter } from "react-text-mask-hoc";
 import {
   CButton,
   CSelect,
@@ -20,7 +18,7 @@ import {
 
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { addEmployee } from "../../../../redux/actions/Slice/employeeSlice";
+import { addEmployee } from "../../../../redux/actions/Slice/employeesSlice";
 import { useDispatch } from "react-redux";
 
 const validationSchema = function (values) {

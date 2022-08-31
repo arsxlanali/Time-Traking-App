@@ -25,6 +25,9 @@ const listEmployee = React.lazy(() =>
 const employee = React.lazy(() =>
   import("./views/pages/Employees/ViewEmployees/User")
 );
+const editEmployee = React.lazy(() =>
+  import("./views/pages/Employees/editEmployee/editEmployee")
+);
 const reports = React.lazy(() => import("./views/pages/reports/viewTable"));
 
 const CodeEditors = React.lazy(() =>
@@ -151,6 +154,12 @@ const routes = [
     exact: true,
     name: "Employee Details",
     component: employee,
+  },
+  {
+    path: "/editemployee/:id",
+    exact: true,
+    name: "Edit Employee",
+    component: editEmployee,
   },
   {
     path: "/addemployee",

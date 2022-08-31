@@ -49,7 +49,6 @@ const _nav = [
   {
     _tag: "CSidebarNavDropdown",
     name: "Employee",
-    route: "/base",
     icon: "cil-puzzle",
     _children: [
       {

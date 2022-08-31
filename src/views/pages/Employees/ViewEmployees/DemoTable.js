@@ -13,23 +13,29 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import {
   deleteEmployee,
-  editEmployee,
-} from "../../../../redux/actions/Slice/employeeSlice";
+  // editEmployee,
+  getEmployees,
+} from "../../../../redux/actions/Slice/employeesSlice";
+import { getEmployee } from "src/redux/actions/Slice/employeeSllice";
 
 const DemoTable = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const queryPage = useLocation().search.match(/page=([0-9]+)/, "");
   const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1);
+
   const [page, setPage] = useState(currentPage);
+
   const pageChange = (newPage) => {
-    currentPage !== newPage && history.push(`/listemployee?page=${newPage}`);
+    currentPage !== newPage && history.push(`/listemployees?page=${newPage}`);
   };
   useEffect(() => {
     currentPage !== page && setPage(currentPage);
-  }, [currentPage, page]);
+    dispatch(getEmployees());
+  }, [currentPage, page, dispatch]);
 
   const { employeesView } = useSelector((state) => state.employees);
-  const dispatch = useDispatch();
+  console.log(employeesView.users);
   const [details, setDetails] = useState([]);
   const toggleDetails = (index) => {
     const position = details.indexOf(index);
@@ -44,7 +50,7 @@ const DemoTable = () => {
 
   const fields = [
     { key: "name", _style: { width: "40%" } },
-    "desingnation",
+    "position",
     { key: "role", _style: { width: "20%" } },
     { key: "email", _style: { width: "20%" } },
     {
@@ -57,7 +63,7 @@ const DemoTable = () => {
   return (
     <CCardBody>
       <CDataTable
-        items={employeesView}
+        items={employeesView.users}
         fields={fields}
         columnFilter
         tableFilter
@@ -94,23 +100,23 @@ const DemoTable = () => {
                   shape="square"
                   size="sm"
                   onClick={() => {
-                    toggleDetails(item.id);
+                    toggleDetails(item._id);
                   }}
                 >
-                  {details.includes(item.id) ? "Hide" : "Show"}
+                  {details.includes(item._id) ? "Hide" : "Show"}
                 </CButton>
               </td>
             );
           },
           details: (item) => {
             return (
-              <CCollapse show={details.includes(item.id)}>
+              <CCollapse show={details.includes(item._id)}>
                 <CCardBody>
                   <CButton
                     size="sm"
                     color="info"
                     onClick={() => {
-                      dispatch(editEmployee(item.id));
+                      history.push(`/editemployee/${item._id}`);
                     }}
                   >
                     Edit
@@ -120,7 +126,7 @@ const DemoTable = () => {
                     color="danger"
                     className="ml-1"
                     onClick={() => {
-                      dispatch(deleteEmployee(item.id));
+                      dispatch(deleteEmployee(item._id));
                     }}
                   >
                     Delete
@@ -130,7 +136,9 @@ const DemoTable = () => {
                     color="primary"
                     className="ml-1"
                     onClick={() => {
-                      history.push(`/listemployee/${item.id}`);
+                      history.push(`/listemployee/${item._id}`, { item });
+                      // console.log("This is my id:   ", item._id);
+                      // dispatch(getEmployee(item._id));
                     }}
                   >
                     View
