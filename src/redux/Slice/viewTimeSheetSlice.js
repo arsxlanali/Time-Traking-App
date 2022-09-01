@@ -25,8 +25,8 @@ export const viewTimeSheet = createAsyncThunk(
   async (thunkAPI) => {
     try {
       const res = await axios
-        .get(`${baseURL}/tasks/findOneUserTasks/630f0020de145d523f8d365b`, header);
-
+        .get(`${baseURL}/tasks/findOneUserTasks/${id}`, header);
+      console.log(res.data)
       return res.data;
 
     }

@@ -39,9 +39,7 @@ const employee = React.lazy(() =>
 const editEmployee = React.lazy(() =>
   import("./views/pages//Employees/editEmployee/editEmployee")
 );
-const addTask = React.lazy(() =>
-  import("./views/pages/timeSheet/addTask/Modals")
-);
+
 
 const AdvancedForms = React.lazy(() =>
   import("./views/forms/advanced-forms/AdvancedForms")
@@ -149,7 +147,6 @@ const routes = [
     component: viewSheet,
     exact: true,
   },
-  { path: "/addTask", name: "Add Task", component: addTask, exact: true },
   {
     path: "/listemployee",
     name: "View Eployees",
