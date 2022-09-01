@@ -42,12 +42,6 @@ const _nav = [
   },
 
   {
-    _tag: "CSidebarNavItem",
-    name: "Add Task",
-    to: "/addtask",
-    icon: "cil-pencil",
-  },
-  {
     _tag: "CSidebarNavDropdown",
     name: "Employee",
     icon: "cil-puzzle",
