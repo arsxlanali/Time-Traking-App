@@ -12,11 +12,11 @@ import {
 // import usersData from "./Data/UsersData";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  deleteEmp,
   deleteEmployee,
-  // editEmployee,
   getEmployees,
 } from "../../../../redux/Slice/employeesSlice";
-import { getEmployee } from "src/redux/Slice/employeeSllice";
+// import { getEmployee } from "src/redux/Slice/employeeSllice";
 
 const DemoTable = () => {
   const history = useHistory();
@@ -32,7 +32,7 @@ const DemoTable = () => {
   useEffect(() => {
     currentPage !== page && setPage(currentPage);
     dispatch(getEmployees());
-  }, [currentPage, page, dispatch]);
+  }, []);
 
   const { employeesView } = useSelector((state) => state.employees);
   console.log(employeesView.users);
@@ -74,17 +74,6 @@ const DemoTable = () => {
         activePage={page}
         hover
         sorter
-        // onRowClick={(item) => history.push(`/users/${item.id}`)}
-        // pagination
-        // loading
-        // onRowClick={(item,index,col,e) => console.log(item,index,col,e)}
-        // onPageChange={(val) => console.log('new page:', val)}
-        // onPagesChange={(val) => console.log('new pages:', val)}
-        // onPaginationChange={(val) => console.log('new pagination:', val)}
-        // onFilteredItemsChange={(val) => console.log('new filtered items:', val)}
-        // onSorterValueChange={(val) => console.log('new sorter value:', val)}
-        // onTableFilterChange={(val) => console.log('new table filter:', val)}
-        // onColumnFilterChange={(val) => console.log('new column filter:', val)}
         scopedSlots={{
           email: (item) => (
             <td>
@@ -126,6 +115,7 @@ const DemoTable = () => {
                     color="danger"
                     className="ml-1"
                     onClick={() => {
+                      dispatch(deleteEmp(item._id));
                       dispatch(deleteEmployee(item._id));
                     }}
                   >
@@ -137,8 +127,6 @@ const DemoTable = () => {
                     className="ml-1"
                     onClick={() => {
                       history.push(`/listemployee/${item._id}`, { item });
-                      // console.log("This is my id:   ", item._id);
-                      // dispatch(getEmployee(item._id));
                     }}
                   >
                     View

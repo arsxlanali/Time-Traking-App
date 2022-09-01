@@ -3,18 +3,24 @@ import axios from "axios";
 // import employeesList from "../../../views/pages/Employees/ViewEmployees/Data/UsersData";
 
 const baseUrl = "https://time-tracking-app-backend.herokuapp.com";
+const token = localStorage.getItem("Token");
 
 const initialState = {
   employeesView: [],
   isLoading: true,
 };
 
+const header = {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+};
 export const getEmployees = createAsyncThunk(
   //action type string
   "employees/getall",
   // callback function
 
-  async (thunkAPI) => {
+  async (data, thunkAPI) => {
     // console.log("sdfsdf");
     try {
       const res = await axios(`${baseUrl}/users/getall`);
@@ -24,7 +30,24 @@ export const getEmployees = createAsyncThunk(
     }
   }
 );
+export const deleteEmp = createAsyncThunk(
+  //action type string
+  "employees/deleteEmp",
+  // callback function
 
+  async (data, thunkAPI) => {
+    // console.log("sdfsdf");
+    try {
+      const res = await axios.delete(
+        `${baseUrl}/users/delete/${data.params.id}`,
+        header
+      );
+      return res?.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue("something went wrong");
+    }
+  }
+);
 export const employeesSlice = createSlice({
   name: "employees",
   initialState,
@@ -45,10 +68,6 @@ export const employeesSlice = createSlice({
       state.employeesView = [...state.employeesView, payload];
     },
     editEmployee: (state, { payload }) => {
-      // const itemId = payload;
-      // console.log(state.employeesView);
-      // const employee = state.employeesView.filter((item) => item.id === itemId);
-      // console.log(employee);
       const updatedEmployees = state.employeesView.map((item) => {
         if (item.id === payload.id) {
           return payload;
