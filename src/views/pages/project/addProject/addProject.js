@@ -91,8 +91,8 @@ const validateForm = (errors) => {
 
 const ValidationForms = () =>  {
   return (
-    <CCard>
-      <CCardBody>
+    // <CCard>
+    //   <CCardBody>
         <Formik
           initialValues={initialValues}
           validate={validate(validationSchema)}
@@ -197,8 +197,8 @@ const ValidationForms = () =>  {
               </CRow>
             )}
         </Formik>
-      </CCardBody>
-    </CCard>
+    //   </CCardBody>
+    // </CCard>
   )
 }
 
