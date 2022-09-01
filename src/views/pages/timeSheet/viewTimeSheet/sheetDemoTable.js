@@ -388,10 +388,10 @@ const DemoTable = () => {
                     shape="square"
                     size="sm"
                     onClick={() => {
-                      toggleDetails(item.id);
+                      toggleDetails(item._id);
                     }}
                   >
-                    {details.includes(item.id) ? "Hide" : <i class="cil"></i>}
+                    {details.includes(item._id) ? "Hide" : <i class="cil"></i>}
                   </CButton>
                 </td>
               );
@@ -405,17 +405,17 @@ const DemoTable = () => {
                     shape="square"
                     size="sm"
                     onClick={() => {
-                      toggleDetails(item.id);
+                      toggleDetails(item._id);
                     }}
                   >
-                    {details.includes(item.id) ? "Hide" : "Show"}
+                    {details.includes(item._id) ? "Hide" : "Show"}
                   </CButton>
                 </td>
               );
             },
             details: (item) => {
               return (
-                <CCollapse show={details.includes(item.id)}>
+                <CCollapse show={details.includes(item._id)}>
                   <CCardBody>
                     <h4>{item.username}</h4>
                     <p className="text-muted">User since: {item.registered}</p>
