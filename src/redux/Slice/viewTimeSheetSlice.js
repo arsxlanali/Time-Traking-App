@@ -1,60 +1,63 @@
-// import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-// import axios from "axios";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 
-// const baseURL = "https://time-tracking-app-backend.herokuapp.com";
-// const Token=localStorage.get('Token');
-// console.log(Token)
-// const Role=localStorage.get('Role');
-// console.log(Role)
+const baseURL = "https://time-tracking-app-backend.herokuapp.com";
+const Token = localStorage.getItem('Token');
+console.log(Token)
+const Role = localStorage.getItem('Role');
+console.log(Role)
+const id = localStorage.getItem('key');
+const initialState = {
+  timeSheet: [],
+  loading: false,
+}
 
-// const initialState = {
-//   entities: [],
-//   loading: false,
-// }
+const header = {
+  headers: {
+    Authorization: `Bearer ${Token}`,
 
-// const header = {
-//   headers:{
-//    accessToken : Token,
+  }
+};
 
-//   }
-// };
+export const viewTimeSheet = createAsyncThunk(
+  'tasks/findOneUserTasks',
+  async (thunkAPI) => {
+    try {
+      const res = await axios
+        .get(`${baseURL}/tasks/findOneUserTasks/630f0020de145d523f8d365b`, header);
 
-// export const viewTimeSheet = createAsyncThunk(
-//   'users/login',
-//   async () => {
-//     axios
-//       .get(`${baseURL}/users/login${Token}`, header)
-//       .then((response) => {
-//         console.log(response.data);
-//         return response.data;
-//       }).catch((error) => {
+      return res.data;
 
-//         return Promise.reject (error)
-//       }
-//       )
+    }
+    catch (error) {
 
-//   })
+      return thunkAPI.rejectWithValue("Didn't get data");
 
-
-// export const viewTimeSheetSlice = createSlice({
-//   name: 'viewTimeSheet',
-//   initialState,
-//   reducers: {},
-//   extraReducers: {
-//     [viewTimeSheet.pending]: (state) => {
-//       state.loading = true
-//     },
-//     [viewTimeSheet.fulfilled]: (state, { payload }) => {
-//       state.loading = false
-//       state.entities = payload
-
-//     },
-//     [viewTimeSheet.rejected]: (state) => {
-//       state.loading = false
-//     },
-//   },
-// })
+    }
 
 
-// export default viewTimeSheetSlice.reducer
+  })
+
+
+export const viewTimeSheetSlice = createSlice({
+  name: 'viewTimeSheet',
+  initialState,
+  reducers: {},
+  extraReducers: {
+    [viewTimeSheet.pending]: (state) => {
+      state.loading = true
+    },
+    [viewTimeSheet.fulfilled]: (state, { payload }) => {
+      state.loading = false
+      state.timeSheet = payload
+
+    },
+    [viewTimeSheet.rejected]: (state) => {
+      state.loading = false
+    },
+  },
+})
+
+
+export default viewTimeSheetSlice.reducer
