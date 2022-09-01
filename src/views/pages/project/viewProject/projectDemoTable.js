@@ -6,7 +6,7 @@ import {
   CCollapse,
   CDataTable
 } from '@coreui/react'
-import usersData from '../../viewProject/projectData/UsersData.js'
+import usersData from 'src/views/users/UsersData'
 
 const DemoTable = () => {
   const [details, setDetails] = useState([])

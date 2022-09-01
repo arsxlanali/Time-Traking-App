@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { viewTimeSheet } from "src/redux/Slice/viewTimeSheetSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import {
   CCard,
   CCardBody,
@@ -19,10 +22,10 @@ import {
   CRow,
   CCol,
 } from "@coreui/react";
-import usersData from "../../viewTimeSheet/sheetData/UsersData.js";
 import { DateRangePicker } from "react-dates";
 import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
+import usersData from "src/views/users/UsersData";
 
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -77,44 +80,58 @@ const initialValues = {
 const onSubmit = (values, { setSubmitting, setErrors }) => {
   setTimeout(() => {
     alert(JSON.stringify(values, null, 2));
-    // console.log('User has been successfully saved!', values)
+    console.log('User has been successfully saved!', values)
     setSubmitting(false);
   }, 2000);
 };
 
-// const findFirstError = (formName, hasError) => {
-//   const form = document.forms[formName];
-//   for (let i = 0; i < form.length; i++) {
-//     if (hasError(form[i].name)) {
-//       form[i].focus();
-//       break;
-//     }
-//   }
-// };
+const findFirstError = (formName, hasError) => {
+  const form = document.forms[formName];
+  for (let i = 0; i < form.length; i++) {
+    if (hasError(form[i].name)) {
+      form[i].focus();
+      break;
+    }
+  }
+};
 
-// const validateForm = (errors) => {
-//   findFirstError("simpleForm", (fieldName) => {
-//     return Boolean(errors[fieldName]);
-//   });
-// };
+const validateForm = (errors) => {
+  findFirstError("simpleForm", (fieldName) => {
+    return Boolean(errors[fieldName]);
+  });
+};
 
-// const touchAll = (setTouched, errors) => {
-//   setTouched({
-//     taskName: true,
-//     taskType: true,
-//     description:true,
-//     duration: true,
-//     status: true,
-//   })
-//   validateForm(errors)
-// }
+const touchAll = (setTouched, errors) => {
+  setTouched({
+    taskName: true,
+    taskType: true,
+    description:true,
+    duration: true,
+    status: true,
+  })
+  validateForm(errors)
+}
 
 const DemoTable = () => {
+
+
+
+
   const [details, setDetails] = useState([]);
-  // const [items, setItems] = useState(usersData)
+  const [items, setItems] = useState(usersData)
   const [date, setDate] = React.useState({ startDate: null, endDate: null });
   const [focused, setFocused] = React.useState();
   const [large, setLarge] = useState(false);
+
+  const dispatch = useDispatch();
+  const { timeSheet, loading } = useSelector((state) => state.viewTimeSheet);
+  console.log(timeSheet);
+  //if (loading) return <p>Loading...</p>;
+
+  useEffect(() => {
+    dispatch(viewTimeSheet())
+    
+  }, [])
 
   const toggleDetails = (index) => {
     const position = details.indexOf(index);
@@ -128,7 +145,7 @@ const DemoTable = () => {
   };
 
   const fields = [
-    { key: "no", _style: { width: "10%" } },
+  
     { key: "name", _style: { width: "40%" } },
     "type",
     { key: "description", _style: { width: "20%" } },
@@ -156,6 +173,7 @@ const DemoTable = () => {
         return "primary";
     }
   };
+
 
   return (
     <>
@@ -336,7 +354,7 @@ const DemoTable = () => {
 
       <CCardBody>
         <CDataTable
-          items={usersData}
+          items={timeSheet}
           fields={fields}
           columnFilter
           tableFilter
@@ -347,14 +365,14 @@ const DemoTable = () => {
           sorter
           pagination
           // loading
-          // onRowClick={(item,index,col,e) => console.log(item,index,col,e)}
-          // onPageChange={(val) => console.log('new page:', val)}
-          // onPagesChange={(val) => console.log('new pages:', val)}
-          // onPaginationChange={(val) => console.log('new pagination:', val)}
-          // onFilteredItemsChange={(val) => console.log('new filtered items:', val)}
-          // onSorterValueChange={(val) => console.log('new sorter value:', val)}
-          // onTableFilterChange={(val) => console.log('new table filter:', val)}
-          // onColumnFilterChange={(val) => console.log('new column filter:', val)}
+          onRowClick={(item,index,col,e) => console.log(item,index,col,e)}
+          onPageChange={(val) => console.log('new page:', val)}
+          onPagesChange={(val) => console.log('new pages:', val)}
+          onPaginationChange={(val) => console.log('new pagination:', val)}
+          onFilteredItemsChange={(val) => console.log('new filtered items:', val)}
+          onSorterValueChange={(val) => console.log('new sorter value:', val)}
+          onTableFilterChange={(val) => console.log('new table filter:', val)}
+          onColumnFilterChange={(val) => console.log('new column filter:', val)}
           scopedSlots={{
             status: (item) => (
               <td>
@@ -370,10 +388,10 @@ const DemoTable = () => {
                     shape="square"
                     size="sm"
                     onClick={() => {
-                      toggleDetails(item.id);
+                      toggleDetails(item._id);
                     }}
                   >
-                    {details.includes(item.id) ? "Hide" : <i class="cil"></i>}
+                    {details.includes(item._id) ? "Hide" : <i class="cil"></i>}
                   </CButton>
                 </td>
               );
@@ -387,17 +405,17 @@ const DemoTable = () => {
                     shape="square"
                     size="sm"
                     onClick={() => {
-                      toggleDetails(item.id);
+                      toggleDetails(item._id);
                     }}
                   >
-                    {details.includes(item.id) ? "Hide" : "Show"}
+                    {details.includes(item._id) ? "Hide" : "Show"}
                   </CButton>
                 </td>
               );
             },
             details: (item) => {
               return (
-                <CCollapse show={details.includes(item.id)}>
+                <CCollapse show={details.includes(item._id)}>
                   <CCardBody>
                     <h4>{item.username}</h4>
                     <p className="text-muted">User since: {item.registered}</p>
