@@ -1,9 +1,6 @@
 import React from "react";
-
-import { TextMask, InputAdapter } from "react-text-mask-hoc";
 import {
   CButton,
-  CSelect,
   CCard,
   CCardHeader,
   CCardBody,
@@ -15,27 +12,23 @@ import {
   CLabel,
   CInput,
   CRow,
-  CFormText,
-  CInputGroup,
-  CInputGroupPrepend,
-  CInputGroupText,
 } from "@coreui/react";
-//import { ProBadge, DocsLink } from "src/reusable";
+import { ProBadge, DocsLink } from "src/reusable";
 
 import { Formik } from "formik";
 import * as Yup from "yup";
 
 const validationSchema = function (values) {
   return Yup.object().shape({
-    name: Yup.string()
-      .min(2, `Name has to be at least 2 characters`)
-      .required("Name is required"),
-    address: Yup.string()
-      .min(1, `Address has to be at least 1 character`)
-      .required("Address is required"),
-    phone: Yup.string()
-      .min(5, `phone has to be at least 5 characters`)
-      .required("phone is required"),
+    firstName: Yup.string()
+      .min(2, `First name has to be at least 2 characters`)
+      .required("First name is required"),
+    lastName: Yup.string()
+      .min(1, `Last name has to be at least 1 character`)
+      .required("Last name is required"),
+    userName: Yup.string()
+      .min(5, `Username has to be at least 5 characters`)
+      .required("Username is required"),
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required!"),
@@ -82,9 +75,9 @@ const getErrorsFromValidationError = (validationError) => {
 };
 
 const initialValues = {
-  name: "",
-  address: "",
-  phone: "",
+  firstName: "",
+  lastName: "",
+  userName: "",
   email: "",
   password: "",
   confirmPassword: "",
@@ -117,9 +110,9 @@ const validateForm = (errors) => {
 
 const touchAll = (setTouched, errors) => {
   setTouched({
-    name: true,
-    address: true,
-    phone: true,
+    firstName: true,
+    lastName: true,
+    userName: true,
     email: true,
     password: true,
     confirmPassword: true,
@@ -131,8 +124,29 @@ const touchAll = (setTouched, errors) => {
 const ValidationForms = () => {
   return (
     <CCard>
-      <CCardHeader>Add Employee</CCardHeader>
+      <CCardHeader>
+        Form Validation
+        <ProBadge />
+        <DocsLink href="https://github.com/jaredpalmer/formik" />
+      </CCardHeader>
       <CCardBody>
+        <a
+          href="https://github.com/jaredpalmer/formik"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          Formik
+        </a>{" "}
+        <cite>Build forms in React, without the tears</cite> with
+        <a
+          href="https://github.com/jquense/yup"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          Yup
+        </a>{" "}
+        <cite>Dead simple Object schema validation</cite>
+        <hr />
         <Formik
           initialValues={initialValues}
           validate={validate(validationSchema)}
@@ -156,22 +170,56 @@ const ValidationForms = () => {
               <CCol lg="6">
                 <CForm onSubmit={handleSubmit} noValidate name="simpleForm">
                   <CFormGroup>
-                    <CLabel htmlFor="name">Name</CLabel>
+                    <CLabel htmlFor="firstName">First Name</CLabel>
                     <CInput
                       type="text"
-                      name="name"
-                      id="name"
-                      placeholder="Name"
+                      name="firstName"
+                      id="firstName"
+                      placeholder="First Name"
                       autoComplete="given-name"
-                      valid={!errors.name}
-                      invalid={touched.name && !!errors.name}
+                      valid={!errors.firstName}
+                      invalid={touched.firstName && !!errors.firstName}
                       autoFocus={true}
                       required
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.name}
+                      value={values.firstName}
                     />
-                    <CInvalidFeedback>{errors.name}</CInvalidFeedback>
+                    <CInvalidFeedback>{errors.firstName}</CInvalidFeedback>
+                  </CFormGroup>
+                  <CFormGroup>
+                    <CLabel htmlFor="lastName">Last Name</CLabel>
+                    <CInput
+                      type="text"
+                      name="lastName"
+                      id="lastName"
+                      placeholder="Last Name"
+                      autoComplete="family-name"
+                      valid={!errors.lastName}
+                      invalid={touched.lastName && !!errors.lastName}
+                      required
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.lastName}
+                    />
+                    <CInvalidFeedback>{errors.lastName}</CInvalidFeedback>
+                  </CFormGroup>
+                  <CFormGroup>
+                    <CLabel htmlFor="userName">User Name</CLabel>
+                    <CInput
+                      type="text"
+                      name="userName"
+                      id="userName"
+                      placeholder="User Name"
+                      autoComplete="username"
+                      valid={!errors.userName}
+                      invalid={touched.userName && !!errors.userName}
+                      required
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.userName}
+                    />
+                    <CInvalidFeedback>{errors.userName}</CInvalidFeedback>
                   </CFormGroup>
                   <CFormGroup>
                     <CLabel htmlFor="email">Email</CLabel>
@@ -190,55 +238,51 @@ const ValidationForms = () => {
                     />
                     <CInvalidFeedback>{errors.email}</CInvalidFeedback>
                   </CFormGroup>
-
-                  <CFormGroup>
-                    <CLabel htmlFor="address">Address</CLabel>
-                    <CInput
-                      type="text"
-                      name="address"
-                      id="address"
-                      placeholder="Address"
-                      autoComplete="family-name"
-                      valid={!errors.address}
-                      invalid={touched.address && !!errors.address}
-                      required
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.address}
-                    />
-                    <CInvalidFeedback>{errors.address}</CInvalidFeedback>
-                  </CFormGroup>
-                  <CFormGroup>
-                    <CLabel htmlFor="phone">Phone</CLabel>
-                    <CInput
-                      type="text"
-                      name="phone"
-                      id="phone"
-                      placeholder="Phone"
-                      autoComplete="phone"
-                      valid={!errors.phone}
-                      invalid={touched.phone && !!errors.phone}
-                      required
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.phone}
-                    />
-                    <CFormText color="muted">ex. (92) 300-12345678</CFormText>
-                    <CInvalidFeedback>{errors.phone}</CInvalidFeedback>
-                  </CFormGroup>
-                  <CFormGroup row>
-                    <CCol md="12">
-                      <CLabel htmlFor="select">Department</CLabel>
+                  <CRow>
+                    <CCol md={6}>
+                      <CFormGroup>
+                        <CLabel htmlFor="password">Password</CLabel>
+                        <CInput
+                          type="password"
+                          name="password"
+                          id="password"
+                          placeholder="Password"
+                          autoComplete="new-password"
+                          valid={!errors.password}
+                          invalid={touched.password && !!errors.password}
+                          required
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.password}
+                        />
+                        {/*<CInvalidFeedback>Required password containing at least: number, uppercase and lowercase letter, 8 characters</CInvalidFeedback>*/}
+                        <CInvalidFeedback>{errors.password}</CInvalidFeedback>
+                      </CFormGroup>
                     </CCol>
-                    <CCol xs="12" md="12">
-                      <CSelect custom name="select" id="select">
-                        <option value="0">Please select</option>
-                        <option value="1">Management</option>
-                        <option value="2">Development</option>
-                        <option value="3">Desining</option>
-                      </CSelect>
+                    <CCol md={6}>
+                      <CFormGroup>
+                        <CLabel htmlFor="confirmPassword">Password</CLabel>
+                        <CInput
+                          type="password"
+                          name="confirmPassword"
+                          id="confirmPassword"
+                          placeholder="Confirm password"
+                          autoComplete="new-password"
+                          valid={!errors.confirmPassword}
+                          invalid={
+                            touched.confirmPassword && !!errors.confirmPassword
+                          }
+                          required
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.confirmPassword}
+                        />
+                        <CInvalidFeedback>
+                          {errors.confirmPassword}
+                        </CInvalidFeedback>
+                      </CFormGroup>
                     </CCol>
-                  </CFormGroup>
+                  </CRow>
                   <CFormGroup variant="custom-checkbox" className="pb-3">
                     <CInputCheckbox
                       custom

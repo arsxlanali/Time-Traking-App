@@ -1,17 +1,17 @@
 import React from "react";
 import { CCard, CCardBody, CCardHeader, CCol, CRow } from "@coreui/react";
-import CIcon from "@coreui/icons-react";
+// import CIcon from "@coreui/icons-react";
 import { useLocation } from "react-router-dom";
 
 const User = ({ match }) => {
   const userDetails = useLocation().state.item;
   return (
-    <CRow>
-      <CCol lg={12}>
+    <CRow className={"d-flex justify-content-center"}>
+      <CCol lg={8}>
         <CCard>
           <CCardHeader>Employee id: {userDetails._id}</CCardHeader>
           <CCardBody>
-            <table className="table table-striped table-hover">
+            <table className="table table-hover">
               <tbody>
                 <tr>
                   <td>Name</td>
@@ -29,12 +29,6 @@ const User = ({ match }) => {
                   <td>Phone</td>
                   <td>
                     <strong>{userDetails.phone}</strong>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Address</td>
-                  <td>
-                    <strong>{userDetails.address}</strong>
                   </td>
                 </tr>
                 <tr>

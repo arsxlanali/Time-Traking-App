@@ -8,11 +8,15 @@ import {
   CCollapse,
   CDataTable,
   CPagination,
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalBody,
+  CModalFooter,
 } from "@coreui/react";
 // import usersData from "./Data/UsersData";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  deleteEmp,
   deleteEmployee,
   getEmployees,
 } from "../../../../redux/Slice/employeesSlice";
@@ -34,8 +38,8 @@ const DemoTable = () => {
     dispatch(getEmployees());
   }, []);
 
-  const { employeesView } = useSelector((state) => state.employees);
-  console.log(employeesView.users);
+  const { employeesView, isLoading } = useSelector((state) => state.employees);
+  const [modal, setModal] = useState(false);
   const [details, setDetails] = useState([]);
   const toggleDetails = (index) => {
     const position = details.indexOf(index);
@@ -49,7 +53,7 @@ const DemoTable = () => {
   };
 
   const fields = [
-    { key: "name", _style: { width: "40%" } },
+    { key: "name", _style: { width: "30%" } },
     "position",
     { key: "role", _style: { width: "20%" } },
     { key: "email", _style: { width: "20%" } },
@@ -63,11 +67,12 @@ const DemoTable = () => {
   return (
     <CCardBody>
       <CDataTable
-        items={employeesView.users}
+        items={employeesView}
         fields={fields}
         columnFilter
-        tableFilter
+        // tableFilter
         cleaner
+        loading={isLoading}
         itemsPerPageSelect
         striped
         itemsPerPage={5}
@@ -92,7 +97,7 @@ const DemoTable = () => {
                     toggleDetails(item._id);
                   }}
                 >
-                  {details.includes(item._id) ? "Hide" : "Show"}
+                  {details.includes(item._id) ? "Actions" : "Actions"}
                 </CButton>
               </td>
             );
@@ -105,7 +110,7 @@ const DemoTable = () => {
                     size="sm"
                     color="info"
                     onClick={() => {
-                      history.push(`/editemployee/${item._id}`);
+                      history.push(`/editemployee/${item._id}`, { item });
                     }}
                   >
                     Edit
@@ -114,10 +119,7 @@ const DemoTable = () => {
                     size="sm"
                     color="danger"
                     className="ml-1"
-                    onClick={() => {
-                      dispatch(deleteEmp(item._id));
-                      dispatch(deleteEmployee(item._id));
-                    }}
+                    onClick={() => setModal(!modal)}
                   >
                     Delete
                   </CButton>
@@ -131,16 +133,43 @@ const DemoTable = () => {
                   >
                     View
                   </CButton>
+                  <CModal show={modal} onClose={setModal}>
+                    <CModalHeader closeButton>
+                      <CModalTitle>Are you sure?</CModalTitle>
+                    </CModalHeader>
+                    <CModalBody>
+                      You are about to permanentaly delete an employee, you will
+                      not be able to recover deleted information letter.
+                    </CModalBody>
+                    <CModalFooter>
+                      <CButton
+                        color="danger"
+                        onClick={() => {
+                          dispatch(deleteEmployee(item._id));
+                          setModal(false);
+                        }}
+                      >
+                        Delete
+                      </CButton>{" "}
+                      <CButton
+                        color="secondary"
+                        onClick={() => setModal(false)}
+                      >
+                        Cancel
+                      </CButton>
+                    </CModalFooter>
+                  </CModal>
                 </CCardBody>
               </CCollapse>
             );
           },
         }}
       />
+
       <CPagination
-        activePage={page}
+        activePage={1}
         onActivePageChange={pageChange}
-        pages={5}
+        pages={1}
         doubleArrows={false}
         align="center"
       />
