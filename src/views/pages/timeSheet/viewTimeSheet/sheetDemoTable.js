@@ -80,7 +80,7 @@ const initialValues = {
 const onSubmit = (values, { setSubmitting, setErrors }) => {
   setTimeout(() => {
     alert(JSON.stringify(values, null, 2));
-    console.log('User has been successfully saved!', values)
+    console.log("User has been successfully saved!", values);
     setSubmitting(false);
   }, 2000);
 };
@@ -105,20 +105,16 @@ const touchAll = (setTouched, errors) => {
   setTouched({
     taskName: true,
     taskType: true,
-    description:true,
+    description: true,
     duration: true,
     status: true,
-  })
-  validateForm(errors)
-}
+  });
+  validateForm(errors);
+};
 
 const DemoTable = () => {
-
-
-
-
   const [details, setDetails] = useState([]);
-  const [items, setItems] = useState(usersData)
+  const [items, setItems] = useState(usersData);
   const [date, setDate] = React.useState({ startDate: null, endDate: null });
   const [focused, setFocused] = React.useState();
   const [large, setLarge] = useState(false);
@@ -129,9 +125,8 @@ const DemoTable = () => {
   //if (loading) return <p>Loading...</p>;
 
   useEffect(() => {
-    dispatch(viewTimeSheet())
-    
-  }, [])
+    dispatch(viewTimeSheet());
+  }, []);
 
   const toggleDetails = (index) => {
     const position = details.indexOf(index);
@@ -145,12 +140,11 @@ const DemoTable = () => {
   };
 
   const fields = [
-  
-    { key: "name", _style: { width: "40%" } },
+    { key: "name", _style: { width: "20%" } },
     "type",
-    { key: "description", _style: { width: "20%" } },
+    { key: "description", _style: { width: "40%" } },
     { key: "duration", _style: { width: "20%" } },
-    { key: "status", _style: { width: "20%" } },
+    { key: "status", _style: { width: "10%" } },
     {
       key: "show_details",
       label: "",
@@ -173,7 +167,6 @@ const DemoTable = () => {
         return "primary";
     }
   };
-
 
   return (
     <>
@@ -365,14 +358,16 @@ const DemoTable = () => {
           sorter
           pagination
           // loading
-          onRowClick={(item,index,col,e) => console.log(item,index,col,e)}
-          onPageChange={(val) => console.log('new page:', val)}
-          onPagesChange={(val) => console.log('new pages:', val)}
-          onPaginationChange={(val) => console.log('new pagination:', val)}
-          onFilteredItemsChange={(val) => console.log('new filtered items:', val)}
-          onSorterValueChange={(val) => console.log('new sorter value:', val)}
-          onTableFilterChange={(val) => console.log('new table filter:', val)}
-          onColumnFilterChange={(val) => console.log('new column filter:', val)}
+          onRowClick={(item, index, col, e) => console.log(item, index, col, e)}
+          onPageChange={(val) => console.log("new page:", val)}
+          onPagesChange={(val) => console.log("new pages:", val)}
+          onPaginationChange={(val) => console.log("new pagination:", val)}
+          onFilteredItemsChange={(val) =>
+            console.log("new filtered items:", val)
+          }
+          onSorterValueChange={(val) => console.log("new sorter value:", val)}
+          onTableFilterChange={(val) => console.log("new table filter:", val)}
+          onColumnFilterChange={(val) => console.log("new column filter:", val)}
           scopedSlots={{
             status: (item) => (
               <td>
