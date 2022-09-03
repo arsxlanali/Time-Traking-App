@@ -15,12 +15,18 @@ import {
   CRow,
   CFormText,
 } from "@coreui/react";
-
+import { CToast, CToastHeader, CToastBody } from "@coreui/react";
+// import { toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+import Toaster from "src/views/notifications/toaster/Toaster";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { addEmployee } from "../../../../redux/Slice/employeesSlice";
 import { useDispatch, useSelector } from "react-redux";
-
+// import { Redirect } from "react-router-dom/cjs/react-router-dom";
+import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+// toast.configure();
 const validationSchema = function (values) {
   return Yup.object().shape({
     name: Yup.string()
@@ -107,16 +113,28 @@ const touchAll = (setTouched, errors) => {
   });
   validateForm(errors);
 };
-
+// const notify = () => {
+//   // Calling toast method by passing string
+//   toast("Hello Geeks");
+// };
 const ValidationForms = () => {
-  const { isLoading } = useSelector((state) => state.employees);
+  const { isLoading, isScuessfull } = useSelector((state) => state.employees);
   const dispatch = useDispatch();
+  const history = useHistory();
   const onSubmit = (values, { setSubmitting }) => {
     //console.log(values);
     dispatch(addEmployee(values));
 
     setSubmitting(isLoading);
   };
+  if (isScuessfull) {
+    setTimeout(() => history.push(`/listemployee`), 5000);
+    return (
+      <div>
+        <Toaster></Toaster>
+      </div>
+    );
+  }
   return (
     <CRow className={"d-flex justify-content-center"}>
       <CCol lg={8}>
@@ -132,8 +150,6 @@ const ValidationForms = () => {
                 values,
                 errors,
                 touched,
-                // status,
-                // dirty,
                 handleChange,
                 handleBlur,
                 handleSubmit,
@@ -180,24 +196,6 @@ const ValidationForms = () => {
                         />
                         <CInvalidFeedback>{errors.email}</CInvalidFeedback>
                       </CFormGroup>
-
-                      {/* <CFormGroup>
-                    <CLabel htmlFor="address">Address</CLabel>
-                    <CInput
-                      type="text"
-                      name="address"
-                      id="address"
-                      placeholder="Address"
-                      autoComplete="address"
-                      valid={!errors.address}
-                      invalid={touched.address && !!errors.address}
-                      required
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.address}
-                    />
-                    <CInvalidFeedback>{errors.address}</CInvalidFeedback>
-                  </CFormGroup> */}
                       <CFormGroup>
                         <CLabel htmlFor="phone">Phone</CLabel>
                         <CInput
@@ -304,7 +302,7 @@ const ValidationForms = () => {
                         <CLabel variant="custom-checkbox" htmlFor="accept">
                           I confrim the data is correct
                         </CLabel>
-                        {/* <CInvalidFeedback>{errors.accept}</CInvalidFeedback> */}
+                        <CInvalidFeedback>{errors.accept}</CInvalidFeedback>
                       </CFormGroup>
                       <CFormGroup>
                         <CButton
@@ -314,11 +312,11 @@ const ValidationForms = () => {
                           disabled={isLoading || !isValid}
                           onClick={() => {
                             touchAll(setTouched, errors);
-                            console.log("this is submitting", isLoading);
                           }}
                         >
                           {isLoading ? "Wait..." : "Submit"}
                         </CButton>
+
                         <CButton
                           type="reset"
                           color="danger"

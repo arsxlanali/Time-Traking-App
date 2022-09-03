@@ -20,9 +20,9 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 // import { editEmployee } from "../../../../redux/Slice/employeesSlice";
 // import { useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, Redirect } from "react-router-dom";
 import { editEmployee } from "src/redux/Slice/employeesSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const validationSchema = function (values) {
   return Yup.object().shape({
@@ -99,6 +99,7 @@ const touchAll = (setTouched, errors) => {
 
 const EditEmployee = ({ match }) => {
   const user = useLocation().state.item;
+  const { isLoading } = useSelector((state) => state.employees);
   // const { employeesView } = useSelector((state) => state.employees);
   // const user = employeesView.find(
   //   (user) => user.id.toString() === match.params.id
@@ -119,8 +120,11 @@ const EditEmployee = ({ match }) => {
   const onSubmit = (values, setSubmitting) => {
     values["id"] = user._id;
     dispatch(editEmployee(values));
-    setSubmitting(true);
+    setSubmitting(isLoading);
   };
+  if (isLoading) {
+    return <Redirect to="/listemployee" />;
+  }
   return (
     <CRow className={"d-flex justify-content-center"}>
       <CCol lg={8}>
@@ -296,10 +300,10 @@ const EditEmployee = ({ match }) => {
                           type="submit"
                           color="primary"
                           className="mr-3"
-                          disabled={isSubmitting || !isValid}
+                          disabled={isLoading || !isValid}
                           onClick={() => touchAll(setTouched, errors)}
                         >
-                          {isSubmitting ? "Wait..." : "Submit"}
+                          {isLoading ? "Wait..." : "Submit"}
                         </CButton>
                         <CButton
                           type="reset"
