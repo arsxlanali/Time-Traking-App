@@ -20,8 +20,8 @@ import navigation from "./_nav";
 
 const TheSidebar = () => {
   const dispatch = useDispatch();
-  const show = useSelector((state) => state.sidebarShow);
-
+  const show = useSelector((state) => state?.slideBar?.sidebarShow);
+  console.log("this is side bar show.", show)
   return (
     <CSidebar
       show={show}

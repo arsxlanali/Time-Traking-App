@@ -16,12 +16,12 @@ import {
   CSidebarClose,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-
+import { setAction } from "src/redux/Slice/sideBarSlice";
 const TheAside = () => {
   const show = useSelector(state => state?.slideBar?.asideShow)
 
   const dispatch = useDispatch()
-  const setState = (state) => dispatch({ type: 'set', asideShow: state })
+  const setState = (state) => dispatch({type:"set",asideShow: state })
 
   return (
     <CSidebar
