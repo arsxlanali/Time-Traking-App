@@ -1,9 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { Redirect } from "react-router-dom";
-// import { useDispatch } from "react-redux";
-import { CToast, CToastHeader, CToastBody } from "@coreui/react";
-// import employeesList from "../../../views/pages/Employees/ViewEmployees/Data/UsersData";
 
 const baseUrl = "https://time-tracking-app-backend.herokuapp.com";
 const token = localStorage.getItem("Token");
@@ -69,7 +65,30 @@ export const editEmployee = createAsyncThunk(
     const id = data["id"];
     delete data["id"];
     delete data["accept"];
-    data["password"] = "11221122";
+    // data["password"] = "11221122";
+    try {
+      const res = await axios.put(
+        `${baseUrl}/users/update/${id}`,
+        data,
+        header
+      );
+      thunkAPI.dispatch(getEmployees());
+      return res?.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue("something went wrong");
+    }
+  }
+);
+export const resetPassword = createAsyncThunk(
+  "employees/editEmployee",
+  async (data, thunkAPI) => {
+    // console.log("This is my id:", data);
+    const id = data["id"];
+    delete data["id"];
+    delete data["accept1"];
+    delete data["confirmPassword"];
+    // data["password"] = "11221122";
+    console.log("This is passwordd", data)
     try {
       const res = await axios.put(
         `${baseUrl}/users/update/${id}`,
@@ -106,6 +125,30 @@ export const employeesSlice = createSlice({
       state.isScuessfull = true;
     },
     [addEmployee.rejected]: (state) => {
+      state.isLoading = false;
+      state.isScuessfull = false;
+    },
+    [editEmployee.pending]: (state) => {
+      state.isLoading = true;
+      state.isScuessfull = false;
+    },
+    [editEmployee.fulfilled]: (state) => {
+      state.isLoading = false;
+      state.isScuessfull = true;
+    },
+    [editEmployee.rejected]: (state) => {
+      state.isLoading = false;
+      state.isScuessfull = false;
+    },
+    [resetPassword.pending]: (state) => {
+      state.isLoading = true;
+      state.isScuessfull = false;
+    },
+    [resetPassword.fulfilled]: (state) => {
+      state.isLoading = false;
+      state.isScuessfull = true;
+    },
+    [resetPassword.rejected]: (state) => {
       state.isLoading = false;
       state.isScuessfull = false;
     },
