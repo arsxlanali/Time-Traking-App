@@ -6,6 +6,10 @@ import { useHistory } from "react-router-dom";
 import {
   CButton,
   CCard,
+  CToast,
+  CToastBody,
+  CToastHeader,
+  CToaster,
   CCardBody,
   CCardGroup,
   CCol,
@@ -38,6 +42,7 @@ function LoginApp() {
 
   if (loading) return <p>Loading...</p>;
 
+  
   const navigate = () => {
     history.push("/dashboard");
   };
@@ -49,69 +54,74 @@ function LoginApp() {
     };
     dispatch(login({ data, navigate }));
   };
+
+
+
+
   return (
-    <div className="c-app c-default-layout flex-row align-items-center">
-      <CContainer>
-        <CRow className="justify-content-center">
-          <CCol md="8">
-            <CCardGroup>
-              <CCard className="p-4">
-                <CCardBody>
-                  <CForm>
-                    <h1>Login</h1>
-                    <p className="text-muted">Sign In to your account</p>
-                    <CInputGroup className="mb-3">
-                      <CInputGroupPrepend>
-                        <CInputGroupText>
-                          <CIcon name="cil-user" />
-                        </CInputGroupText>
-                      </CInputGroupPrepend>
-                      <CInput
-                        type="text"
-                        placeholder="Email"
-                        autoComplete="email"
-                        onChange={handleEmail}
-                        required
-                      />
-                    </CInputGroup>
-                    <CInputGroup className="mb-4">
-                      <CInputGroupPrepend>
-                        <CInputGroupText>
-                          <CIcon name="cil-lock-locked" />
-                        </CInputGroupText>
-                      </CInputGroupPrepend>
-                      <CInput
-                        type="password"
-                        placeholder="Password"
-                        autoComplete="current-password"
-                        onChange={handlePas}
-                        required
-                      />
-                    </CInputGroup>
-                    <CRow>
-                      <CCol xs="6">
-                        <CButton
-                          color="primary"
-                          className="px-4"
-                          onClick={onSubmit}
-                        >
-                          Login
-                        </CButton>
-                      </CCol>
-                      <CCol xs="6" className="text-right">
-                        <CButton color="link" className="px-0">
-                          Forgot password?
-                        </CButton>
-                      </CCol>
-                    </CRow>
-                  </CForm>
-                </CCardBody>
-              </CCard>
-            </CCardGroup>
-          </CCol>
-        </CRow>
-      </CContainer>
-    </div>
+      <div className="c-app c-default-layout flex-row align-items-center">
+        <CContainer>
+          <CRow className="justify-content-center">
+            <CCol md="8">
+              <CCardGroup>
+                <CCard className="p-4">
+                  <CCardBody>
+                    <CForm>
+                      <h1>Login</h1>
+                      <p className="text-muted">Sign In to your account</p>
+                      <CInputGroup className="mb-3">
+                        <CInputGroupPrepend>
+                          <CInputGroupText>
+                            <CIcon name="cil-user" />
+                          </CInputGroupText>
+                        </CInputGroupPrepend>
+                        <CInput
+                          type="text"
+                          placeholder="Email"
+                          autoComplete="email"
+                          onChange={handleEmail}
+                          required
+
+                        />
+                      </CInputGroup>
+                      <CInputGroup className="mb-4">
+                        <CInputGroupPrepend>
+                          <CInputGroupText>
+                            <CIcon name="cil-lock-locked" />
+                          </CInputGroupText>
+                        </CInputGroupPrepend>
+                        <CInput
+                          type="password"
+                          placeholder="Password"
+                          autoComplete="current-password"
+                          onChange={handlePas}
+                          required
+                        />
+                      </CInputGroup>
+                      <CRow>
+                        <CCol xs="6">
+                          <CButton
+                            color="primary"
+                            className="px-4"
+                            onClick={onSubmit}
+                          >
+                            Login
+                          </CButton>
+                        </CCol>
+                        <CCol xs="6" className="text-right">
+                          <CButton color="link" className="px-0">
+                            Forgot password?
+                          </CButton>
+                        </CCol>
+                      </CRow>
+                    </CForm>
+                  </CCardBody>
+                </CCard>
+              </CCardGroup>
+            </CCol>
+          </CRow>
+        </CContainer>
+      </div>
   );
 }
 

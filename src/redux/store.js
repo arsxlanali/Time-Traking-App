@@ -4,6 +4,7 @@ import viewEmployees from "./Slice/employeesSlice";
 import employee from "./Slice/employeeSllice";
 import loginSliceReducer from "./Slice/loginSlice";
 import viewTimeSheetReducer from "./Slice/viewTimeSheetSlice";
+import viewProjectsReducer from './Slice/projectSlice';
 export default configureStore({
   reducer: {
     slideBar: slideBarSliceReducer,
@@ -11,5 +12,6 @@ export default configureStore({
     employee: employee,
     login: loginSliceReducer,
     viewTimeSheet: viewTimeSheetReducer,
+    viewProjects:viewProjectsReducer
   },
 });

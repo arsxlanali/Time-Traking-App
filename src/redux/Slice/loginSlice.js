@@ -16,11 +16,11 @@ export const login = createAsyncThunk(
     axios
       .post(`${baseURL}/users/login`, data)
       .then((response) => {
-         localStorage.setItem("Token", response.data.accessToken);
-      
-         localStorage.setItem("Role", response.data.data.role);
-         localStorage.setItem("key", response.data.data._id)
-      
+        localStorage.setItem("Token", response.data.accessToken);
+
+        localStorage.setItem("Role", response.data.data.role);
+        localStorage.setItem("key", response.data.data._id)
+        console.log(response.data)
         navigate()
         console.log(response.data)
         return response.data;
