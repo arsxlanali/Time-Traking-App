@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import 'spinkit/spinkit.min.css'
-import Spinners from "../../Loader/Spinners";
+import Spinners from "../../loader/Loader";
 import {
   CCard,
   CCardBody,

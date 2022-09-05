@@ -13,10 +13,6 @@ import {
   CModalTitle,
   CModalBody,
   CModalFooter,
-  CToaster,
-  CToastHeader,
-  CToastBody,
-  CToast,
 } from "@coreui/react";
 // import usersData from "./Data/UsersData";
 import { useSelector, useDispatch } from "react-redux";
@@ -49,15 +45,6 @@ const DemoTable = () => {
 
   const [modal, setModal] = useState(false);
   const [details, setDetails] = useState([]);
-  const [toasts, setToasts] = useState([]);
-  const addToast = () => {
-    setToasts([{}]);
-  };
-  const toasters = (() => {
-    return toasts.reduce(() => {
-      return { "": [{ "": "" }] };
-    }, {});
-  })();
   const toggleDetails = (index) => {
     const position = details.indexOf(index);
     let newDetails = details.slice();
