@@ -29,9 +29,7 @@ const viewProject = React.lazy(() =>
   import("./views/pages/project/viewProject/projectTable")
 );
 const viewSheet = React.lazy(() =>
-  import(
-    "./views/pages/timeSheet/viewTimeSheet/sheetTable"
-  )
+  import("./views/pages/timeSheet/viewTimeSheet/sheetTable")
 );
 const employee = React.lazy(() =>
   import("./views/pages//Employees/ViewEmployees/User")
@@ -39,7 +37,6 @@ const employee = React.lazy(() =>
 const editEmployee = React.lazy(() =>
   import("./views/pages//Employees/editEmployee/editEmployee")
 );
-
 
 const AdvancedForms = React.lazy(() =>
   import("./views/forms/advanced-forms/AdvancedForms")
@@ -154,17 +151,18 @@ const routes = [
     exact: true,
   },
   {
-    path: "/listemployee/:id",
-    exact: true,
-    name: "Employee Details",
-    component: employee,
-  },
-  {
     path: "/editemployee/:id",
     exact: true,
     name: "Edit Employee",
     component: editEmployee,
   },
+  {
+    path: "/listemployee/:id",
+    exact: true,
+    name: "Employee Details",
+    component: employee,
+  },
+
   {
     path: "/addemployee",
     name: "Add Eployees",

@@ -1,13 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { Redirect } from "react-router-dom";
+// import { useDispatch } from "react-redux";
+import { CToast, CToastHeader, CToastBody } from "@coreui/react";
 // import employeesList from "../../../views/pages/Employees/ViewEmployees/Data/UsersData";
 
 const baseUrl = "https://time-tracking-app-backend.herokuapp.com";
 const token = localStorage.getItem("Token");
 
 const initialState = {
-  employeesView: [],
-  isLoading: true,
+  employeesView: [1],
+  isLoading: false,
+  isScuessfull: false,
 };
 
 const header = {
@@ -20,28 +24,59 @@ export const getEmployees = createAsyncThunk(
   "employees/getall",
   // callback function
 
-  async (data, thunkAPI) => {
-    // console.log("sdfsdf");
+  async (thunkAPI) => {
     try {
-      const res = await axios(`${baseUrl}/users/getall`);
+      const res = await axios(`${baseUrl}/users/getall`, header);
+      return res?.data?.users;
+    } catch (error) {
+      return thunkAPI.rejectWithValue("something went wrong");
+    }
+  }
+);
+export const addEmployee = createAsyncThunk(
+  "employees/addEmployee",
+  async (data, thunkAPI) => {
+    delete data["accept"];
+    try {
+      const res = await axios.post(
+        `${baseUrl}/users/admin/addnewuser`,
+        data,
+        header
+      );
+      thunkAPI.dispatch(getEmployees());
       return res?.data;
     } catch (error) {
       return thunkAPI.rejectWithValue("something went wrong");
     }
   }
 );
-export const deleteEmp = createAsyncThunk(
-  //action type string
-  "employees/deleteEmp",
-  // callback function
-
-  async (data, thunkAPI) => {
-    // console.log("sdfsdf");
+export const deleteEmployee = createAsyncThunk(
+  "employees/deleteEmployee",
+  async (id, thunkAPI) => {
     try {
-      const res = await axios.delete(
-        `${baseUrl}/users/delete/${data.params.id}`,
+      const res = await axios.delete(`${baseUrl}/users/delete/${id}`, header);
+      thunkAPI.dispatch(getEmployees());
+      return res?.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue("something went wrong");
+    }
+  }
+);
+export const editEmployee = createAsyncThunk(
+  "employees/editEmployee",
+  async (data, thunkAPI) => {
+    // console.log("This is my id:", data);
+    const id = data["id"];
+    delete data["id"];
+    delete data["accept"];
+    data["password"] = "11221122";
+    try {
+      const res = await axios.put(
+        `${baseUrl}/users/update/${id}`,
+        data,
         header
       );
+      thunkAPI.dispatch(getEmployees());
       return res?.data;
     } catch (error) {
       return thunkAPI.rejectWithValue("something went wrong");
@@ -51,33 +86,6 @@ export const deleteEmp = createAsyncThunk(
 export const employeesSlice = createSlice({
   name: "employees",
   initialState,
-  reducers: {
-    view: (state) => {
-      state.isLoading = false;
-    },
-    deleteEmployee: (state, action) => {
-      const itemId = action.payload;
-      const employee = state.employeesView.filter((item) => item.id !== itemId);
-      state.employeesView = employee;
-      // state.isLoading = false;
-    },
-    addEmployee: (state, { payload }) => {
-      delete payload.accept;
-      payload.id = 330;
-      console.log(payload);
-      state.employeesView = [...state.employeesView, payload];
-    },
-    editEmployee: (state, { payload }) => {
-      const updatedEmployees = state.employeesView.map((item) => {
-        if (item.id === payload.id) {
-          return payload;
-        } else {
-          return item;
-        }
-      });
-      state.employeesView = updatedEmployees;
-    },
-  },
   extraReducers: {
     [getEmployees.pending]: (state) => {
       state.isLoading = true;
@@ -89,9 +97,19 @@ export const employeesSlice = createSlice({
     [getEmployees.rejected]: (state) => {
       state.isLoading = false;
     },
+    [addEmployee.pending]: (state) => {
+      state.isLoading = true;
+      state.isScuessfull = false;
+    },
+    [addEmployee.fulfilled]: (state) => {
+      state.isLoading = false;
+      state.isScuessfull = true;
+    },
+    [addEmployee.rejected]: (state) => {
+      state.isLoading = false;
+      state.isScuessfull = false;
+    },
   },
 });
-
-export const { view, deleteEmployee, addEmployee, editEmployee } =
-  employeesSlice.actions;
+// export const { redirect } = employeesSlice.actions;
 export default employeesSlice.reducer;

@@ -1,28 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
+const initialState = {
+  sidebarShow: 'responsive',
+  asideShow: false,
+  darkMode: false
+}
 
-export const sideBarSlice = createSlice({
-    name: "sideBar",
-
-    initialState: {
-        sidebarShow: 'responsive',
-        asideShow: false,
-        darkMode: false
-    },
-    reducers: {
-
-        set: (state, rest) => {
-            return { ...state, ...rest }
-
-        },
-
-
-    }
-
-})
-
-
-
-
-export const { set } = sideBarSlice.actions;
-
-export default sideBarSlice.reducer;
+export const sideBarSliceReducer = (state = initialState, { type, ...rest }) => {
+  switch (type) {
+    case 'set':
+      return {...state, ...rest }
+    default:
+      return state
+  }
+}
