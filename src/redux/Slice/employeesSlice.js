@@ -33,6 +33,7 @@ export const addEmployee = createAsyncThunk(
   "employees/addEmployee",
   async (data, thunkAPI) => {
     delete data["accept"];
+    // console.log("this is employee add data", data);
     try {
       const res = await axios.post(
         `${baseUrl}/users/admin/addnewuser`,

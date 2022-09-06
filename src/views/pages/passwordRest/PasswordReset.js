@@ -16,6 +16,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom";
 // import Toaster from "src/views/notifications/toaster/Toaster";
+import Loader from "../loader/Loader";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 // import { useLocation } from "react-router-dom";
@@ -71,14 +72,18 @@ const getErrorsFromValidationError = (validationError) => {
 const PasswordReset = () => {
 	const userId = useLocation().state;
 	console.log("this is user", userId);
-	const { isLoading } = useSelector((state) => state.employees);
+	const { isLoading } = useSelector((state) => state.login);
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const onSubmit = (values, setSubmitting) => {
+	const onSubmit = (values) => {
 		values["id"] = userId;
 		dispatch(PasswordRest({ values, history }));
-		setSubmitting(isLoading);
 	};
+	if (isLoading) {
+		return (
+			<Loader />
+		);
+	}
 	const initialValues = {
 		newPassword: "",
 		confirmPassword: "",
@@ -102,7 +107,6 @@ const PasswordReset = () => {
 									handleChange,
 									handleBlur,
 									handleSubmit,
-									isLoading,
 									isValid,
 									// handleReset,
 									// setTouched,
@@ -172,7 +176,7 @@ const PasswordReset = () => {
 														className="mr-1"
 														disabled={!isValid}
 													>
-														{isLoading ? "Wait..." : "Reset Password"}
+														Reset Password
 													</CButton>
 												</CFormGroup>
 											</CForm>

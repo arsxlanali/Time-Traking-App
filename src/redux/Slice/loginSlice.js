@@ -5,8 +5,7 @@ const baseURL = "https://time-tracking-app-backend.herokuapp.com";
 
 const initialState = {
   entities: [],
-  loading: false,
-  isScuessfull: false,
+  isLoading: false,
 }
 
 
@@ -20,7 +19,7 @@ export const login = createAsyncThunk(
         localStorage.setItem("Token", response.data.accessToken);
         localStorage.setItem("Role", response.data.data.role);
         localStorage.setItem("key", response.data.data._id)
-
+        localStorage.setItem("isDefualt", response.data.data.isDefault)
         if (response?.data?.data?.isDefault) {
           history.push('/passwordrest', response?.data?.data?._id)
         }
@@ -42,15 +41,17 @@ export const PasswordRest = createAsyncThunk(
     const id = values["id"];
     delete values["id"];
     delete values["accept2"];
-    values["oldPassword"] = "tdc@1234";
-    // console.log("This is my id:", values);
+    console.log("this is isdefyalt", localStorage.getItem("isDefualt"))
+    const isDefault = localStorage.getItem("isDefualt");
+    if (isDefault) {
+      values["oldPassword"] = "tdc@1234";
+    }
+    console.log("this is defualt", values)
     try {
       const res = await axios.post(
         `${baseURL}/users/resetPassword/${id}`,
         values,
       );
-      // console.log("this is reset password", res?.data);
-      // thunkAPI.dispatch(getEmployees());
       history.push('/dashboard');
       return res?.data;
     } catch (error) {
@@ -65,17 +66,25 @@ export const loginSlice = createSlice({
   extraReducers: {
     [login.pending]: (state) => {
       state.isLoading = true;
-      state.isScuessfull = false;
     },
     [login.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
-      state.isScuessfull = true;
       state.entities = payload
 
     },
-    [login.rejected]: (state) => {
+    [PasswordRest.rejected]: (state) => {
       state.isLoading = false;
-      state.isScuessfull = false;
+    },
+    [PasswordRest.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [PasswordRest.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      state.entities = payload
+
+    },
+    [PasswordRest.rejected]: (state) => {
+      state.isLoading = false;
     },
   },
 })

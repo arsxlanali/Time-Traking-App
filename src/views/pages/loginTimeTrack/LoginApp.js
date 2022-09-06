@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "src/redux/Slice/loginSlice";
 import { Formik } from "formik";
+import Loader from "../loader/Loader";
 import * as Yup from "yup";
 import {
   CButton,
@@ -56,23 +57,21 @@ const getErrorsFromValidationError = (validationError) => {
 };
 
 function LoginApp() {
-  const { isLoading, isScuessfull } = useSelector((state) => state.login);
+  const { isLoading } = useSelector((state) => state.login);
   const dispatch = useDispatch();
   const history = useHistory();
   const onSubmit = (values) => {
-    // values["id"] = user._id;
     dispatch(login({ values, history }));
     // setSubmitting(isLoading);
   };
-  // console.log("this is issuccessfful", isScuessfull)
-  // if (isScuessfull) {
-  //   setTimeout(() => history.push(`/dashboard`), 5000);
-  //   // return (
-  //   //   <div>
-  //   //     <Toaster></Toaster>
-  //   //   </div>
-  //   // );
-  // }
+  if (isLoading) {
+    return (
+      // <div className="vh-100">
+      <Loader />
+      // </div>
+
+    );
+  }
   const initialValues = {
     email: "",
     password: "",
