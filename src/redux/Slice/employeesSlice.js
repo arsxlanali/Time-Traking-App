@@ -33,6 +33,7 @@ export const addEmployee = createAsyncThunk(
   "employees/addEmployee",
   async (data, thunkAPI) => {
     delete data["accept"];
+    // console.log("this is employee add data", data);
     try {
       const res = await axios.post(
         `${baseUrl}/users/admin/addnewuser`,
@@ -88,7 +89,7 @@ export const resetPassword = createAsyncThunk(
     delete data["accept1"];
     delete data["confirmPassword"];
     // data["password"] = "11221122";
-    console.log("This is passwordd", data)
+    // console.log("This is passwordd", data)
     try {
       const res = await axios.put(
         `${baseUrl}/users/update/${id}`,

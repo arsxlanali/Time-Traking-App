@@ -17,6 +17,8 @@ const TheEmailApp = React.lazy(() => import("./views/apps/email/TheEmailApp"));
 // Pages
 const Login = React.lazy(() => import("./views/pages/loginTimeTrack/LoginApp"));
 const Register = React.lazy(() => import("./views/pages/register/Register"));
+const PaaswordRest = React.lazy(() => import("./views/pages/passwordRest/PasswordReset"));
+
 const Page404 = React.lazy(() => import("./views/pages/page404/Page404"));
 
 const Page500 = React.lazy(() => import("./views/pages/page500/Page500"));
@@ -35,9 +37,9 @@ class App extends Component {
             />
             <Route
               exact
-              path="/register"
-              name="Register Page"
-              render={(props) => <Register {...props} />}
+              path="/passwordrest"
+              name="Rest Password"
+              render={(props) => <PaaswordRest {...props} />}
             />
             <Route
               exact

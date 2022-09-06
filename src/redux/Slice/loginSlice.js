@@ -5,25 +5,27 @@ const baseURL = "https://time-tracking-app-backend.herokuapp.com";
 
 const initialState = {
   entities: [],
-  loading: false,
-  isScuessfull: false,
+  isLoading: false,
 }
 
 
 
 export const login = createAsyncThunk(
   'users/login',
-  async (data, thunkAPI) => {
+  async ({ values, history }, thunkAPI) => {
     axios
-      .post(`${baseURL}/users/login`, data)
+      .post(`${baseURL}/users/login`, values)
       .then((response) => {
         localStorage.setItem("Token", response.data.accessToken);
-
         localStorage.setItem("Role", response.data.data.role);
         localStorage.setItem("key", response.data.data._id)
-        console.log(response.data)
-        // navigate()
-        // console.log(response.data)
+        localStorage.setItem("isDefualt", response.data.data.isDefault)
+        if (response?.data?.data?.isDefault) {
+          history.push('/passwordrest', response?.data?.data?._id)
+        }
+        else {
+          history.push('/dashboard')
+        }
         return response.data;
       }).catch((error) => {
 
@@ -32,8 +34,31 @@ export const login = createAsyncThunk(
       )
 
   })
+export const PasswordRest = createAsyncThunk(
+  "PasswordRest",
+  async ({ values, history }, thunkAPI) => {
 
-
+    const id = values["id"];
+    delete values["id"];
+    delete values["accept2"];
+    console.log("this is isdefyalt", localStorage.getItem("isDefualt"))
+    const isDefault = localStorage.getItem("isDefualt");
+    if (isDefault) {
+      values["oldPassword"] = "tdc@1234";
+    }
+    console.log("this is defualt", values)
+    try {
+      const res = await axios.post(
+        `${baseURL}/users/resetPassword/${id}`,
+        values,
+      );
+      history.push('/dashboard');
+      return res?.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue("something went wrong");
+    }
+  }
+);
 export const loginSlice = createSlice({
   name: 'login',
   initialState,
@@ -41,17 +66,25 @@ export const loginSlice = createSlice({
   extraReducers: {
     [login.pending]: (state) => {
       state.isLoading = true;
-      state.isScuessfull = false;
     },
     [login.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
-      state.isScuessfull = true;
       state.entities = payload
 
     },
-    [login.rejected]: (state) => {
+    [PasswordRest.rejected]: (state) => {
       state.isLoading = false;
-      state.isScuessfull = false;
+    },
+    [PasswordRest.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [PasswordRest.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      state.entities = payload
+
+    },
+    [PasswordRest.rejected]: (state) => {
+      state.isLoading = false;
     },
   },
 })

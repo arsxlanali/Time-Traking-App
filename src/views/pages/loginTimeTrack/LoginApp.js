@@ -1,42 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { login } from "src/redux/Slice/loginSlice";
-// import { useDispatch, useSelector } from "react-redux";
-// import { useHistory } from "react-router-dom";
-
+import { Formik } from "formik";
+import Loader from "../loader/Loader";
+import * as Yup from "yup";
 import {
   CButton,
   CCard,
-  CToast,
-  CToastBody,
-  CToastHeader,
-  CToaster,
-  CCardBody,
-  CCardGroup,
   CCol,
   CContainer,
   CForm,
   CInput,
-  CInputGroup,
-  CInputGroupPrepend,
-  CInputGroupText,
-  CRow,
-} from "@coreui/react";
-import CIcon from "@coreui/icons-react";
-import {
   CInvalidFeedback,
-  CInputCheckbox,
   CFormGroup,
   CLabel,
+  CRow,
 } from "@coreui/react";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom";
-// import Toaster from "src/views/notifications/toaster/Toaster";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-// import { resetPassword } from "src/redux/Slice/employeesSlice"
-// import loginSlice from "src/redux/Slice/loginSlice";
-// import { login } from "src/redux/Slice/loginSlice";
+
+
 const validationSchema = function (values) {
   return Yup.object().shape({
     email: Yup.string()
@@ -75,22 +57,20 @@ const getErrorsFromValidationError = (validationError) => {
 };
 
 function LoginApp() {
-  const { isLoading, isScuessfull } = useSelector((state) => state.login);
+  const { isLoading } = useSelector((state) => state.login);
   const dispatch = useDispatch();
   const history = useHistory();
-  const onSubmit = (values, setSubmitting) => {
-    // values["id"] = user._id;
-    dispatch(login(values));
-    setSubmitting(isLoading);
+  const onSubmit = (values) => {
+    dispatch(login({ values, history }));
+    // setSubmitting(isLoading);
   };
-  // console.log("this is issuccessfful", isScuessfull)
-  if (isScuessfull) {
-    setTimeout(() => history.push(`/dashboard`), 5000);
-    // return (
-    //   <div>
-    //     <Toaster></Toaster>
-    //   </div>
-    // );
+  if (isLoading) {
+    return (
+      // <div className="vh-100">
+      <Loader />
+      // </div>
+
+    );
   }
   const initialValues = {
     email: "",
@@ -126,25 +106,6 @@ function LoginApp() {
                         <p className="text-muted">Sign In to your account</p>
                         {/* <CCol> */}
                         <CFormGroup>
-                          <CLabel htmlFor="password">Password</CLabel>
-                          <CInput
-                            type="password"
-                            name="password"
-                            id="password"
-                            placeholder="Password"
-                            autoComplete="new-password"
-                            valid={!errors.password}
-                            invalid={touched.password && !!errors.password}
-                            required
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.password}
-                          />
-                          <CInvalidFeedback>{errors.password}</CInvalidFeedback>
-                        </CFormGroup>
-                        {/* </CCol> */}
-                        {/* <CCol> */}
-                        <CFormGroup>
                           <CLabel htmlFor="email">Email</CLabel>
                           <CInput
                             type="email"
@@ -161,9 +122,23 @@ function LoginApp() {
                           />
                           <CInvalidFeedback>{errors.email}</CInvalidFeedback>
                         </CFormGroup>
-                        {/* </CCol> */}
-
-                        {/* <CFormGroup> */}
+                        <CFormGroup>
+                          <CLabel htmlFor="password">Password</CLabel>
+                          <CInput
+                            type="password"
+                            name="password"
+                            id="password"
+                            placeholder="Password"
+                            autoComplete="new-password"
+                            valid={!errors.password}
+                            invalid={touched.password && !!errors.password}
+                            required
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.password}
+                          />
+                          <CInvalidFeedback>{errors.password}</CInvalidFeedback>
+                        </CFormGroup>
                         <CRow>
                           <CCol xs="6">
                             <CButton
@@ -179,7 +154,6 @@ function LoginApp() {
                             <CButton color="link" className="px-0">Forgot password?</CButton>
                           </CCol>
                         </CRow>
-                        {/* </CFormGroup> */}
                       </CForm>
                     </CCol>
                   </CRow>
