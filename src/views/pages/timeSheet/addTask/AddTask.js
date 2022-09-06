@@ -397,73 +397,26 @@ const AddTask = (props) => {
 
                       <CFormGroup>
                         <CLabel htmlFor="date">Date</CLabel>
-                        <CInputGroup 
-                        type="text"
+                        <CInput
+                          type="text"
                           name="date"
                           id="date"
-                          placeholder="Date"
+                          placeholder="MM/DD/YYYY"
                           autoComplete="date-name"
                           valid={!errors.date}
-                          invalid={touched.date && !!errors.date}
+                          invalid={
+                            touched.date && !!errors.date
+                          }
                           required
                           onChange={handleChange}
                           onBlur={handleBlur}
                           value={values.date}
-                        >
-                        <TextMask
-                          mask={[
-                            /\d/,
-                            /\d/,
-                            "/",
-                            /\d/,
-                            /\d/,
-                            "/",
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                          ]}
-                          Component={InputAdapter}
-                          />
-                         </CInputGroup>
-                        <CInvalidFeedback>{errors.date}</CInvalidFeedback>
+                        />
+                        <CInvalidFeedback>
+                          {errors.date}
+                        </CInvalidFeedback>
                       </CFormGroup>
-
-                      {/* <CFormGroup>
-                        <CLabel htmlFor="date">Select Date</CLabel>
-                        <CInputGroup
-                          type="text"
-                          name="date"
-                          id="date"
-                          placeholder="Date"
-                          autoComplete="date-name"
-                          valid={!errors.date}
-                          invalid={touched.date && !!errors.date}
-                          required
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.date}>
-
-                          <TextMask
-                            mask={[
-                              /\d/,
-                              /\d/,
-                              "/",
-                              /\d/,
-                              /\d/,
-                              "/",
-                              /\d/,
-                              /\d/,
-                              /\d/,
-                              /\d/,
-                            ]}
-                            Component={InputAdapter}
-                            className="form-control"
-                          />
-                        </CInputGroup>
-                        <CInvalidFeedback>{errors.date}</CInvalidFeedback>
-                      </CFormGroup> */}
-
+  
                       <CFormGroup>
                         <CButton
                           type="submit"
