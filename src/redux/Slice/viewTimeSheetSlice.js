@@ -21,11 +21,11 @@ const header = {
 };
 
 export const viewTimeSheet = createAsyncThunk(
-  'tasks/findoneusertasksbypage',
+  'tasks/user',
   async (id,thunkAPI) => {
     try {
       const res = await axios
-        .get(`${baseURL}/tasks/findoneusertasksbypage/${id}`, header);
+        .get(`${baseURL}/tasks/user/${id}`, header);
       return res.data;
 
     }
@@ -44,13 +44,14 @@ export const deleteTask = createAsyncThunk(
   "tasks/delete",
 
   async (id, thunkAPI) => {
+      console.log("taskid",id)
     try {
       const res = await axios.delete(
         `${baseURL}/tasks/delete/${id}`,
         header
       );
-
-      thunkAPI.dispatch(viewTimeSheet());
+        
+      thunkAPI.dispatch(viewTimeSheet(localStorage.getItem('key')));
       return res?.data;
     } catch (error) {
       return thunkAPI.rejectWithValue("task not found");
@@ -69,8 +70,8 @@ export const addTask = createAsyncThunk(
         taskInfo,
         header,
         );
-
-      thunkAPI.dispatch(viewTimeSheet());
+        console.log("task info",taskInfo)
+      thunkAPI.dispatch(viewTimeSheet(localStorage.getItem('key')));
       return res?.data;
     } catch (error) {
       return thunkAPI.rejectWithValue("task not found");
@@ -92,7 +93,8 @@ export const editTask = createAsyncThunk(
         header,
         );
 
-      thunkAPI.dispatch(viewTimeSheet());
+      thunkAPI.dispatch(viewTimeSheet(localStorage.getItem('key')));
+      console.log(res.data);
       return res?.data;
     } catch (error) {
       return thunkAPI.rejectWithValue("task not updated");

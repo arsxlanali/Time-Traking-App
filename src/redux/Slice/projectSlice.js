@@ -54,7 +54,9 @@ export const addProject = createAsyncThunk(
   "projects/create",
 
   async (projectInfo, thunkAPI) => {
+    console.log("project info",projectInfo)
     try {
+
       const res = await axios.post(
         `${baseURL}/projects/create`,
         projectInfo,

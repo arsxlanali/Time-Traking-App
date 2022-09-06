@@ -1,3 +1,4 @@
+import Loader from "../../loader/Loader";
 import React, { useState } from "react";
 import { viewTimeSheet, deleteTask } from "src/redux/Slice/viewTimeSheetSlice";
 import AddTask from "../addTask/AddTask";
@@ -7,7 +8,6 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import 'spinkit/spinkit.min.css'
-import Spinners from "../../Loader/Spinners";
 import {
   CCard,
   CCardBody,
@@ -27,6 +27,9 @@ import {
   CModalTitle,
   CRow,
   CCol,
+  CInputGroup,
+  CInputGroupPrepend,
+  CInputGroupText
 
 
 } from "@coreui/react";
@@ -34,6 +37,8 @@ import { DateRangePicker } from "react-dates";
 import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
 import usersData from "src/views/users/UsersData";
+import CIcon from "@coreui/icons-react";
+import { TextMask, InputAdapter } from "react-text-mask-hoc";
 
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -81,7 +86,7 @@ const initialValues = {
   taskName: "",
   taskType: "",
   description: "",
-  duration: "",
+  duration: {},
 
 };
 
@@ -128,18 +133,19 @@ const DemoTable = () => {
   const [focused, setFocused] = React.useState();
   const [large, setLarge] = useState(false);
   const [largeForEditTask, setLargeForEditTask] = useState(false);
-  const history=useHistory();
+  const history = useHistory();
   const id = localStorage.getItem('key');
   const dispatch = useDispatch();
   const { timeSheet, loading } = useSelector((state) => state.viewTimeSheet);
+  const [taskId, setTaskId] = useState();
   //console.log(timeSheet);
-  const [preSetData,setPreSetData]=useState();
+  const [preSetData, setPreSetData] = useState();
   useEffect(() => {
     dispatch(viewTimeSheet(id))
 
   }, [])
 
-  if (loading) return <Spinners />;
+
 
 
   const toggleDetails = (index) => {
@@ -154,15 +160,15 @@ const DemoTable = () => {
   };
 
   const fields = [
-   
+
     { key: "userId", _style: { width: "20%" } },
-    
+
     { key: "projectId", _style: { width: "20%" } },
-    
+
     { key: "_id", _style: { width: "20%" } },
-    
+
     { key: "name", _style: { width: "20%" } },
-    
+
     { key: "description", _style: { width: "40%" } },
     { key: "duration", _style: { width: "10%" } },
     { key: "date", _style: { width: "20%" } },
@@ -189,11 +195,11 @@ const DemoTable = () => {
     }
   };
 
-  
+
   return (
     <>
       <div className="mb-2 my-2 mr-4">
-        <CButton onClick={()=>setLarge(true)}
+        <CButton onClick={() => setLarge(true)}
 
           color="primary"
           size="sm"
@@ -204,105 +210,128 @@ const DemoTable = () => {
       </div>
 
 
-      <div className="text-right mr-4">
-        <DateRangePicker
-          size="sm"
-          startDate={date.startDate}
-          startDateId="startDate"
-          endDate={date.endDate}
-          endDateId="endDate"
-          onDatesChange={(value) => setDate(value)}
-          focusedInput={focused}
-          onFocusChange={(focusedInput) => setFocused(focusedInput)}
-          orientation="horizontal"
-          openDirection="down"
-        />
+      <div >
+        <CLabel htmlFor="startDate">Select Date</CLabel>
+        <CInputGroup
+
+        >
+          <CInputGroupPrepend>
+            <CInputGroupText>
+              <CIcon name="cil-calendar" />
+            </CInputGroupText>
+          </CInputGroupPrepend>
+          <TextMask
+            mask={[
+              /\d/,
+              /\d/,
+              "/",
+              /\d/,
+              /\d/,
+              "/",
+              /\d/,
+              /\d/,
+              /\d/,
+              /\d/,
+            ]}
+            Component={InputAdapter}
+            className="form-control"
+          />
+        </CInputGroup>
       </div>
 
       <CCardBody>
-        <CDataTable
-          items={timeSheet}
-          fields={fields}
-          //columnFilter
-          //tableFilter
-          //cleaner
-          //itemsPerPageSelect
-          //itemsPerPage={5}
-          hover
-          sorter
-          pagination
-          // loading
-          onRowClick={(item, index, col, e) => console.log(item, index, col, e)}
-          onPageChange={(val) => console.log('new page:', val)}
-          onPagesChange={(val) => console.log('new pages:', val)}
-          onPaginationChange={(val) => console.log('new pagination:', val)}
-          onFilteredItemsChange={(val) => console.log('new filtered items:', val)}
-          onSorterValueChange={(val) => console.log('new sorter value:', val)}
-          onTableFilterChange={(val) => console.log('new table filter:', val)}
-          onColumnFilterChange={(val) => console.log('new column filter:', val)}
-          scopedSlots={{
-            status: (item) => (
-              <td>
-                <CBadge color={getBadge(item.status)}>{item.status}</CBadge>
-              </td>
-            ),
-            edit: (item) => {
-              return (
-                <td className="py-2">
-                  <CButton
-                    color="primary"
-                    variant="outline"
-                    shape="square"
-                    size="sm"
-                    onClick={() => {
-                      toggleDetails(item._id);
-                    }}
-                  >
-                    {details.includes(item._id) ? "Hide" : "Action"}
-                  </CButton>
-                </td>
-              );
-            },
-            show_details: (item) => {
-              return (
-                <td className="py-2">
-                  <CButton
-                    color="primary"
-                    variant="outline"
-                    shape="square"
-                    size="sm"
-                    onClick={() => {
-                      toggleDetails(item._id);
-                    }}
-                  >
-                    {details.includes(item._id) ? "Hide" : "Action"}
-                  </CButton>
-                </td>
-              );
-            },
-            details: (item) => {
-              return (
-                <CCollapse show={details.includes(item._id)}>
-                  <CCardBody>
-                    <h4>{item.username}</h4>
-               
-                    <CButton size="sm" color="info"  onClick={()=>{
-                      setLargeForEditTask(true);
-                      // setPreSetData(item);
-                    }} >
-                      Edit
-                    </CButton>
-                    <CButton size="sm" color="danger" className="ml-1" onClick={() => dispatch(deleteTask(item._id))}>
-                      Delete
-                    </CButton>
+        {
+          loading ? (
+            <Loader />
+          ) : (
+            <CDataTable
+              items={timeSheet}
+              fields={fields}
+              //columnFilter
+              //tableFilter
+              //cleaner
+              //itemsPerPageSelect
+              //itemsPerPage={5}
+              hover
+              sorter
+              pagination
+              // loading
+              onRowClick={(item, index, col, e) => console.log(item, index, col, e)}
+              onPageChange={(val) => console.log('new page:', val)}
+              onPagesChange={(val) => console.log('new pages:', val)}
+              onPaginationChange={(val) => console.log('new pagination:', val)}
+              onFilteredItemsChange={(val) => console.log('new filtered items:', val)}
+              onSorterValueChange={(val) => console.log('new sorter value:', val)}
+              onTableFilterChange={(val) => console.log('new table filter:', val)}
+              onColumnFilterChange={(val) => console.log('new column filter:', val)}
+              scopedSlots={{
+                status: (item) => (
+                  <td>
+                    <CBadge color={getBadge(item.status)}>{item.status}</CBadge>
+                  </td>
+                ),
+                edit: (item) => {
+                  return (
+                    <td className="py-2">
+                      <CButton
+                        color="primary"
+                        variant="outline"
+                        shape="square"
+                        size="sm"
+                        onClick={() => {
+                          toggleDetails(item._id);
+                        }}
+                      >
+                        {details.includes(item._id) ? "Hide" : "Action"}
+                      </CButton>
+                    </td>
+                  );
+                },
+                show_details: (item) => {
+                  return (
+                    <td className="py-2">
+                      <CButton
+                        color="primary"
+                        variant="outline"
+                        shape="square"
+                        size="sm"
+                        onClick={() => {
+                          toggleDetails(item._id);
+                        }}
+                      >
+                        {details.includes(item._id) ? "Hide" : "Action"}
+                      </CButton>
+                    </td>
+                  );
+                },
+                details: (item) => {
+                  return (
+                    <CCollapse show={details.includes(item._id)}>
+                      <CCardBody>
+                        <h4>{item.username}</h4>
+
+                        <CButton size="sm" color="info" onClick={() => {
+                          setLargeForEditTask(true);
+                          setTaskId(item._id);
+                          // setPreSetData(item);
+                        }} >
+                          Edit
+                        </CButton>
+                        <CButton size="sm" color="danger" className="ml-1" onClick={() => dispatch(deleteTask(item._id))
+
+                        }>
+                          Delete
+                        </CButton>
 
 
-                  </CCardBody>
-                </CCollapse>
-              );
-            },
-          }}
-        />
+                      </CCardBody>
+                    </CCollapse>
+                  );
+                },
+              }}
+
+            />
+          )}
       </CCardBody>
       <div className="mb-4">
         <CButton color="primary" className={"float-right mr-4"} >
@@ -310,7 +339,7 @@ const DemoTable = () => {
         </CButton>
         <AddTask flag={large} />
         {/* <EditTask flagForEdit={largeForEditTask} preSetData={preSetData}/> */}
-        <EditTask flagForEdit={largeForEditTask} />
+        <EditTask flagForEdit={largeForEditTask} id={taskId} />
       </div>
     </>
   );

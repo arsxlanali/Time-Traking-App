@@ -37,7 +37,8 @@ import {
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from 'react-redux';
-
+import { TextMask, InputAdapter } from "react-text-mask-hoc";
+import CIcon from "@coreui/icons-react";
 const validationSchema = function (values) {
   return Yup.object().shape({
 
@@ -49,15 +50,15 @@ const validationSchema = function (values) {
       .min(2, `Name has to be at least 2 characters`)
       .required("Name is required"),
     type: Yup.string()
-      .min(1, `Address has to be at least 1 character`)
-      .required("Address is required"),
+      .min(1, `Task type has to be at least 1 character`)
+      .required("Task type is required"),
     description: Yup.string()
-      .min(5, `phone has to be at least 5 characters`)
-      .required("phone is required"),
+      .min(5, `Description has to be at least 5 characters`)
+      .required("Description is required"),
     date: Yup.string()
-      .required("Email is required!"),
-    duration: Yup.object()
-      .required("Email is required!"),
+      .required("Date is required!"),
+    duration: Yup.string()
+      .required("Duration is required!"),
 
   });
 };
@@ -108,7 +109,7 @@ const touchAll = (setTouched, errors) => {
     type: true,
     description: true,
     duration: true,
-
+    date: true,
     projectId: true,
     duration: true
   });
@@ -128,10 +129,7 @@ const AddTask = (props) => {
     description: "",
     date: "",
     projectId: "",
-    duration: {
-      hours: "",
-      minutes: ""
-    }
+    duration: "",
   };
 
 
@@ -145,6 +143,7 @@ const AddTask = (props) => {
       // console.log('User has been successfully saved!', values)
       setSubmitting(false);
     }, 2000);
+    console.log("values", values)
     dispatch(addTask(values));
   };
 
@@ -200,6 +199,32 @@ const AddTask = (props) => {
                   />
                   <CInvalidFeedback>{errors.userId}</CInvalidFeedback>
                 </CFormGroup> */}
+                      <CFormGroup row>
+                        <CCol md="12">
+                          <CLabel htmlFor="select">Project</CLabel>
+                        </CCol>
+                        <CCol xs="12" md="12">
+                          <CSelect
+                            custom
+                            name="project"
+                            id="project"
+                            required
+                            valid={!errors.project}
+                            invalid={touched.project && !!errors.project}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.project}
+                          >
+                            <option value="">Please select</option>
+                            <option value="P1">P1</option>
+                            <option value="P2">P2</option>
+                            <option value="P3">P3</option>
+                            <option value="P4">P4</option>
+                          </CSelect>
+                        </CCol>
+                        <CInvalidFeedback>{errors.project}</CInvalidFeedback>
+                      </CFormGroup>
+
                       <CFormGroup>
                         <CLabel htmlFor="projectId">Project Id</CLabel>
                         <CInput
@@ -236,7 +261,7 @@ const AddTask = (props) => {
                         />
                         <CInvalidFeedback>{errors.name}</CInvalidFeedback>
                       </CFormGroup>
-                      <CFormGroup>
+                      {/* <CFormGroup>
                         <CLabel htmlFor="type">Type</CLabel>
                         <CInput
                           type="text"
@@ -253,7 +278,34 @@ const AddTask = (props) => {
                           value={values.type}
                         />
                         <CInvalidFeedback>{errors.type}</CInvalidFeedback>
+                      </CFormGroup> */}
+
+                      <CFormGroup row>
+                        <CCol md="12">
+                          <CLabel htmlFor="select">Task Type</CLabel>
+                        </CCol>
+                        <CCol xs="12" md="12">
+                          <CSelect
+                            custom
+                            name="type"
+                            id="type"
+                            required
+                            valid={!errors.type}
+                            invalid={touched.type && !!errors.type}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.type}
+                          >
+                            <option value="">Please select</option>
+                            <option value="t1">Frontend</option>
+                            <option value="t2">Backend</option>
+                            <option value="t3">UI?UX</option>
+                          </CSelect>
+                        </CCol>
+                        <CInvalidFeedback>{errors.type}</CInvalidFeedback>
                       </CFormGroup>
+
+
                       <CFormGroup>
                         <CLabel htmlFor="description">Description</CLabel>
                         <CInput
@@ -278,7 +330,7 @@ const AddTask = (props) => {
 
                       <CFormGroup>
                         <CLabel htmlFor="duration">Duration</CLabel>
-                        < CDropdown className="m-1">
+                        {/* < CDropdown className="m-1">
                           <CDropdownToggle>
                             Hours
                           </CDropdownToggle>
@@ -321,32 +373,32 @@ const AddTask = (props) => {
                             <CDropdownDivider />
                             <CDropdownItem>8</CDropdownItem>
                           </CDropdownMenu>
-                        </CDropdown>
+                        </CDropdown> */}
 
-                        {/* <CInput
-                    type="text"
-                    name="duration"
-                    id="duration"
-                    placeholder="Duration"
-                    autoComplete="duration-name"
-                    valid={!errors.duration}
-                    invalid={
-                      touched.duration && !!errors.duration
-                    }
-                    required
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.duration}
-                  /> */}
-                        {/* <CInvalidFeedback>
+                        <CInput
+                          type="text"
+                          name="duration"
+                          id="duration"
+                          placeholder="Duration"
+                          autoComplete="duration-name"
+                          valid={!errors.duration}
+                          invalid={
+                            touched.duration && !!errors.duration
+                          }
+                          required
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.duration}
+                        />
+                        <CInvalidFeedback>
                           {errors.description}
-                        </CInvalidFeedback> */}
+                        </CInvalidFeedback>
                       </CFormGroup>
 
                       <CFormGroup>
                         <CLabel htmlFor="date">Date</CLabel>
-                        <CInput
-                          type="text"
+                        <CInputGroup 
+                        type="text"
                           name="date"
                           id="date"
                           placeholder="Date"
@@ -357,9 +409,60 @@ const AddTask = (props) => {
                           onChange={handleChange}
                           onBlur={handleBlur}
                           value={values.date}
-                        />
+                        >
+                        <TextMask
+                          mask={[
+                            /\d/,
+                            /\d/,
+                            "/",
+                            /\d/,
+                            /\d/,
+                            "/",
+                            /\d/,
+                            /\d/,
+                            /\d/,
+                            /\d/,
+                          ]}
+                          Component={InputAdapter}
+                          />
+                         </CInputGroup>
                         <CInvalidFeedback>{errors.date}</CInvalidFeedback>
                       </CFormGroup>
+
+                      {/* <CFormGroup>
+                        <CLabel htmlFor="date">Select Date</CLabel>
+                        <CInputGroup
+                          type="text"
+                          name="date"
+                          id="date"
+                          placeholder="Date"
+                          autoComplete="date-name"
+                          valid={!errors.date}
+                          invalid={touched.date && !!errors.date}
+                          required
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.date}>
+
+                          <TextMask
+                            mask={[
+                              /\d/,
+                              /\d/,
+                              "/",
+                              /\d/,
+                              /\d/,
+                              "/",
+                              /\d/,
+                              /\d/,
+                              /\d/,
+                              /\d/,
+                            ]}
+                            Component={InputAdapter}
+                            className="form-control"
+                          />
+                        </CInputGroup>
+                        <CInvalidFeedback>{errors.date}</CInvalidFeedback>
+                      </CFormGroup> */}
 
                       <CFormGroup>
                         <CButton
@@ -370,6 +473,7 @@ const AddTask = (props) => {
                         >
                           {isSubmitting ? "Wait..." : "Add Task"}
                         </CButton>
+
                       </CFormGroup>
                     </CForm>
                   </CCol>
@@ -379,14 +483,14 @@ const AddTask = (props) => {
           </CCardBody>
         </CCard>
       </CModalBody>
-      <CModalFooter>
+      {/* <CModalFooter>
         <CButton color="primary" onClick={() => setLarge(!large)}>
           Add
         </CButton>{" "}
         <CButton color="secondary" onClick={() => setLarge(!large)}>
           Cancel
         </CButton>
-      </CModalFooter>
+      </CModalFooter> */}
     </CModal >
   )
 }

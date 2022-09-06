@@ -38,10 +38,7 @@ import { cibOpenCollective } from '@coreui/icons';
 const validationSchema = function (values) {
     return Yup.object().shape({
 
-        _id: Yup.string()
-            .min(2, `Name has to be at least 2 characters`)
-            .required("Name is required"),
-
+       
         userId: Yup.string()
             .min(2, `Name has to be at least 2 characters`)
             .required("Name is required"),
@@ -115,7 +112,7 @@ const touchAll = (setTouched, errors) => {
         userId: true,
         projectId: true,
         duration: true,
-        _id: true
+
     });
     validateForm(errors);
 };
@@ -124,6 +121,22 @@ const key = localStorage.getItem("key");
 
 
 const EditTask = (props) => {
+
+    const onSubmit = (values, { setSubmitting, setErrors }) => {
+        setTimeout(() => {
+            alert(JSON.stringify(values, null, 2));
+
+            // console.log('User has been successfully saved!', values)
+            setSubmitting(false);
+        }, 2000);
+        const taskInfo = () => values;
+        // console.log("props task data:", data);
+        // console.log("displaying name", data.name);
+        const id = props.id;
+        console.log("task id", id);
+        console.log("task data", taskInfo);
+        dispatch(editTask({ taskInfo, id }));
+    };
 
     const location = useLocation();
     const data = props.preSetData;
@@ -143,7 +156,6 @@ const EditTask = (props) => {
         date: "",
         projectId: "",
         userId: key,
-        _id: "",
         duration: ""
 
     };
@@ -151,22 +163,7 @@ const EditTask = (props) => {
 
     const dispatch = useDispatch();
 
-    const onSubmit = (values, { setSubmitting, setErrors }) => {
-        setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-
-            // console.log('User has been successfully saved!', values)
-            setSubmitting(false);
-        }, 2000);
-        const taskInfo = () => values;
-        // console.log("props task data:", data);
-        // console.log("displaying name", data.name);
-        const id = values._id;
-        console.log("task id",id);
-         console.log("task data",taskInfo);
-        dispatch(editTask({ taskInfo, id }));
-    };
-
+   
     const [large, setLarge] = useState();
 
 
@@ -200,26 +197,7 @@ const EditTask = (props) => {
                                             onSubmit={handleSubmit}
                                             noValidate
                                             name="simpleForm"
-                                        >
-                                            <CFormGroup>
-                                                <CLabel htmlFor="_id">Task Id</CLabel>
-                                                <CInput
-                                                    type="text"
-                                                    name="_id"
-                                                    id="_id"
-                                                    placeholder="Task Id"
-                                                    autoComplete="given-name"
-                                                    valid={!errors._id}
-                                                    invalid={touched._id && !!errors._id}
-                                                    autoFocus={true}
-                                                    required
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    value={values._id}
-                                                />
-                                                <CInvalidFeedback>{errors._id}</CInvalidFeedback>
-                                            </CFormGroup>
-                                            <CFormGroup>
+                                        >   <CFormGroup>
                                                 <CLabel htmlFor="userId">User Id</CLabel>
                                                 <CInput
                                                     type="text"

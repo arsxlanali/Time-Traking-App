@@ -1,7 +1,7 @@
 import React, { useState, useNavigate } from 'react'
-import { viewProjects,deleteProject } from 'src/redux/Slice/projectSlice'
-
-import { useDispatch,useSelector  } from 'react-redux'
+import { viewProjects, deleteProject } from 'src/redux/Slice/projectSlice'
+import Loader from "../../loader/Loader";
+import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 
 import {
@@ -15,15 +15,15 @@ import {
 import { useHistory } from 'react-router-dom'
 const DemoTable = () => {
 
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     //currentPage !== page && setPage(currentPage);
     dispatch(viewProjects());
   }, []);
 
-  const { projects,loading } = useSelector((state) => state.viewProjects);
- 
+  const { projects, loading } = useSelector((state) => state.viewProjects);
+
 
 
   const [details, setDetails] = useState([])
@@ -43,7 +43,7 @@ const DemoTable = () => {
 
   const fields = [
     { key: '_id', _style: { width: '20%' } },
-  
+
     { key: 'name', _style: { width: '20%' } },
     { key: 'description', _style: { width: '40%' } },
 
@@ -59,88 +59,94 @@ const DemoTable = () => {
     }
   ]
 
-  const history=useHistory();
+  const history = useHistory();
   return (
     <CCardBody>
-      <CDataTable
-        items={projects}
-        fields={fields}
-        columnFilter
-        tableFilter
-        cleaner
-        itemsPerPageSelect
-        itemsPerPage={5}
-        hover
-        sorter
-        pagination
-        // loading
-         onRowClick={(item,index,col,e) => console.log(item,index,col,e)}
-         onPageChange={(val) => console.log('new page:', val)}
-         onPagesChange={(val) => console.log('new pages:', val)}
-         onPaginationChange={(val) => console.log('new pagination:', val)}
-       onFilteredItemsChange={(val) => console.log('new filtered items:', val)}
-         onSorterValueChange={(val) => console.log('new sorter value:', val)}
-         onTableFilterChange={(val) => console.log('new table filter:', val)}
-         onColumnFilterChange={(val) => console.log('new column filter:', val)}
-        scopedSlots={{
-          
-          'edit':
-            item => {
-              return (
-                <td className="py-2">
-                  <CButton
-                    color="primary"
-                    variant="outline"
-                    shape="square"
-                    size="sm"
-                    onClick={() => { toggleDetails(item._id) }}
-                  >
-                    {details.includes(item.id) ? 'Hide' : <i class="cil"></i>}
-                  </CButton>
-                </td>
-              )
-            },
-          'show_details':
-            item => {
-              return (
-                <td className="py-2">
-                  <CButton
-                    color="primary"
-                    variant="outline"
-                    shape="square"
-                    size="sm"
-                    onClick={() => { toggleDetails(item._id) }}
-                  >
-                    {details.includes(item._id) ? 'Hide' : 'Action'}
-                  </CButton>
-                </td>
-              )
-            },
-          'details':
-            item => {
-              return (
-                <>
-                <CCollapse show={details.includes(item._id)}>
-                  <CCardBody>
-                    
-                    <CButton size="sm" color="info" onClick={()=>history.push('/editProject',item)}>
-                      Edit
-                    </CButton>
-                    <CButton size="sm" color="danger" className="ml-1" onClick={()=>dispatch(deleteProject(item._id))}>
-                      Delete
-                    </CButton>
-                  </CCardBody>
+      {
+        loading ? (
+          <Loader />
+        ) : (
+          <CDataTable
+            items={projects}
+            fields={fields}
+            columnFilter
+            tableFilter
+            cleaner
+            itemsPerPageSelect
+            itemsPerPage={5}
+            hover
+            sorter
+            pagination
+            // loading
+            onRowClick={(item, index, col, e) => console.log(item, index, col, e)}
+            onPageChange={(val) => console.log('new page:', val)}
+            onPagesChange={(val) => console.log('new pages:', val)}
+            onPaginationChange={(val) => console.log('new pagination:', val)}
+            onFilteredItemsChange={(val) => console.log('new filtered items:', val)}
+            onSorterValueChange={(val) => console.log('new sorter value:', val)}
+            onTableFilterChange={(val) => console.log('new table filter:', val)}
+            onColumnFilterChange={(val) => console.log('new column filter:', val)}
+            scopedSlots={{
 
-                </CCollapse>
+              'edit':
+                item => {
+                  return (
+                    <td className="py-2">
+                      <CButton
+                        color="primary"
+                        variant="outline"
+                        shape="square"
+                        size="sm"
+                        onClick={() => { toggleDetails(item._id) }}
+                      >
+                        {details.includes(item.id) ? 'Hide' : <i class="cil"></i>}
+                      </CButton>
+                    </td>
+                  )
+                },
+              'show_details':
+                item => {
+                  return (
+                    <td className="py-2">
+                      <CButton
+                        color="primary"
+                        variant="outline"
+                        shape="square"
+                        size="sm"
+                        onClick={() => { toggleDetails(item._id) }}
+                      >
+                        {details.includes(item._id) ? 'Hide' : 'Action'}
+                      </CButton>
+                    </td>
+                  )
+                },
+              'details':
+                item => {
+                  return (
+                    <>
+                      <CCollapse show={details.includes(item._id)}>
+                        <CCardBody>
 
-                
-</>
-              )
-            }
-        }}
-      />
+                          <CButton size="sm" color="info" onClick={() => history.push('/editProject', item)}>
+                            Edit
+                          </CButton>
+                          <CButton size="sm" color="danger" className="ml-1" onClick={() => dispatch(deleteProject(item._id))}>
+                            Delete
+                          </CButton>
+                        </CCardBody>
+
+                      </CCollapse>
+
+
+                    </>
+                  )
+                }
+            }}
+          />
+          )}
     </CCardBody>
-  )
+
+  );
 }
 
 export default DemoTable
