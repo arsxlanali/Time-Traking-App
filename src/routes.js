@@ -15,10 +15,6 @@ const TextEditors = React.lazy(() =>
   import("./views/editors/text-editors/TextEditors")
 );
 
-const loginApp = React.lazy(() =>
-  import("./views/pages/loginTimeTrack/LoginApp")
-);
-
 const addProject = React.lazy(() =>
   import("./views/pages/project/addProject/addProject")
 );
@@ -175,7 +171,6 @@ const routes = [
     component: reports,
     exact: true,
   },
-
   { path: "/theme/colors", name: "Colors", component: Colors },
   { path: "/theme/typography", name: "Typography", component: Typography },
   { path: "/base", name: "Base", component: Cards, exact: true },

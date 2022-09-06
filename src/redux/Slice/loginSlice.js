@@ -13,17 +13,20 @@ const initialState = {
 
 export const login = createAsyncThunk(
   'users/login',
-  async (data, thunkAPI) => {
+  async ({ values, history }, thunkAPI) => {
     axios
-      .post(`${baseURL}/users/login`, data)
+      .post(`${baseURL}/users/login`, values)
       .then((response) => {
         localStorage.setItem("Token", response.data.accessToken);
-
         localStorage.setItem("Role", response.data.data.role);
         localStorage.setItem("key", response.data.data._id)
-        console.log(response.data)
-        // navigate()
-        // console.log(response.data)
+
+        if (response?.data?.data?.isDefault) {
+          history.push('/passwordrest', response?.data?.data?._id)
+        }
+        else {
+          history.push('/dashboard')
+        }
         return response.data;
       }).catch((error) => {
 
@@ -32,8 +35,29 @@ export const login = createAsyncThunk(
       )
 
   })
+export const PasswordRest = createAsyncThunk(
+  "PasswordRest",
+  async ({ values, history }, thunkAPI) => {
 
-
+    const id = values["id"];
+    delete values["id"];
+    delete values["accept2"];
+    values["oldPassword"] = "tdc@1234";
+    // console.log("This is my id:", values);
+    try {
+      const res = await axios.post(
+        `${baseURL}/users/resetPassword/${id}`,
+        values,
+      );
+      // console.log("this is reset password", res?.data);
+      // thunkAPI.dispatch(getEmployees());
+      history.push('/dashboard');
+      return res?.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue("something went wrong");
+    }
+  }
+);
 export const loginSlice = createSlice({
   name: 'login',
   initialState,
