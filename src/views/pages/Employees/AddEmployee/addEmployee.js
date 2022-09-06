@@ -15,26 +15,17 @@ import {
   CRow,
   CFormText,
 } from "@coreui/react";
-import { CToast, CToastHeader, CToastBody } from "@coreui/react";
-// import { toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
 import Toaster from "src/views/notifications/toaster/Toaster";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { addEmployee } from "../../../../redux/Slice/employeesSlice";
 import { useDispatch, useSelector } from "react-redux";
-// import { Redirect } from "react-router-dom/cjs/react-router-dom";
-import { Redirect } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-// toast.configure();
 const validationSchema = function (values) {
   return Yup.object().shape({
     name: Yup.string()
       .min(2, `Name has to be at least 2 characters`)
       .required("Name is required"),
-    // address: Yup.string()
-    //   .min(10, `Address has to be at least 12 character`)
-    //   .required("Address is required"),
     phone: Yup.string()
       .min(11, `Phone has to be at least 11 characters`)
       .required("phone is required"),
@@ -74,7 +65,6 @@ const getErrorsFromValidationError = (validationError) => {
 
 const initialValues = {
   name: "",
-  // address: "",
   phone: "",
   email: "",
   department: "",
@@ -94,7 +84,6 @@ const findFirstError = (formName, hasError) => {
 };
 
 const validateForm = (errors) => {
-  // console.log("This is error", errors);
   findFirstError("simpleForm", (fieldName) => {
     return Boolean(errors[fieldName]);
   });
@@ -103,7 +92,6 @@ const validateForm = (errors) => {
 const touchAll = (setTouched, errors) => {
   setTouched({
     name: true,
-    // address: true,
     phone: true,
     email: true,
     department: true,
@@ -113,16 +101,11 @@ const touchAll = (setTouched, errors) => {
   });
   validateForm(errors);
 };
-// const notify = () => {
-//   // Calling toast method by passing string
-//   toast("Hello Geeks");
-// };
 const ValidationForms = () => {
   const { isLoading, isScuessfull } = useSelector((state) => state.employees);
   const dispatch = useDispatch();
   const history = useHistory();
   const onSubmit = (values, { setSubmitting }) => {
-    //console.log(values);
     dispatch(addEmployee(values));
 
     setSubmitting(isLoading);
@@ -282,7 +265,6 @@ const ValidationForms = () => {
                             required
                           >
                             <option value="">Please select</option>
-                            <option value="ADMIN">Admin</option>
                             <option value="MANAGEMENT">Managment</option>
                             <option value="EMPLOYEE">Employee</option>
                           </CSelect>
