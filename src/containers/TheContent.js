@@ -34,7 +34,7 @@ const TheContent = () => {
                 )
               );
             })}
-            <Redirect from="/" to="/dashboard" />
+            <Redirect from="/" to="/viewsheet" />
           </Switch>
         </Suspense>
       </CContainer>

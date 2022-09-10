@@ -22,10 +22,11 @@ const header = {
 
 export const viewTimeSheet = createAsyncThunk(
   'tasks/user',
-  async (id,thunkAPI) => {
+  async ({ UserId, date }, thunkAPI) => {
+    // console.log("this is id and date", UserId, date)
     try {
       const res = await axios
-        .get(`${baseURL}/tasks/user/${id}`, header);
+        .get(`${baseURL}/tasks/user/${UserId}/date/${date}`, header);
       return res.data;
 
     }
@@ -39,19 +40,20 @@ export const viewTimeSheet = createAsyncThunk(
   })
 
 
- 
+
 export const deleteTask = createAsyncThunk(
   "tasks/delete",
 
-  async (id, thunkAPI) => {
-      console.log("taskid",id)
+  async ({ _id, date }, thunkAPI) => {
+    console.log("taskid", id)
     try {
       const res = await axios.delete(
-        `${baseURL}/tasks/delete/${id}`,
+        `${baseURL}/tasks/delete/${_id}`,
         header
       );
-        
-      thunkAPI.dispatch(viewTimeSheet(localStorage.getItem('key')));
+      const UserId = localStorage.getItem('key');
+      // const date = data.date;
+      thunkAPI.dispatch(viewTimeSheet({ UserId, date }));
       return res?.data;
     } catch (error) {
       return thunkAPI.rejectWithValue("task not found");
@@ -62,16 +64,19 @@ export const deleteTask = createAsyncThunk(
 export const addTask = createAsyncThunk(
   "tasks/create",
 
-  async (taskInfo,thunkAPI) => {
-    
+  async ({ data }, thunkAPI) => {
+
     try {
       const res = await axios.post(
         `${baseURL}/tasks/create`,
-        taskInfo,
+        data,
         header,
-        );
-        console.log("task info",taskInfo)
-      thunkAPI.dispatch(viewTimeSheet(localStorage.getItem('key')));
+      );
+      // console.log("task info", taskInfo)
+      // history.push('/')
+      const UserId = localStorage.getItem('key');
+      const date = data.date;
+      thunkAPI.dispatch(viewTimeSheet({ UserId, date }));
       return res?.data;
     } catch (error) {
       return thunkAPI.rejectWithValue("task not found");
@@ -82,19 +87,22 @@ export const addTask = createAsyncThunk(
 export const editTask = createAsyncThunk(
   "tasks/update",
 
-  async ({ taskInfo, id },thunkAPI) => {
-    const data = taskInfo();
-    console.log("task id in slice ",id);
-    console.log("task data in slice ",data);
+  async ({ data, id }, thunkAPI) => {
+    // setTimeout(console.log("this is edit task,", taskInfo, id), 4000)
+
+    // const data = taskInfo();
+    // console.log("task id in slice ", data, id);
+    // console.log("task data in slice ", data);
     try {
       const res = await axios.patch(
         `${baseURL}/tasks/update/${id}`,
         data,
         header,
-        );
-
-      thunkAPI.dispatch(viewTimeSheet(localStorage.getItem('key')));
-      console.log(res.data);
+      );
+      const UserId = localStorage.getItem('key');
+      const date = data.date;
+      thunkAPI.dispatch(viewTimeSheet({ UserId, date }));
+      // console.log(res.data);
       return res?.data;
     } catch (error) {
       return thunkAPI.rejectWithValue("task not updated");
@@ -106,8 +114,10 @@ export const viewTimeSheetSlice = createSlice({
   name: 'viewTimeSheet',
   initialState,
   reducers: {
-   
-   },
+    clearTimeSheet: (state) => {
+      state.timeSheet = [];
+    }
+  },
 
 
   extraReducers: {
@@ -117,13 +127,14 @@ export const viewTimeSheetSlice = createSlice({
     [viewTimeSheet.fulfilled]: (state, { payload }) => {
       state.loading = false
       state.timeSheet = payload
-    
+
     },
     [viewTimeSheet.rejected]: (state) => {
       state.loading = false
     },
+
   },
 
 })
-
+export const { clearTimeSheet } = viewTimeSheetSlice.actions;
 export default viewTimeSheetSlice.reducer;

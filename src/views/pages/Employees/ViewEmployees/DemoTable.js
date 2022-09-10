@@ -41,7 +41,7 @@ const DemoTable = () => {
     if (employeesView.length > 1)
       setPageLength(Math.ceil(employeesView.length / 5));
   }, [setPageLength, currentPage, dispatch, employeesView.length, page]);
-  console.log("this is emp lenght;", employeesView.length, pageLength);
+  // console.log("this is emp lenght;", employeesView.length, pageLength);
 
   const [modal, setModal] = useState(false);
   const [details, setDetails] = useState([]);

@@ -3,7 +3,7 @@ import { viewProjects, deleteProject } from 'src/redux/Slice/projectSlice'
 import Loader from "../../loader/Loader";
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
-
+// import { getEmployees } from 'src/redux/Slice/employeesSlice';
 import {
   CCardBody,
   CBadge,
@@ -13,18 +13,24 @@ import {
 } from '@coreui/react'
 
 import { useHistory } from 'react-router-dom'
+
 const DemoTable = () => {
-
   const dispatch = useDispatch();
-
   useEffect(() => {
     //currentPage !== page && setPage(currentPage);
+    // dispatch(getEmployees());
     dispatch(viewProjects());
   }, []);
 
   const { projects, loading } = useSelector((state) => state.viewProjects);
+  console.log("this is projejct", projects)
+  const projectsArray = projects.map(project => {
+    return {
+      ...project, assignTo: project['assignTo'].map((assign) => { return assign.name }), assignBy: project['assignBy'].name
+    }
+  })
 
-
+  const history = useHistory();
 
   const [details, setDetails] = useState([])
   // const [items, setItems] = useState(usersData)
@@ -42,14 +48,13 @@ const DemoTable = () => {
 
 
   const fields = [
-    { key: '_id', _style: { width: '20%' } },
 
-    { key: 'name', _style: { width: '20%' } },
-    { key: 'description', _style: { width: '40%' } },
+    { key: 'name', _style: { width: '15%' } },
+    { key: 'description', _style: { width: '30%' } },
 
-    { key: 'startDate', _style: { width: '20%' } },
-    { key: 'assignBy', _style: { width: '20%' } },
-    { key: 'assignTo', _style: { width: '20%' } },
+    { key: 'startDate', _style: { width: '15%' } },
+    { key: 'assignBy', _style: { width: '15%' } },
+    { key: 'assignTo', _style: { width: '30%' } },
 
     {
       key: 'show_details',
@@ -59,7 +64,6 @@ const DemoTable = () => {
     }
   ]
 
-  const history = useHistory();
   return (
     <CCardBody>
       {
@@ -67,7 +71,7 @@ const DemoTable = () => {
           <Loader />
         ) : (
           <CDataTable
-            items={projects}
+            items={projectsArray}
             fields={fields}
             columnFilter
             tableFilter
@@ -133,6 +137,16 @@ const DemoTable = () => {
                           <CButton size="sm" color="danger" className="ml-1" onClick={() => dispatch(deleteProject(item._id))}>
                             Delete
                           </CButton>
+                          <CButton
+                            size="sm"
+                            color="primary"
+                            className="ml-1"
+                            onClick={() => {
+                              history.push(`/viewproject/${item._id}`, { item });
+                            }}
+                          >
+                            View
+                          </CButton>
                         </CCardBody>
 
                       </CCollapse>
@@ -143,7 +157,7 @@ const DemoTable = () => {
                 }
             }}
           />
-          )}
+        )}
     </CCardBody>
 
   );

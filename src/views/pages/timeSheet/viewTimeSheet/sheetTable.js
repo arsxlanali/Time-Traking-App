@@ -14,10 +14,10 @@ const AdvancedTables = () => {
     <CRow>
       <CCol sm="12">
         <CCard>
-          <CCardHeader>
+          {/* <CCardHeader>
             <CIcon name="cil-grid" /> Time Sheet
             <DocsLink name="CDataTable" />
-          </CCardHeader>
+          </CCardHeader> */}
           <DemoTable />
         </CCard>
 

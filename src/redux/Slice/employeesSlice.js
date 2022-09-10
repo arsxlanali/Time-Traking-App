@@ -22,6 +22,7 @@ export const getEmployees = createAsyncThunk(
 
   async (thunkAPI) => {
     try {
+      // console.log('11')
       const res = await axios(`${baseUrl}/users/getall`, header);
       return res?.data?.users;
     } catch (error) {
@@ -33,7 +34,7 @@ export const addEmployee = createAsyncThunk(
   "employees/addEmployee",
   async (data, thunkAPI) => {
     delete data["accept"];
-    // console.log("this is employee add data", data);
+    console.log("this is employee add data", data, header);
     try {
       const res = await axios.post(
         `${baseUrl}/users/admin/addnewuser`,
@@ -106,6 +107,11 @@ export const resetPassword = createAsyncThunk(
 export const employeesSlice = createSlice({
   name: "employees",
   initialState,
+  reducers: {
+    clearEmployee: (state) => {
+      state.employeesView = [];
+    }
+  },
   extraReducers: {
     [getEmployees.pending]: (state) => {
       state.isLoading = true;
@@ -155,5 +161,5 @@ export const employeesSlice = createSlice({
     },
   },
 });
-// export const { redirect } = employeesSlice.actions;
+export const { clearEmployee } = employeesSlice.actions;
 export default employeesSlice.reducer;

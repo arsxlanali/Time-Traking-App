@@ -24,7 +24,7 @@ export const login = createAsyncThunk(
           history.push('/passwordrest', response?.data?.data?._id)
         }
         else {
-          history.push('/dashboard')
+          history.push('/viewsheet')
         }
         return response.data;
       }).catch((error) => {
@@ -41,7 +41,7 @@ export const PasswordRest = createAsyncThunk(
     const id = values["id"];
     delete values["id"];
     delete values["accept2"];
-    console.log("this is isdefyalt", localStorage.getItem("isDefualt"))
+    // console.log("this is isdefyalt", localStorage.getItem("isDefualt"))
     const isDefault = localStorage.getItem("isDefualt");
     if (isDefault) {
       values["oldPassword"] = "tdc@1234";
@@ -52,7 +52,7 @@ export const PasswordRest = createAsyncThunk(
         `${baseURL}/users/resetPassword/${id}`,
         values,
       );
-      history.push('/dashboard');
+      history.push('/viewsheet');
       return res?.data;
     } catch (error) {
       return thunkAPI.rejectWithValue("something went wrong");
@@ -63,6 +63,11 @@ export const loginSlice = createSlice({
   name: 'login',
   initialState,
   reducers: {},
+  reducers: {
+    clearLogin: (state) => {
+      state.entities = [];
+    }
+  },
   extraReducers: {
     [login.pending]: (state) => {
       state.isLoading = true;
@@ -89,5 +94,5 @@ export const loginSlice = createSlice({
   },
 })
 
-
+export const { clearLogin } = loginSlice.actions;
 export default loginSlice.reducer

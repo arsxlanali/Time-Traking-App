@@ -21,7 +21,23 @@ import navigation from "./_nav";
 const TheSidebar = () => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state?.slideBar?.sidebarShow);
-  console.log("this is side bar show.", show)
+  const role = localStorage.getItem("Role");
+  // const filteredNav = [];
+  if (role == "EMPLOYEE") {
+    console.log("this is nav");
+    navigation = navigation.filter((obj) => {
+      return (obj.name !== "Projects" && obj.name !== "Employee");
+    })
+    var filteredNav = navigation.slice();
+    console.log("this is nav", navigation)
+    // filteredNav = navigation.filter(function (obj) {
+    //   return obj.name !== "Projects";
+    // });
+  }
+  else {
+    var filteredNav = navigation.slice();
+  }
+  console.log("this is employee nav", navigation);
   return (
     <CSidebar
       show={show}
@@ -42,7 +58,7 @@ const TheSidebar = () => {
       </CSidebarBrand>
       <CSidebarNav>
         <CCreateElement
-          items={navigation}
+          items={filteredNav}
           components={{
             CSidebarNavDivider,
             CSidebarNavDropdown,

@@ -30,124 +30,42 @@ import {
   CCol,
   CInputGroup,
   CInputGroupPrepend,
-  CInputGroupText
-
+  CInputGroupText,
+  // CDatePicker
 
 } from "@coreui/react";
-import { DateRangePicker } from "react-dates";
 import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
-import usersData from "src/views/users/UsersData";
-import CIcon from "@coreui/icons-react";
-import { TextMask, InputAdapter } from "react-text-mask-hoc";
+// import { set } from "core-js/core/dict";
 
-import { Formik } from "formik";
-import * as Yup from "yup";
-const validationSchema = function (values) {
-  return Yup.object().shape({
-    taskName: Yup.string()
-      .min(2, `Task name has to be at least 2 characters`)
-      .required("Task name is required"),
-    taskType: Yup.string()
-      .min(1, `Task Type has to be at least 1 character`)
-      .required("Task Type is required"),
-    description: Yup.string()
-      .min(5, `description has to be at least 5 characters`)
-      .required("description is required"),
-    duration: Yup.string()
-      .min(5, `duration has to be at least 5 characters`)
-      .required("duration is required"),
 
-  });
-};
-
-const validate = (getValidationSchema) => {
-  return (values) => {
-    const validationSchema = getValidationSchema(values);
-    try {
-      validationSchema.validateSync(values, { abortEarly: false });
-      return {};
-    } catch (error) {
-      return getErrorsFromValidationError(error);
-    }
-  };
-};
-
-const getErrorsFromValidationError = (validationError) => {
-  const FIRST_ERROR = 0;
-  return validationError.inner.reduce((errors, error) => {
-    return {
-      ...errors,
-      [error.path]: error.errors[FIRST_ERROR],
-    };
-  }, {});
-};
-
-const initialValues = {
-  taskName: "",
-  taskType: "",
-  description: "",
-  duration: {},
-
-};
-
-const onSubmit = (values, { setSubmitting, setErrors }) => {
-  setTimeout(() => {
-    alert(JSON.stringify(values, null, 2));
-    console.log("User has been successfully saved!", values);
-    setSubmitting(false);
-  }, 2000);
-};
-
-const findFirstError = (formName, hasError) => {
-  const form = document.forms[formName];
-  for (let i = 0; i < form.length; i++) {
-    if (hasError(form[i].name)) {
-      form[i].focus();
-      break;
-    }
-  }
-};
-
-const validateForm = (errors) => {
-  findFirstError("simpleForm", (fieldName) => {
-    return Boolean(errors[fieldName]);
-  });
-};
-
-const touchAll = (setTouched, errors) => {
-  setTouched({
-    taskName: true,
-    taskType: true,
-    description: true,
-    duration: true,
-    status: true,
-  });
-  validateForm(errors);
-};
 
 
 const DemoTable = () => {
   const [details, setDetails] = useState([]);
-  const [items, setItems] = useState(usersData);
-  const [date, setDate] = React.useState({ startDate: null, endDate: null });
-  const [focused, setFocused] = React.useState();
-  const [large, setLarge] = useState(false);
+  const [model, setModel] = useState(false);
   const [largeForEditTask, setLargeForEditTask] = useState(false);
-  const history = useHistory();
-  const id = localStorage.getItem('key');
+  const UserId = localStorage.getItem('key');
   const dispatch = useDispatch();
   const { timeSheet, loading } = useSelector((state) => state.viewTimeSheet);
-  const [taskId, setTaskId] = useState();
-  //console.log(timeSheet);
-  const [preSetData, setPreSetData] = useState();
+  const [taskId, setTaskId] = useState(undefined);
+
+  // console.log("taskkkkkkkk", taskId)
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0');
+  var yyyy = today.getFullYear();
+  today = yyyy + '-' + mm + '-' + dd;
+  const [date, setDate] = useState(today)
+
+  const newArray = timeSheet.map((sheet) => {
+    return {
+      ...sheet, duration: `${sheet?.duration?.hours}:${sheet?.duration?.minutes} mins`, totalMins: sheet?.duration?.hours * 60 + sheet?.duration?.minutes
+    }
+  })
   useEffect(() => {
-    dispatch(viewTimeSheet(id))
-
+    dispatch(viewTimeSheet({ UserId, date }));
   }, [])
-
-
-
 
   const toggleDetails = (index) => {
     const position = details.indexOf(index);
@@ -159,17 +77,8 @@ const DemoTable = () => {
     }
     setDetails(newDetails);
   };
-
   const fields = [
-
-    { key: "userId", _style: { width: "20%" } },
-
-    { key: "projectId", _style: { width: "20%" } },
-
-    { key: "_id", _style: { width: "20%" } },
-
-    { key: "name", _style: { width: "20%" } },
-
+    { key: "type", _style: { width: "20%" } },
     { key: "description", _style: { width: "40%" } },
     { key: "duration", _style: { width: "10%" } },
     { key: "date", _style: { width: "20%" } },
@@ -180,65 +89,34 @@ const DemoTable = () => {
       filter: false,
     },
   ];
-
-  const getBadge = (status) => {
-    switch (status) {
-      case "Active":
-        return "success";
-      case "Inactive":
-        return "secondary";
-      case "Pending":
-        return "warning";
-      case "Banned":
-        return "danger";
-      default:
-        return "primary";
-    }
+  const handleChange = event => {
+    // setMessage(event.target.value);
+    const date = event.target.value;
+    setDate(event.target.value);
+    dispatch(viewTimeSheet({ UserId, date }));
+    // console.log('value is:fjd', event.target.value);
   };
-
-
+  // timeSheet.forEach((sheet) => { console.log("This is sheet", sheet.description) })
   return (
     <>
+      <AddTask flag={model} onClose={() => setModel(!model)} date={date} />
+      {taskId && <EditTask flag={model} onClose={() => {
+        setModel(!model)
+          ; setTaskId(undefined);
+      }} date={date} task={taskId} />}
       <div className="mb-2 my-2 mr-4">
-        <CButton onClick={() => setLarge(true)}
-
+        <CButton onClick={() => setModel(true)}
           color="primary"
-          size="sm"
-          className={"float-right"}
+          className={"float-right my-3"}
         >
           Add Task
         </CButton>
       </div>
-
-
-      <div >
-        <CLabel htmlFor="startDate">Select Date</CLabel>
-        <CInputGroup
-
-        >
-          <CInputGroupPrepend>
-            <CInputGroupText>
-              <CIcon name="cil-calendar" />
-            </CInputGroupText>
-          </CInputGroupPrepend>
-          <TextMask
-            mask={[
-              /\d/,
-              /\d/,
-              "/",
-              /\d/,
-              /\d/,
-              "/",
-              /\d/,
-              /\d/,
-              /\d/,
-              /\d/,
-            ]}
-            Component={InputAdapter}
-            className="form-control"
-          />
-        </CInputGroup>
-      </div>
+      <CCol xs="12" md="3">
+        <CInput type="date" name="date-input" placeholder="date"
+          value={date}
+          onChange={handleChange} />
+      </CCol>
 
       <CCardBody>
         {
@@ -246,48 +124,13 @@ const DemoTable = () => {
             <Loader />
           ) : (
             <CDataTable
-              items={timeSheet}
+              items={newArray}
               fields={fields}
-              //columnFilter
-              //tableFilter
-              //cleaner
-              //itemsPerPageSelect
-              //itemsPerPage={5}
+              columnFilter
               hover
               sorter
               pagination
-              // loading
-              onRowClick={(item, index, col, e) => console.log(item, index, col, e)}
-              onPageChange={(val) => console.log('new page:', val)}
-              onPagesChange={(val) => console.log('new pages:', val)}
-              onPaginationChange={(val) => console.log('new pagination:', val)}
-              onFilteredItemsChange={(val) => console.log('new filtered items:', val)}
-              onSorterValueChange={(val) => console.log('new sorter value:', val)}
-              onTableFilterChange={(val) => console.log('new table filter:', val)}
-              onColumnFilterChange={(val) => console.log('new column filter:', val)}
               scopedSlots={{
-                status: (item) => (
-                  <td>
-                    <CBadge color={getBadge(item.status)}>{item.status}</CBadge>
-                  </td>
-                ),
-                edit: (item) => {
-                  return (
-                    <td className="py-2">
-                      <CButton
-                        color="primary"
-                        variant="outline"
-                        shape="square"
-                        size="sm"
-                        onClick={() => {
-                          toggleDetails(item._id);
-                        }}
-                      >
-                        {details.includes(item._id) ? "Hide" : "Action"}
-                      </CButton>
-                    </td>
-                  );
-                },
                 show_details: (item) => {
                   return (
                     <td className="py-2">
@@ -300,7 +143,7 @@ const DemoTable = () => {
                           toggleDetails(item._id);
                         }}
                       >
-                        {details.includes(item._id) ? "Hide" : "Action"}
+                        {details.includes(item._id) ? "Action" : "Action"}
                       </CButton>
                     </td>
                   );
@@ -312,13 +155,13 @@ const DemoTable = () => {
                         <h4>{item.username}</h4>
 
                         <CButton size="sm" color="info" onClick={() => {
-                          setLargeForEditTask(true);
-                          setTaskId(item._id);
-                          // setPreSetData(item);
+                          setModel(true)
+                          setTaskId(item)
+
                         }} >
                           Edit
                         </CButton>
-                        <CButton size="sm" color="danger" className="ml-1" onClick={() => dispatch(deleteTask(item._id))
+                        <CButton size="sm" color="danger" className="ml-1" onClick={() => dispatch(deleteTask(item))
 
                         }>
                           Delete
@@ -338,9 +181,6 @@ const DemoTable = () => {
         <CButton color="primary" className={"float-right mr-4"} >
           End My Day
         </CButton>
-        <AddTask flag={large} />
-        {/* <EditTask flagForEdit={largeForEditTask} preSetData={preSetData}/> */}
-        <EditTask flagForEdit={largeForEditTask} id={taskId} />
       </div>
     </>
   );

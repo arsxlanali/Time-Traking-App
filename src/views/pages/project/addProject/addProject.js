@@ -17,14 +17,17 @@ import {
   CInputGroupPrepend,
   CInputGroupText
 } from '@coreui/react'
-
+import { useSelector } from "react-redux";
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
 import CIcon from "@coreui/icons-react";
 import { TextMask, InputAdapter } from "react-text-mask-hoc";
-
-
+import { getEmployees } from 'src/redux/Slice/employeesSlice';
+import states from 'src/views/forms/advanced-forms/states';
+import Select from "react-select";
+import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 const validationSchema = function (values) {
   return Yup.object().shape({
     name: Yup.string()
@@ -34,12 +37,6 @@ const validationSchema = function (values) {
     description: Yup.string()
       .min(5, `Description has to be at least 5 characters`)
       .required('Description is required'),
-    assignBy: Yup.string()
-      .required('Name is required!'),
-    assignTo: Yup.string()
-      .required('Employee name is required!'),
-    startDate: Yup.string()
-      .required('Assignment is required!'),
   })
 }
 
@@ -68,52 +65,69 @@ const getErrorsFromValidationError = (validationError) => {
 const initialValues = {
   name: "",
   description: "",
-  assignToBy: "",
-  assignTo: "",
-  startDate: "",
+  // assignToBy: "",
+  assignTo: [],
+  // startDate: "",
 
 }
 
-const onSubmit = (values, { setSubmitting, setErrors }) => {
-  setTimeout(() => {
-    alert(JSON.stringify(values, null, 2))
-    // console.log('User has been successfully saved!', values)
-    setSubmitting(false)
-  }, 2000)
-}
+// const onSubmit = (values, { setSubmitting, setErrors }) => {
+//   setTimeout(() => {
+//     alert(JSON.stringify(values, null, 2))
+//     // console.log('User has been successfully saved!', values)
+//     setSubmitting(false)
+//   }, 2000)
+// }
 
-const findFirstError = (formName, hasError) => {
-  const form = document.forms[formName]
-  for (let i = 0; i < form.length; i++) {
-    if (hasError(form[i].name)) {
-      form[i].focus()
-      break
-    }
-  }
-}
+// const findFirstError = (formName, hasError) => {
+//   const form = document.forms[formName]
+//   for (let i = 0; i < form.length; i++) {
+//     if (hasError(form[i].name)) {
+//       form[i].focus()
+//       break
+//     }
+//   }
+// }
 
-const validateForm = (errors) => {
-  findFirstError('simpleForm', (fieldName) => {
-    return Boolean(errors[fieldName])
-  })
-}
+
 
 
 const ValidationForms = () => {
 
   const dispatch = useDispatch();
-  const onSubmit = (values, { setSubmitting, setErrors }) => {
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2))
-      // console.log('User has been successfully saved!', values)
-      setSubmitting(false)
-    }, 2000)
+  const darkMode = useSelector((state) => state?.slideBar?.darkMode);
+  const history = useHistory();
+  const [value, setValue] = React.useState([]);
+  useEffect(() => {
+    dispatch(getEmployees());
+  }, [dispatch]);
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0');
+  var yyyy = today.getFullYear();
+  today = mm + '-' + dd + '-' + yyyy;
 
-    console.log("values",values)
-    dispatch(addProject(values));
+  const allEmployees = useSelector((state) => state?.employees?.employeesView);
+  // console.log("this is all employees", allEmployees);
+  const employees = allEmployees.filter(emp => emp['role'] == 'EMPLOYEE');
+  const empOptions = [];
+  employees.forEach(emp => {
+    const result = (({ _id, name }) => ({ _id, name }))(emp)
+    empOptions.push({ "value": result._id, "label": result.name });
+  })
+  // console.log("this is employees", empOptions)
+  const onSubmit = (initialValues) => {
+
+    // const id = localStorage.getItem("key");
+    const arry = [];
+    value.forEach(val => {
+      arry.push(val.value);
+    })
+    // console.log("This ", nnnn)
+    const data = { ...initialValues, assignTo: arry, startDate: today }
+    console.log("this is data", data);
+    dispatch(addProject({ data, history }));
   }
-
-
   return (
     <CRow className={"d-flex justify-content-center"}>
       <CCol lg={8}>
@@ -171,95 +185,36 @@ const ValidationForms = () => {
                             value={values.description} />
                           <CInvalidFeedback>{errors.description}</CInvalidFeedback>
                         </CFormGroup>
-
-                        <CFormGroup>
-                          <CLabel htmlFor="assignBy">Assign By</CLabel>
-                          <CInput type="assignBy"
-                            name="assignBy"
-                            id="assignBy"
-                            placeholder="Name"
-                            autoComplete="assignBy"
-                            valid={!errors.assignBy}
-                            invalid={touched.assignBy && !!errors.assignBy}
-                            required
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.assignBy} />
-                          <CInvalidFeedback>{errors.assigntBy}</CInvalidFeedback>
-                        </CFormGroup>
                         <CFormGroup>
                           <CLabel htmlFor="assignTo">Assign To</CLabel>
-                          <CInput type="assignTo"
+                          <Select
+                            type="assignTo"
                             name="assignTo"
                             id="assignTo"
                             placeholder="Employee Name"
-                            autoComplete="assignTo"
-                            valid={!errors.assignto}
-                            invalid={touched.assignto && !!errors.assignto}
-                            required
-                            onChange={handleChange}
+                            value={value}
+                            options={empOptions}
+                            onChange={setValue}
+                            isMulti
+                            // required
+                            // valid={!errors.assignTo}
+                            invalid={touched.assignTo}
                             onBlur={handleBlur}
-                            value={values.assignto} />
-                          <CInvalidFeedback>{errors.assignto}</CInvalidFeedback>
+                            theme={(theme) => ({
+                              ...theme,
+                              colors: {
+                                ...theme.colors,
+                                primary: darkMode ? "black" : theme.colors.primary,
+                                primary25: darkMode ? "black" : theme.colors.primary25,
+                                dangerLight: darkMode ? "black" : theme.colors.dangerLight,
+                                neutral0: darkMode ? "#2a2b36" : theme.colors.neutral0,
+                              },
+                            })}
+                          />
+                          <CInvalidFeedback>{errors.assignTo}</CInvalidFeedback>
                         </CFormGroup>
-
-                        {/* <CFormGroup>
-                          <CLabel htmlFor="startDate">Start Date</CLabel>
-                          <CInput type="startDate"
-                            name="startDate"
-                            id="startDate"
-                            placeholder="Date"
-                            autoComplete="startDate"
-                            valid={!errors.startDate}
-                            invalid={touched.startDate && !!errors.startDate}
-                            required
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.startDate} />
-                          <CInvalidFeedback>{errors.startDate}</CInvalidFeedback>
-                        </CFormGroup>  */}
-
-                          <CFormGroup>
-                        <CLabel htmlFor="startDate">Start Date</CLabel>
-                          <CInputGroup type="startDate"
-                            name="startDate"
-                            id="startDate"
-                            placeholder="Date"
-                            autoComplete="startDate"
-                            valid={!errors.startDate}
-                            invalid={touched.startDate && !!errors.startDate}
-                            required
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.startDate} >
-                            <CInputGroupPrepend>
-                              <CInputGroupText>
-                                <CIcon name="cil-calendar" />
-                              </CInputGroupText>
-                            </CInputGroupPrepend>
-                            <TextMask
-                              mask={[
-                                /\d/,
-                                /\d/,
-                                "/",
-                                /\d/,
-                                /\d/,
-                                "/",
-                                /\d/,
-                                /\d/,
-                                /\d/,
-                                /\d/,
-                              ]}
-                              Component={InputAdapter}
-                              className="form-control"
-                            />
-                          </CInputGroup>
-                          <CFormText color="muted">ex. 99/99/9999</CFormText>
-                          <CInvalidFeedback>{errors.startDate}</CInvalidFeedback>
-                        </CFormGroup> 
-
                         <CFormGroup>
-                          <CButton type="submit" color="primary" className="mr-1" disabled={isSubmitting || !isValid}>{isSubmitting ? 'Wait...' : 'Add Project'}</CButton>
+                          <CButton type="submit" color="primary" className="mr-1">'Add Project</CButton>
                         </CFormGroup>
                       </CForm>
                     </CCol>

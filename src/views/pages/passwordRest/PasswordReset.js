@@ -26,7 +26,7 @@ const validationSchema = function (values) {
 		newPassword: Yup.string()
 			.min(6, `Password has to be at least ${6} characters!`)
 			.matches(
-				/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/,
+				/(?=.*\d)(?=.*[a-z]).{6,}/,
 				"Password must contain: numbers, uppercase and lowercase letters\n"
 			)
 			.required("Password is required"),

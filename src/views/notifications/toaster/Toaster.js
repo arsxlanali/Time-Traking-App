@@ -11,7 +11,7 @@ const Toaster = () => {
   return (
     <CCard>
       {Object.keys({ "": [{ "": "" }] }).map(() => (
-        <CToaster position={"static"} key={"toaster1"}>
+        <CToaster position={"top-right"} key={"toaster1"}>
           <CToast key={"toast1"} show={true} autohide={5000} fade={true}>
             <CToastHeader>Toast title</CToastHeader>
             <CToastBody>

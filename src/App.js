@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./scss/style.scss";
+import { ProtectedRouteForLogin, ProtectedRoute } from "./views/pages/loginTimeTrack/loginAuth";
 
 const loading = (
   <div className="pt-3 text-center">
@@ -29,12 +30,14 @@ class App extends Component {
       <BrowserRouter>
         <React.Suspense fallback={loading}>
           <Switch>
-            <Route
+            {/* <PrivateRoute exact path="/" name="Home" render={props => <Login {...props} />} /> */}
+            <ProtectedRouteForLogin exact path="/login" name="Login" render={props => <Login {...props} />} />
+            {/* <Route
               exact
               path="/login"
               name="Login"
               render={(props) => <Login {...props} />}
-            />
+            /> */}
             <Route
               exact
               path="/passwordrest"
@@ -53,12 +56,12 @@ class App extends Component {
               name="Page 500"
               render={(props) => <Page500 {...props} />}
             />
-            <Route
+            {/* <Route
               path="/apps/email"
               name="Email App"
               render={(props) => <TheEmailApp {...props} />}
-            />
-            <Route
+            /> */}
+            <ProtectedRoute
               path="/"
               name="Home"
               render={(props) => <TheLayout {...props} />}

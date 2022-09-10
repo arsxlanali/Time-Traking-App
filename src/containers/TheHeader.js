@@ -5,8 +5,6 @@ import {
   CToggler,
   CHeaderBrand,
   CHeaderNav,
-  CHeaderNavItem,
-  CHeaderNavLink,
   CSubheader,
   CBreadcrumbRouter,
   CLink,
@@ -17,10 +15,7 @@ import CIcon from "@coreui/icons-react";
 import routes from "../routes";
 
 import {
-  TheHeaderDropdown,
-  TheHeaderDropdownMssg,
-  TheHeaderDropdownNotif,
-  TheHeaderDropdownTasks,
+  TheHeaderDropdown
 } from "./index";
 
 const TheHeader = () => {
@@ -60,15 +55,6 @@ const TheHeader = () => {
       </CHeaderBrand>
 
       <CHeaderNav className="d-md-down-none mr-auto">
-        <CHeaderNavItem className="px-3">
-          <CHeaderNavLink to="/dashboard">Home</CHeaderNavLink>
-        </CHeaderNavItem>
-        <CHeaderNavItem className="px-3">
-          <CHeaderNavLink to="/users">Users</CHeaderNavLink>
-        </CHeaderNavItem>
-        <CHeaderNavItem className="px-3">
-          <CHeaderNavLink>Settings</CHeaderNavLink>
-        </CHeaderNavItem>
       </CHeaderNav>
 
       <CHeaderNav className="px-3">
@@ -89,17 +75,7 @@ const TheHeader = () => {
             alt="CoreUI Icons Sun"
           />
         </CToggler>
-        <TheHeaderDropdownNotif />
-        <TheHeaderDropdownTasks />
-        <TheHeaderDropdownMssg />
         <TheHeaderDropdown />
-        <CToggler
-          inHeader
-          className="d-md-down-none"
-          onClick={() => dispatch({ type: "set", asideShow: !asideShow })}
-        >
-          <CIcon className="mr-2" size="lg" name="cil-applications-settings" />
-        </CToggler>
       </CHeaderNav>
 
       <CSubheader className="px-3 justify-content-between">
@@ -108,20 +84,13 @@ const TheHeader = () => {
           routes={routes}
         />
         <div className="d-md-down-none mfe-2 c-subheader-nav">
-          <CLink className="c-subheader-nav-link" href="#">
-            <CIcon name="cil-speech" alt="Settings" />
-          </CLink>
           <CLink
             className="c-subheader-nav-link"
             aria-current="page"
-            to="/dashboard"
+            to="/viewsheet"
           >
             <CIcon name="cil-graph" alt="Dashboard" />
-            &nbsp;Dashboard
-          </CLink>
-          <CLink className="c-subheader-nav-link" href="#">
-            <CIcon name="cil-settings" alt="Settings" />
-            &nbsp;Settings
+            &nbsp;Time Sheet
           </CLink>
         </div>
       </CSubheader>

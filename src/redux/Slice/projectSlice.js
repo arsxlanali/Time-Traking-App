@@ -23,7 +23,7 @@ export const viewProjects = createAsyncThunk(
     try {
       const res = await axios
         .get(`${baseURL}/projects/getall`, header);
-      console.log(res.data)
+      // console.log("This is project data", res.data)
       return res.data;
 
     } catch (error) {
@@ -53,16 +53,16 @@ export const deleteProject = createAsyncThunk(
 export const addProject = createAsyncThunk(
   "projects/create",
 
-  async (projectInfo, thunkAPI) => {
-    console.log("project info",projectInfo)
+  async ({ data, history }, thunkAPI) => {
+    // console.log("project info", data)
     try {
 
       const res = await axios.post(
         `${baseURL}/projects/create`,
-        projectInfo,
+        data,
         header,
       );
-
+      history.push('/viewproject')
       thunkAPI.dispatch(viewProjects());
       return res?.data;
     } catch (error) {
@@ -76,7 +76,7 @@ export const editProject = createAsyncThunk(
 
   async ({ data, id }, thunkAPI) => {
     const projectInfo = data();
-    console.log("projectInfo: ",projectInfo)
+    // console.log("projectInfo: ", projectInfo)
     try {
       const res = await axios.patch(
         `${baseURL}/projects/update/${id}`,
@@ -92,10 +92,35 @@ export const editProject = createAsyncThunk(
   }
 );
 
+export const getProjects = createAsyncThunk(
+  "tasks/getProjects",
 
+  async (thunkAPI) => {
+    const id = localStorage.getItem('key')
+    // console.log("this is user id", id);
+    try {
+      const res = await axios.get(
+        `${baseURL}/projects/findprojectsbyuser/${id}`,
+        header,
+      );
+      // console.log("this is date", res?.data)
+      // console.log("task info", taskInfo)
+      // history.push('/')
+      // thunkAPI.dispatch(viewTimeSheet(localStorage.getItem('key')));
+      return res?.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue("task not found");
+    }
+  }
+);
 export const viewProjectsSlice = createSlice({
   name: "projects",
   initialState,
+  reducers: {
+    clearProjects: (state) => {
+      state.projects = [];
+    }
+  },
   extraReducers: {
     [viewProjects.pending]: (state) => {
       state.loading = true;
@@ -108,7 +133,10 @@ export const viewProjectsSlice = createSlice({
     [viewProjects.rejected]: (state) => {
       state.loading = false;
     },
+    [getProjects.fulfilled]: (state, { payload }) => {
+      state.projects = payload
+    },
   },
 });
-
+export const { clearProjects } = viewProjectsSlice.actions;
 export default viewProjectsSlice.reducer;
