@@ -6,23 +6,24 @@ const baseURL = "https://time-tracking-app-backend.herokuapp.com";
 const initialState = {
   entities: [],
   loading: false,
+  isScuessfull: false,
 }
 
 
 
 export const login = createAsyncThunk(
   'users/login',
-  async ({ data, navigate }, thunkAPI) => {
+  async (data, thunkAPI) => {
     axios
       .post(`${baseURL}/users/login`, data)
       .then((response) => {
-         localStorage.setItem("Token", response.data.accessToken);
-      
-         localStorage.setItem("Role", response.data.data.role);
-         localStorage.setItem("key", response.data.data._id)
-      
-        navigate()
+        localStorage.setItem("Token", response.data.accessToken);
+
+        localStorage.setItem("Role", response.data.data.role);
+        localStorage.setItem("key", response.data.data._id)
         console.log(response.data)
+        // navigate()
+        // console.log(response.data)
         return response.data;
       }).catch((error) => {
 
@@ -39,15 +40,18 @@ export const loginSlice = createSlice({
   reducers: {},
   extraReducers: {
     [login.pending]: (state) => {
-      state.loading = true
+      state.isLoading = true;
+      state.isScuessfull = false;
     },
     [login.fulfilled]: (state, { payload }) => {
-      state.loading = false
+      state.isLoading = false;
+      state.isScuessfull = true;
       state.entities = payload
 
     },
     [login.rejected]: (state) => {
-      state.loading = false
+      state.isLoading = false;
+      state.isScuessfull = false;
     },
   },
 })

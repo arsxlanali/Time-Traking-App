@@ -14,16 +14,17 @@ import {
   CInput,
   CRow,
   CFormText,
+  CCollapse,
 } from "@coreui/react";
-// import { useSelector } from "react-redux";
+import { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-// import { editEmployee } from "../../../../redux/Slice/employeesSlice";
-// import { useDispatch } from "react-redux";
-import { useLocation, Redirect } from "react-router-dom";
+import ResetPassword from "./resetPassword";
+
+import { useLocation, useHistory } from "react-router-dom";
 import { editEmployee } from "src/redux/Slice/employeesSlice";
 import { useDispatch, useSelector } from "react-redux";
-
+import Toaster from "src/views/notifications/toaster/Toaster";
 const validationSchema = function (values) {
   return Yup.object().shape({
     name: Yup.string()
@@ -99,14 +100,25 @@ const touchAll = (setTouched, errors) => {
 
 const EditEmployee = ({ match }) => {
   const user = useLocation().state.item;
-  const { isLoading } = useSelector((state) => state.employees);
-  // const { employeesView } = useSelector((state) => state.employees);
-  // const user = employeesView.find(
-  //   (user) => user.id.toString() === match.params.id
-  // );
+  const { isLoading, isScuessfull } = useSelector((state) => state.employees);
+  const [collapse, setCollapse] = useState(false)
   const dispatch = useDispatch();
-  console.log(user);
-  const initialValues = {
+  const history = useHistory();
+  const onSubmit = (values, setSubmitting) => {
+    values["id"] = user._id;
+    dispatch(editEmployee(values));
+    setSubmitting(isLoading);
+  };
+  // console.log("this is issuccessfful", isScuessfull)
+  if (isScuessfull) {
+    setTimeout(() => history.push(`/listemployee`), 5000);
+    return (
+      <div>
+        <Toaster></Toaster>
+      </div>
+    );
+  }
+  var initialValues = {
     name: user.name,
     address: user.address,
     phone: user.phone,
@@ -116,15 +128,6 @@ const EditEmployee = ({ match }) => {
     role: user.role,
     accept: false,
   };
-  console.log("this is id", user._id);
-  const onSubmit = (values, setSubmitting) => {
-    values["id"] = user._id;
-    dispatch(editEmployee(values));
-    setSubmitting(isLoading);
-  };
-  if (isLoading) {
-    return <Redirect to="/listemployee" />;
-  }
   return (
     <CRow className={"d-flex justify-content-center"}>
       <CCol lg={8}>
@@ -143,7 +146,7 @@ const EditEmployee = ({ match }) => {
                 handleChange,
                 handleBlur,
                 handleSubmit,
-                isSubmitting,
+                isLoading,
                 isValid,
                 handleReset,
                 setTouched,
@@ -273,7 +276,6 @@ const EditEmployee = ({ match }) => {
                             required
                           >
                             <option value="">Please select</option>
-                            <option value="ADMIN">Admin</option>
                             <option value="MANAGEMENT">Managment</option>
                             <option value="EMPLOYEE">Employee</option>
                           </CSelect>
@@ -308,10 +310,13 @@ const EditEmployee = ({ match }) => {
                         <CButton
                           type="reset"
                           color="danger"
-                          className="mr-1"
+                          className="mr-3"
                           onClick={handleReset}
                         >
                           Reset
+                        </CButton>
+                        <CButton color="success" className="mr-1" onClick={() => setCollapse(!collapse)}>
+                          Chanage Password
                         </CButton>
                       </CFormGroup>
                     </CForm>
@@ -319,6 +324,9 @@ const EditEmployee = ({ match }) => {
                 </CRow>
               )}
             </Formik>
+            <CCollapse show={collapse}>
+              <ResetPassword />
+            </CCollapse>
           </CCardBody>
         </CCard>
       </CCol>

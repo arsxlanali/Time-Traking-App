@@ -1,4 +1,5 @@
 import React from 'react'
+import { addProject } from 'src/redux/Slice/projectSlice'
 import {
   CButton,
   CCard,
@@ -9,28 +10,37 @@ import {
   CFormGroup,
   CLabel,
   CInput,
-  CRow
+  CRow,
+  CCardHeader,
+  CFormText,
+  CInputGroup,
+  CInputGroupPrepend,
+  CInputGroupText
 } from '@coreui/react'
 
 import { Formik } from 'formik'
 import * as Yup from 'yup'
+import { useDispatch } from 'react-redux'
+import CIcon from "@coreui/icons-react";
+import { TextMask, InputAdapter } from "react-text-mask-hoc";
+
 
 const validationSchema = function (values) {
   return Yup.object().shape({
-    projectName: Yup.string()
-    .min(2, `Project name has to be at least 2 characters`)
-    .required('Project name is required'),
-    projectType: Yup.string()
-    .min(1, `Project Type has to be at least 1 character`)
-    .required('Project Type is required'),
+    name: Yup.string()
+      .min(2, `Project name has to be at least 2 characters`)
+      .required('Project name is required'),
+
     description: Yup.string()
-    .min(5, `Description has to be at least 5 characters`)
-    .required('Description is required'),
-    duration: Yup.string()
-    .required('Duration is required!'),
+      .min(5, `Description has to be at least 5 characters`)
+      .required('Description is required'),
+    assignBy: Yup.string()
+      .required('Name is required!'),
     assignTo: Yup.string()
-    .required('Assignment is required!'),
-    })
+      .required('Employee name is required!'),
+    startDate: Yup.string()
+      .required('Assignment is required!'),
+  })
 }
 
 const validate = (getValidationSchema) => {
@@ -56,12 +66,12 @@ const getErrorsFromValidationError = (validationError) => {
 }
 
 const initialValues = {
-  projectName: "",
-  projectType: "",
+  name: "",
   description: "",
-  duration: "",
-  assignTo:"",
-  
+  assignToBy: "",
+  assignTo: "",
+  startDate: "",
+
 }
 
 const onSubmit = (values, { setSubmitting, setErrors }) => {
@@ -89,116 +99,177 @@ const validateForm = (errors) => {
 }
 
 
-const ValidationForms = () =>  {
+const ValidationForms = () => {
+
+  const dispatch = useDispatch();
+  const onSubmit = (values, { setSubmitting, setErrors }) => {
+    setTimeout(() => {
+      alert(JSON.stringify(values, null, 2))
+      // console.log('User has been successfully saved!', values)
+      setSubmitting(false)
+    }, 2000)
+
+    console.log("values",values)
+    dispatch(addProject(values));
+  }
+
+
   return (
-    // <CCard>
-    //   <CCardBody>
-        <Formik
-          initialValues={initialValues}
-          validate={validate(validationSchema)}
-          onSubmit={onSubmit}
-        >
-          {
-            ({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isSubmitting,
-              isValid,
-            }) => (
-              <CRow>
-                <CCol lg="6">
-                  <CForm onSubmit={handleSubmit} noValidate name='simpleForm'>
-                    <CFormGroup>
-                      <CLabel htmlFor="projectName">Project Name</CLabel>
-                      <CInput type="text"
-                              name="projectName"
-                              id="projectName"
-                              placeholder="Project Name"
-                              autoComplete="given-name"
-                              valid={!errors.projectName}
-                              invalid={touched.projectName && !!errors.projectName}
-                              autoFocus={true}
-                              required
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.projectName} />
-                      <CInvalidFeedback>{errors.projectName}</CInvalidFeedback>
-                    </CFormGroup>
-                    <CFormGroup>
-                      <CLabel htmlFor="projectType">Project Type</CLabel>
-                      <CInput type="text"
-                              name="projectType"
-                              id="projectType"
-                              placeholder="Project Type"
-                              autoComplete="family-name"
-                              valid={!errors.projectType}
-                              invalid={touched.projectType && !!errors.projectType}
-                              required
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.projectType} />
-                      <CInvalidFeedback>{errors.projectType}</CInvalidFeedback>
-                    </CFormGroup>
-                    <CFormGroup>
-                      <CLabel htmlFor="description">Description</CLabel>
-                      <CInput type="text"
-                              name="description"
-                              id="description"
-                              placeholder="Description"
-                              autoComplete="description"
-                              valid={!errors.description}
-                              invalid={touched.description && !!errors.description}
-                              required
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.description} />
-                      <CInvalidFeedback>{errors.description}</CInvalidFeedback>
-                    </CFormGroup>
-                    <CFormGroup>
-                      <CLabel htmlFor="duration">Duration</CLabel>
-                      <CInput type="duration"
-                              name="duration"
-                              id="duration"
-                              placeholder="Duration"
-                              autoComplete="duration"
-                              valid={!errors.duration}
-                              invalid={touched.duration && !!errors.duration}
-                              required
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.duration} />
-                      <CInvalidFeedback>{errors.duration}</CInvalidFeedback>
-                    </CFormGroup>
-                    <CFormGroup>
-                      <CLabel htmlFor="assignTo">Assign To</CLabel>
-                      <CInput type="assignTo"
-                              name="assignTo"
-                              id="assignTo"
-                              placeholder="Employee Name"
-                              autoComplete="assignTo"
-                              valid={!errors.assignto}
-                              invalid={touched.assignto && !!errors.assignto}
-                              required
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.assignto} />
-                      <CInvalidFeedback>{errors.assignto}</CInvalidFeedback>
-                    </CFormGroup>
-                    
-                    <CFormGroup>
-                      <CButton type="submit" color="primary" className="mr-1" disabled={isSubmitting || !isValid}>{isSubmitting ? 'Wait...' : 'Add Project'}</CButton>
-                    </CFormGroup>
-                  </CForm>
-                </CCol>
-              </CRow>
-            )}
-        </Formik>
-    //   </CCardBody>
-    // </CCard>
+    <CRow className={"d-flex justify-content-center"}>
+      <CCol lg={8}>
+        <CCard >
+          <CCardHeader>Add Project</CCardHeader>
+
+          <CCardBody>
+            <Formik
+              initialValues={initialValues}
+              validate={validate(validationSchema)}
+              onSubmit={onSubmit}
+            >
+              {
+                ({
+                  values,
+                  errors,
+                  touched,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  isSubmitting,
+                  isValid,
+                }) => (
+                  <CRow >
+                    <CCol>
+                      <CForm onSubmit={handleSubmit} noValidate name='simpleForm'>
+                        <CFormGroup>
+                          <CLabel htmlFor="name">Project Name</CLabel>
+                          <CInput type="text"
+                            name="name"
+                            id="name"
+                            placeholder="Project Name"
+                            autoComplete="given-name"
+                            valid={!errors.name}
+                            invalid={touched.name && !!errors.name}
+                            autoFocus={true}
+                            required
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.name} />
+                          <CInvalidFeedback>{errors.name}</CInvalidFeedback>
+                        </CFormGroup>
+                        <CFormGroup>
+                          <CLabel htmlFor="description">Description</CLabel>
+                          <CInput type="text"
+                            name="description"
+                            id="description"
+                            placeholder="Description"
+                            autoComplete="description"
+                            valid={!errors.description}
+                            invalid={touched.description && !!errors.description}
+                            required
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.description} />
+                          <CInvalidFeedback>{errors.description}</CInvalidFeedback>
+                        </CFormGroup>
+
+                        <CFormGroup>
+                          <CLabel htmlFor="assignBy">Assign By</CLabel>
+                          <CInput type="assignBy"
+                            name="assignBy"
+                            id="assignBy"
+                            placeholder="Name"
+                            autoComplete="assignBy"
+                            valid={!errors.assignBy}
+                            invalid={touched.assignBy && !!errors.assignBy}
+                            required
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.assignBy} />
+                          <CInvalidFeedback>{errors.assigntBy}</CInvalidFeedback>
+                        </CFormGroup>
+                        <CFormGroup>
+                          <CLabel htmlFor="assignTo">Assign To</CLabel>
+                          <CInput type="assignTo"
+                            name="assignTo"
+                            id="assignTo"
+                            placeholder="Employee Name"
+                            autoComplete="assignTo"
+                            valid={!errors.assignto}
+                            invalid={touched.assignto && !!errors.assignto}
+                            required
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.assignto} />
+                          <CInvalidFeedback>{errors.assignto}</CInvalidFeedback>
+                        </CFormGroup>
+
+                        {/* <CFormGroup>
+                          <CLabel htmlFor="startDate">Start Date</CLabel>
+                          <CInput type="startDate"
+                            name="startDate"
+                            id="startDate"
+                            placeholder="Date"
+                            autoComplete="startDate"
+                            valid={!errors.startDate}
+                            invalid={touched.startDate && !!errors.startDate}
+                            required
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.startDate} />
+                          <CInvalidFeedback>{errors.startDate}</CInvalidFeedback>
+                        </CFormGroup>  */}
+
+                          <CFormGroup>
+                        <CLabel htmlFor="startDate">Start Date</CLabel>
+                          <CInputGroup type="startDate"
+                            name="startDate"
+                            id="startDate"
+                            placeholder="Date"
+                            autoComplete="startDate"
+                            valid={!errors.startDate}
+                            invalid={touched.startDate && !!errors.startDate}
+                            required
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.startDate} >
+                            <CInputGroupPrepend>
+                              <CInputGroupText>
+                                <CIcon name="cil-calendar" />
+                              </CInputGroupText>
+                            </CInputGroupPrepend>
+                            <TextMask
+                              mask={[
+                                /\d/,
+                                /\d/,
+                                "/",
+                                /\d/,
+                                /\d/,
+                                "/",
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                              ]}
+                              Component={InputAdapter}
+                              className="form-control"
+                            />
+                          </CInputGroup>
+                          <CFormText color="muted">ex. 99/99/9999</CFormText>
+                          <CInvalidFeedback>{errors.startDate}</CInvalidFeedback>
+                        </CFormGroup> 
+
+                        <CFormGroup>
+                          <CButton type="submit" color="primary" className="mr-1" disabled={isSubmitting || !isValid}>{isSubmitting ? 'Wait...' : 'Add Project'}</CButton>
+                        </CFormGroup>
+                      </CForm>
+                    </CCol>
+                  </CRow>
+                )}
+            </Formik>
+          </CCardBody>
+        </CCard>
+      </CCol>
+    </CRow>
   )
 }
 
