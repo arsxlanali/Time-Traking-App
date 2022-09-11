@@ -116,7 +116,7 @@ const ValidationForms = () => {
     empOptions.push({ "value": result._id, "label": result.name });
   })
   // console.log("this is employees", empOptions)
-  const onSubmit = (initialValues) => {
+  const onSubmit = (initialValues, { setSubmitting }) => {
 
     // const id = localStorage.getItem("key");
     const arry = [];
@@ -126,7 +126,7 @@ const ValidationForms = () => {
     // console.log("This ", nnnn)
     const data = { ...initialValues, assignTo: arry, startDate: today }
     console.log("this is data", data);
-    dispatch(addProject({ data, history }));
+    dispatch(addProject({ data, history, setSubmitting }));
   }
   return (
     <CRow className={"d-flex justify-content-center"}>
@@ -214,7 +214,7 @@ const ValidationForms = () => {
                           <CInvalidFeedback>{errors.assignTo}</CInvalidFeedback>
                         </CFormGroup>
                         <CFormGroup>
-                          <CButton type="submit" color="primary" className="mr-1">'Add Project</CButton>
+                          <CButton type="submit" color="primary" className="mr-1 " disabled={isSubmitting || !isValid}>{isSubmitting ? 'Wait...' : 'Add Project'}</CButton>
                         </CFormGroup>
                       </CForm>
                     </CCol>

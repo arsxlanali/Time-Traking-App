@@ -1,33 +1,52 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import swal from 'sweetalert';
+import history from "src/hisotry";
+import { clearTimeSheet } from "./viewTimeSheetSlice";
+import { clearEmployee } from "./employeesSlice";
+import { clearLogin } from "./loginSlice";
+
+
 
 const baseURL = "https://time-tracking-app-backend.herokuapp.com";
-const token = localStorage.getItem("Token");
+// const token = localStorage.getItem("Token");
 
 const initialState = {
   projects: [],
   loading: true,
 };
 
-const header = {
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-};
 export const viewProjects = createAsyncThunk(
 
   "projects/getall",
 
-  async (data, thunkAPI) => {
+  async (thunkAPI) => {
 
     try {
       const res = await axios
-        .get(`${baseURL}/projects/getall`, header);
+        .get(`${baseURL}/projects/getall`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("Token")}`,
+          }
+        });
       // console.log("This is project data", res.data)
       return res.data;
 
     } catch (error) {
-      return thunkAPI.rejectWithValue("can't find any project");
+      if (error.response.data == 'Unauthorized') {
+
+        setTimeout(history.push('/login'), 2000)
+        swal("Opps!", "Session Expired", "error")
+        localStorage.clear();
+        thunkAPI.dispatch(clearEmployee())
+        thunkAPI.dispatch(clearProjects())
+        thunkAPI.dispatch(clearLogin())
+        thunkAPI.dispatch(clearTimeSheet())
+      }
+      else {
+        swal("Opps!", error.response.data.message, "error")
+
+      }
     }
   }
 );
@@ -35,17 +54,36 @@ export const viewProjects = createAsyncThunk(
 export const deleteProject = createAsyncThunk(
   "projects/delete",
 
-  async (id, thunkAPI) => {
+  async ({ id, setSubmitting }, thunkAPI) => {
     try {
       const res = await axios.delete(
         `${baseURL}/projects/delete/${id}`,
-        header
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("Token")}`,
+          }
+        }
       );
-
+      setSubmitting(false)
+      swal("Deleted", { icon: "success" })
       thunkAPI.dispatch(viewProjects());
       return res?.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue("project not found");
+      setSubmitting(false);
+      if (error.response.data == 'Unauthorized') {
+
+        setTimeout(history.push('/login'), 2000)
+        swal("Opps!", "Session Expired", "error")
+        localStorage.clear();
+        thunkAPI.dispatch(clearEmployee())
+        thunkAPI.dispatch(clearProjects())
+        thunkAPI.dispatch(clearLogin())
+        thunkAPI.dispatch(clearTimeSheet())
+      }
+      else {
+        swal("Opps!", error.response.data.message, "error")
+
+      }
     }
   }
 );
@@ -53,20 +91,40 @@ export const deleteProject = createAsyncThunk(
 export const addProject = createAsyncThunk(
   "projects/create",
 
-  async ({ data, history }, thunkAPI) => {
+  async ({ data, history, setSubmitting }, thunkAPI) => {
     // console.log("project info", data)
     try {
 
       const res = await axios.post(
         `${baseURL}/projects/create`,
         data,
-        header,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("Token")}`,
+          }
+        },
       );
+      setSubmitting(false)
+      swal("Project Added", { icon: "success" })
       history.push('/viewproject')
       thunkAPI.dispatch(viewProjects());
       return res?.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue("not added");
+      setSubmitting(false);
+      if (error.response.data == 'Unauthorized') {
+
+        setTimeout(history.push('/login'), 2000)
+        swal("Opps!", "Session Expired", "error")
+        localStorage.clear();
+        thunkAPI.dispatch(clearEmployee())
+        thunkAPI.dispatch(clearProjects())
+        thunkAPI.dispatch(clearLogin())
+        thunkAPI.dispatch(clearTimeSheet())
+      }
+      else {
+        swal("Opps!", error.response.data.message, "error")
+
+      }
     }
   }
 );
@@ -74,20 +132,40 @@ export const addProject = createAsyncThunk(
 export const editProject = createAsyncThunk(
   "projects/update",
 
-  async ({ data, id }, thunkAPI) => {
-    const projectInfo = data();
-    // console.log("projectInfo: ", projectInfo)
+  async ({ data, id, setSubmitting }, thunkAPI) => {
+    // const projectInfo = data();
+    console.log("projectInfo: ", data)
     try {
       const res = await axios.patch(
         `${baseURL}/projects/update/${id}`,
-        projectInfo,
-        header,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("Token")}`,
+          }
+        },
       );
-
+      setSubmitting(false);
+      swal("Project Update", { icon: "success" })
       thunkAPI.dispatch(viewProjects());
       return res?.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue("not edited");
+      setSubmitting(false);
+      setSubmitting(false);
+      if (error.response.data == 'Unauthorized') {
+
+        setTimeout(history.push('/login'), 2000)
+        swal("Opps!", "Session Expired", "error")
+        localStorage.clear();
+        thunkAPI.dispatch(clearEmployee())
+        thunkAPI.dispatch(clearProjects())
+        thunkAPI.dispatch(clearLogin())
+        thunkAPI.dispatch(clearTimeSheet())
+      }
+      else {
+        swal("Opps!", error.response.data.message, "error")
+
+      }
     }
   }
 );
@@ -101,15 +179,28 @@ export const getProjects = createAsyncThunk(
     try {
       const res = await axios.get(
         `${baseURL}/projects/findprojectsbyuser/${id}`,
-        header,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("Token")}`,
+          }
+        },
       );
-      // console.log("this is date", res?.data)
-      // console.log("task info", taskInfo)
-      // history.push('/')
-      // thunkAPI.dispatch(viewTimeSheet(localStorage.getItem('key')));
       return res?.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue("task not found");
+      if (error.response.data == 'Unauthorized') {
+
+        setTimeout(history.push('/login'), 2000)
+        swal("Opps!", "Session Expired", "error")
+        localStorage.clear();
+        thunkAPI.dispatch(clearEmployee())
+        thunkAPI.dispatch(clearProjects())
+        thunkAPI.dispatch(clearLogin())
+        thunkAPI.dispatch(clearTimeSheet())
+      }
+      else {
+        swal("Opps!", error.response.data.message, "error")
+
+      }
     }
   }
 );

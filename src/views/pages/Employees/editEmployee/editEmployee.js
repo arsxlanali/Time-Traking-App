@@ -104,20 +104,20 @@ const EditEmployee = ({ match }) => {
   const [collapse, setCollapse] = useState(false)
   const dispatch = useDispatch();
   const history = useHistory();
-  const onSubmit = (values, setSubmitting) => {
+  const onSubmit = (values, { setSubmitting }) => {
     values["id"] = user._id;
-    dispatch(editEmployee(values));
-    setSubmitting(isLoading);
+    dispatch(editEmployee({ values, setSubmitting, history }));
+    // setSubmitting(isLoading);
   };
   // console.log("this is issuccessfful", isScuessfull)
-  if (isScuessfull) {
-    setTimeout(() => history.push(`/listemployee`), 5000);
-    return (
-      <div>
-        <Toaster></Toaster>
-      </div>
-    );
-  }
+  // if (isScuessfull) {
+  //   setTimeout(() => history.push(`/listemployee`), 5000);
+  //   return (
+  //     <div>
+  //       <Toaster></Toaster>
+  //     </div>
+  //   );
+  // }
   var initialValues = {
     name: user.name,
     address: user.address,
@@ -146,7 +146,7 @@ const EditEmployee = ({ match }) => {
                 handleChange,
                 handleBlur,
                 handleSubmit,
-                isLoading,
+                isSubmitting,
                 isValid,
                 handleReset,
                 setTouched,
@@ -302,10 +302,10 @@ const EditEmployee = ({ match }) => {
                           type="submit"
                           color="primary"
                           className="mr-3"
-                          disabled={isLoading || !isValid}
+                          disabled={isSubmitting || !isValid}
                           onClick={() => touchAll(setTouched, errors)}
                         >
-                          {isLoading ? "Wait..." : "Submit"}
+                          {isSubmitting ? "Wait..." : "Submit"}
                         </CButton>
                         <CButton
                           type="reset"

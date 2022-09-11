@@ -67,23 +67,14 @@ const getErrorsFromValidationError = (validationError) => {
 
 const ResetPassword = () => {
 	const user = useLocation().state.item;
-	const { isLoading, isScuessfull } = useSelector((state) => state.employees);
+	const { isScuessfull } = useSelector((state) => state.employees);
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const onSubmit = (values, setSubmitting) => {
+	const onSubmit = (values, { setSubmitting }) => {
 		values["id"] = user._id;
-		dispatch(resetPassword(values));
-		setSubmitting(isLoading);
+		dispatch(resetPassword({ values, setSubmitting }));
+		// setSubmitting(isSubmitting);
 	};
-	// console.log("this is issuccessfful", isScuessfull)
-	if (isScuessfull) {
-		setTimeout(() => history.push(`/listemployee`), 5000);
-		return (
-			<div>
-				<Toaster></Toaster>
-			</div>
-		);
-	}
 	const initialValues = {
 		password: "",
 		confirmPassword: "",
@@ -102,7 +93,7 @@ const ResetPassword = () => {
 				handleChange,
 				handleBlur,
 				handleSubmit,
-				isLoading,
+				isSubmitting,
 				isValid,
 				handleReset,
 				setTouched,
@@ -174,9 +165,9 @@ const ResetPassword = () => {
 									type="submit"
 									color="primary"
 									className="mr-1"
-									disabled={isLoading || !isValid}
+									disabled={isSubmitting || !isValid}
 								>
-									{isLoading ? "Wait..." : "Submit"}
+									{isSubmitting ? "Wait..." : "Submit"}
 								</CButton>
 							</CFormGroup>
 						</CForm>

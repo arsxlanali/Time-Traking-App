@@ -4,7 +4,7 @@ import App from './App'
 import ChartLineSimple from './views/charts/ChartLineSimple'
 // import Dashboard from './views/dashboard/Dashboard.js'
 // import {viewTimeSheet} fomr "./"
-import heetDemotable from "./views/pages/timeSheet/viewTimeSheet/sheetTable"
+import TaskSheetTable from "./views/pages/timeSheet/viewTimeSheet/TaskSheetTable"
 
 
 it('mounts App without crashing', () => {

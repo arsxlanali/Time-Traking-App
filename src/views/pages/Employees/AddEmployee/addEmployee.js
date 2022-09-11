@@ -15,10 +15,11 @@ import {
   CRow,
   CFormText,
 } from "@coreui/react";
-import Toaster from "src/views/notifications/toaster/Toaster";
+
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { addEmployee } from "../../../../redux/Slice/employeesSlice";
+// import { addEmployee } from "../../../../redux/Slice/employeesSlice";
+import { addEmployee } from "src/redux/Slice/employeesSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 const validationSchema = function (values) {
@@ -106,18 +107,12 @@ const ValidationForms = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const onSubmit = (values, { setSubmitting }) => {
-    dispatch(addEmployee(values));
+    dispatch(addEmployee({ values, setSubmitting, history }));
+    // console.log("this is employeeeeee", values)
 
-    setSubmitting(isLoading);
+    // setSubmitting(isLoading);
   };
-  if (isScuessfull) {
-    // setTimeout(() => history.push(`/listemployee`), 5000);
-    return (
-      <div>
-        <Toaster />
-      </div>
-    );
-  }
+
   return (
     <CRow className={"d-flex justify-content-center"}>
       <CCol lg={8}>
@@ -291,12 +286,12 @@ const ValidationForms = () => {
                           type="submit"
                           color="primary"
                           className="mr-3"
-                          disabled={isLoading || !isValid}
+                          disabled={isSubmitting || !isValid}
                           onClick={() => {
                             touchAll(setTouched, errors);
                           }}
                         >
-                          {isLoading ? "Wait..." : "Submit"}
+                          {isSubmitting ? "Wait..." : "Submit"}
                         </CButton>
 
                         <CButton

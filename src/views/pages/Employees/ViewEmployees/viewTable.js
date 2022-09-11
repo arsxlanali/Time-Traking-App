@@ -1,23 +1,17 @@
 import React from "react";
-import { CCard, CCardHeader, CCol, CRow } from "@coreui/react";
-import CIcon from "@coreui/icons-react";
-import DemoTable from "./DemoTable";
-import { DocsLink } from "src/reusable";
+import { CCard, CCol, CRow } from "@coreui/react";
+import EmployeeTable from "./EmployeeTable";
 
-const AdvancedTables = () => {
+const EmployeesTable = () => {
   return (
     <CRow>
       <CCol sm="12">
         <CCard>
-          <CCardHeader>
-            <CIcon name="cil-grid" /> View Employees
-            {/* <DocsLink name="CDataTable" /> */}
-          </CCardHeader>
-          <DemoTable />
+          <EmployeeTable />
         </CCard>
       </CCol>
     </CRow>
   );
 };
 
-export default AdvancedTables;
+export default EmployeesTable;

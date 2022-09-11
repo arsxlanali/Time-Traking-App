@@ -25,9 +25,9 @@ const validationSchema = function (values) {
       .email("Invalid email address")
       .required("Email is required!"),
     password: Yup.string()
-      .min(6, `Password has to be at least ${6} characters!`)
+      .min(8, `Password has to be at least ${8} characters!`)
       .matches(
-        /(?=.*\d)(?=.*[a-z]).{6,}/,
+        /(?=.*\d)(?=.*[a-z]).{8,}/,
         "Password must contain: numbers, uppercase and lowercase letters\n"
       )
       .required("Password is required")
@@ -60,18 +60,21 @@ function LoginApp() {
   const { isLoading } = useSelector((state) => state.login);
   const dispatch = useDispatch();
   const history = useHistory();
-  const onSubmit = (values) => {
-    dispatch(login({ values, history }));
+
+  const onSubmit = (values, { setSubmitting }) => {
+    initialValues.email = values.email;
+    initialValues.password = values.password;
+    dispatch(login({ values, history, setSubmitting }));
     // setSubmitting(isLoading);
   };
-  if (isLoading) {
-    return (
-      // <div className="vh-100">
-      <Loader />
-      // </div>
+  // if (isLoading) {
+  //   return (
+  //     // <div className="vh-100">
+  //     <Loader />
+  //     // </div>
 
-    );
-  }
+  //   );
+  // }
   const initialValues = {
     email: "",
     password: "",
@@ -96,7 +99,7 @@ function LoginApp() {
                   handleChange,
                   handleBlur,
                   handleSubmit,
-                  isLoading,
+                  isSubmitting,
                   isValid,
                 }) => (
                   <CRow>
@@ -145,9 +148,9 @@ function LoginApp() {
                               type="submit"
                               color="primary"
                               className="mr-1"
-                              disabled={isLoading || !isValid}
+                              disabled={isSubmitting || !isValid}
                             >
-                              {isLoading ? "Wait..." : "Login"}
+                              {isSubmitting ? "Wait..." : "Login"}
                             </CButton>
                           </CCol>
                           <CCol xs="6" className="text-right">

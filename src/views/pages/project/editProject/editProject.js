@@ -18,8 +18,11 @@ import {
 
 import { Formik } from 'formik'
 import * as Yup from 'yup'
-import { useDispatch } from 'react-redux'
-
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom/cjs/react-router-dom'
+import Select from "react-select";
+import { useEffect } from 'react'
+import { getEmployees } from 'src/redux/Slice/employeesSlice'
 const validationSchema = function (values) {
   return Yup.object().shape({
     name: Yup.string()
@@ -29,13 +32,12 @@ const validationSchema = function (values) {
     description: Yup.string()
       .min(5, `Description has to be at least 5 characters`)
       .required('Description is required'),
-    assignBy: Yup.string()
-      .required('Assignment is required!'),
-    assignTo: Yup.string()
-      .required('Assignment is required!'),
-    startDate: Yup.string()
-      .required('Assignment is required!'),
-  })
+    // assignBy: Yup.string()
+    //   .required('Assignment is required!'),
+    // assignTo: Yup.string()
+    //   .required('Assignment is required!'),
+  }
+  )
 }
 
 const validate = (getValidationSchema) => {
@@ -61,58 +63,62 @@ const getErrorsFromValidationError = (validationError) => {
 }
 
 
-const onSubmit = (values, { setSubmitting, setErrors }) => {
-  setTimeout(() => {
-    alert(JSON.stringify(values, null, 2))
-    // console.log('User has been successfully saved!', values)
-    setSubmitting(false)
-  }, 2000)
-}
 
-const findFirstError = (formName, hasError) => {
-  const form = document.forms[formName]
-  for (let i = 0; i < form.length; i++) {
-    if (hasError(form[i].name)) {
-      form[i].focus()
-      break
-    }
-  }
-}
 
-const validateForm = (errors) => {
-  findFirstError('simpleForm', (fieldName) => {
-    return Boolean(errors[fieldName])
-  })
-}
+
+
 
 
 const ValidationForms = () => {
 
-
   const dispatch = useDispatch();
+  const darkMode = useSelector((state) => state?.slideBar?.darkMode);
+  const empOptions = [];
+  const empAssigned = [];
+  useEffect(() => {
+    dispatch(getEmployees());
+  }, [dispatch]);
+  const history = useHistory();
   const location = useLocation();
+
+  const allEmployees = useSelector((state) => state?.employees?.employeesView);
+  const employees = allEmployees.filter(emp => emp['role'] == 'EMPLOYEE');
+  employees.forEach(emp => {
+    const result = (({ _id, name }) => ({ _id, name }))(emp)
+    empOptions.push({ "value": result._id, "label": result.name });
+  })
+
+  // console.log("this is assigned to", location.state.assignTo)
+  const assigned = location.state.assignTo;
+  assigned.forEach(emp => {
+    const result = (({ _id, name }) => ({ _id, name }))(emp)
+    empAssigned.push({ "value": result._id, "label": result.name });
+  })
+
+  const [value, setValue] = React.useState(empAssigned);
+
+  // const assignedBy = (({ _id }) => ({ _id }))(location.state.assignBy)
+  const assignedBy = [location.state.assignBy._id]
 
   const initialValues = {
     name: location.state.name,
     description: location.state.description,
-    assignBy: location.state.assignBy,
-    assignTo: location.state.assignTo,
+    assignBy: assignedBy,
     startDate: location.state.startDate,
-
   }
 
-  const [id, setId] = useState(location.state._id);
+  const id = useState(location.state._id);
 
-  const onSubmit = (values, { setSubmitting, setErrors }) => {
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2))
-      // console.log('User has been successfully saved!', values)
-      setSubmitting(false)
-    }, 2000)
+  const onSubmit = (values, { setSubmitting }) => {
+    const selectedEmp = [];
+    value.forEach(val => {
+      selectedEmp.push(val.value);
+    })
+    const data = { ...values, assignTo: selectedEmp }
+    console.log("this is data", data);
 
-    const data = () => values;
-    console.log("state data", location.state);
-    dispatch(editProject({ data, id }));
+
+    dispatch(editProject({ data, id, setSubmitting }));
 
   }
 
@@ -122,7 +128,7 @@ const ValidationForms = () => {
       <CCol lg="8">
 
         <CCard>
-        <CCardHeader>Edit Project</CCardHeader>
+          <CCardHeader>Edit Project</CCardHeader>
 
 
           <CCardBody>
@@ -176,52 +182,35 @@ const ValidationForms = () => {
                             value={values.description} />
                           <CInvalidFeedback>{errors.description}</CInvalidFeedback>
                         </CFormGroup>
-                        <CFormGroup>
-                          <CLabel htmlFor="assignBy">Assign By</CLabel>
-                          <CInput type="assignBy"
-                            name="assignBy"
-                            id="assignBy"
-                            placeholder="Name"
-                            autoComplete="assignBy"
-                            valid={!errors.assignBy}
-                            invalid={touched.assignBy && !!errors.assignBy}
-                            required
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.assignBy} />
-                          <CInvalidFeedback>{errors.assigntBy}</CInvalidFeedback>
-                        </CFormGroup>
+
                         <CFormGroup>
                           <CLabel htmlFor="assignTo">Assign To</CLabel>
-                          <CInput type="assignTo"
+                          <Select
+                            type="assignTo"
                             name="assignTo"
                             id="assignTo"
                             placeholder="Employee Name"
-                            autoComplete="assignTo"
-                            valid={!errors.assignto}
-                            invalid={touched.assignto && !!errors.assignto}
-                            required
-                            onChange={handleChange}
+                            value={value}
+                            options={empOptions}
+                            onChange={setValue}
+                            isMulti
+                            // required
+                            // valid={!errors.assignTo}
+                            invalid={touched.assignTo}
                             onBlur={handleBlur}
-                            value={values.assignto} />
-                          <CInvalidFeedback>{errors.assignto}</CInvalidFeedback>
+                            theme={(theme) => ({
+                              ...theme,
+                              colors: {
+                                ...theme.colors,
+                                primary: darkMode ? "black" : theme.colors.primary,
+                                primary25: darkMode ? "black" : theme.colors.primary25,
+                                dangerLight: darkMode ? "black" : theme.colors.dangerLight,
+                                neutral0: darkMode ? "#2a2b36" : theme.colors.neutral0,
+                              },
+                            })}
+                          />
+                          <CInvalidFeedback>{errors.assignTo}</CInvalidFeedback>
                         </CFormGroup>
-                        <CFormGroup>
-                          <CLabel htmlFor="startDate">Start Date</CLabel>
-                          <CInput type="startDate"
-                            name="startDate"
-                            id="startDate"
-                            placeholder="Date"
-                            autoComplete="startDate"
-                            valid={!errors.startDate}
-                            invalid={touched.startDate && !!errors.startDate}
-                            required
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.startDate} />
-                          <CInvalidFeedback>{errors.startDate}</CInvalidFeedback>
-                        </CFormGroup>
-
                         <CFormGroup>
                           <CButton type="submit" color="primary" className="mr-1 " disabled={isSubmitting || !isValid}>{isSubmitting ? 'Wait...' : 'Update'}</CButton>
                         </CFormGroup>

@@ -38,6 +38,7 @@
     "core-js": "^3.8.1",
     "enzyme": "^3.11.0",
     "formik": "^2.2.6",
+    "jwt-decode": "^3.1.2",
     "node-sass": "^4.14.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
@@ -56,6 +57,7 @@
     "redux": "~4.0.5",
     "sass": "^1.54.5",
     "spinkit": "~2.0.1",
+    "sweetalert": "^2.1.2",
     "yup": "^0.32.8"
   },
   "devDependencies": {

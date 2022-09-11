@@ -23,16 +23,16 @@ const editProject = React.lazy(() =>
   import("./views/pages/project/editProject/editProject")
 );
 const viewProject = React.lazy(() =>
-  import("./views/pages/project/viewProject/projectTable")
+  import("./views/pages/project/viewProject/projectsTable")
 );
 const Project = React.lazy(() =>
   import("./views/pages/project/viewProject/project")
 );
 const viewSheet = React.lazy(() =>
-  import("./views/pages/timeSheet/viewTimeSheet/sheetTable")
+  import("./views/pages/timeSheet/viewTimeSheet/TaskSheetTable")
 );
 const employee = React.lazy(() =>
-  import("./views/pages//Employees/ViewEmployees/User")
+  import("./views/pages/Employees/ViewEmployees/Employee")
 );
 const editEmployee = React.lazy(() =>
   import("./views/pages//Employees/editEmployee/editEmployee")

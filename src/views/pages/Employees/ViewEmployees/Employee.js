@@ -3,7 +3,7 @@ import { CCard, CCardBody, CCardHeader, CCol, CRow } from "@coreui/react";
 // import CIcon from "@coreui/icons-react";
 import { useLocation } from "react-router-dom";
 
-const User = ({ match }) => {
+const Employee = ({ match }) => {
   const userDetails = useLocation().state.item;
   return (
     <CRow className={"d-flex justify-content-center"}>
@@ -58,4 +58,4 @@ const User = ({ match }) => {
   );
 };
 
-export default User;
+export default Employee;

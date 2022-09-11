@@ -22,22 +22,18 @@ const TheSidebar = () => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state?.slideBar?.sidebarShow);
   const role = localStorage.getItem("Role");
-  // const filteredNav = [];
   if (role == "EMPLOYEE") {
-    console.log("this is nav");
+    // console.log("this is nav");
     navigation = navigation.filter((obj) => {
       return (obj.name !== "Projects" && obj.name !== "Employee");
     })
     var filteredNav = navigation.slice();
-    console.log("this is nav", navigation)
-    // filteredNav = navigation.filter(function (obj) {
-    //   return obj.name !== "Projects";
-    // });
+    // console.log("this is nav", navigation)
   }
   else {
     var filteredNav = navigation.slice();
   }
-  console.log("this is employee nav", navigation);
+  // console.log("this is employee nav", navigation);
   return (
     <CSidebar
       show={show}

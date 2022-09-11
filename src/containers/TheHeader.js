@@ -37,7 +37,17 @@ const TheHeader = () => {
       : "responsive";
     dispatch({ type: "set", sidebarShow: val });
   };
-
+  const role = localStorage.getItem("Role");
+  if (role == "EMPLOYEE") {
+    console.log("this is routes", routes);
+    var filteredRoutes = routes.filter((obj) => {
+      return (obj.path == "/viewsheet" || obj.path == "/reports");
+    })
+  }
+  else {
+    var filteredRoutes = routes.slice();
+  }
+  // console.log("this is filtered routes", filteredRoutes);
   return (
     <CHeader withSubheader>
       <CToggler
@@ -51,13 +61,18 @@ const TheHeader = () => {
         onClick={toggleSidebar}
       />
       <CHeaderBrand className="mx-auto d-lg-none" to="/">
-        <CIcon name="logo" height="48" alt="Logo" />
+        <CIcon name="cil-task" height="48" alt="Logo" />
       </CHeaderBrand>
 
       <CHeaderNav className="d-md-down-none mr-auto">
       </CHeaderNav>
 
       <CHeaderNav className="px-3">
+        <CIcon
+          name="cil-switch"
+          className="c-d-dark-none"
+          alt="CoreUI Icons Moon"
+        />
         <CToggler
           inHeader
           className="ml-3 d-md-down-none c-d-legacy-none"
@@ -81,7 +96,7 @@ const TheHeader = () => {
       <CSubheader className="px-3 justify-content-between">
         <CBreadcrumbRouter
           className="border-0 c-subheader-nav m-0 px-0 px-md-3"
-          routes={routes}
+          routes={filteredRoutes}
         />
         <div className="d-md-down-none mfe-2 c-subheader-nav">
           <CLink
@@ -89,7 +104,7 @@ const TheHeader = () => {
             aria-current="page"
             to="/viewsheet"
           >
-            <CIcon name="cil-graph" alt="Dashboard" />
+            <CIcon name="cil-graph" alt="TimeSheet" />
             &nbsp;Time Sheet
           </CLink>
         </div>

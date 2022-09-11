@@ -1,29 +1,186 @@
-import React from 'react'
+import React, { useState, useNavigate } from 'react'
+import { viewProjects, deleteProject } from 'src/redux/Slice/projectSlice'
+import Loader from "../../loader/Loader";
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+// import { getEmployees } from 'src/redux/Slice/employeesSlice';
 import {
-  CCard,
-  CCardHeader,
-  CCol,
-  CRow,
+  CCardBody,
+  CBadge,
+  CButton,
+  CCollapse,
+  CDataTable
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import DemoTable from './projectDemoTable'
-import { DocsLink } from 'src/reusable'
 
-const AdvancedTables = () => {
+import { useHistory } from 'react-router-dom'
+
+const ProjectTable = () => {
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("Token");
+  useEffect(() => {
+    if (token) {
+      dispatch(viewProjects());
+    }
+  }, [token]);
+
+  const { projects, loading } = useSelector((state) => state.viewProjects);
+  const [submitting, setSubmitting] = useState(false);
+
+  const projectsArray = projects.map(project => {
+    return {
+      ...project, assignTo: project['assignTo'].map((assign) => { return assign.name }), assignBy: project['assignBy'].name
+    }
+  })
+
+  const history = useHistory();
+
+  const [details, setDetails] = useState([])
+  // const [items, setItems] = useState(usersData)
+
+  const toggleDetails = (index) => {
+    const position = details.indexOf(index)
+    let newDetails = details.slice()
+    if (position !== -1) {
+      newDetails.splice(position, 1)
+    } else {
+      newDetails = [...details, index]
+    }
+    setDetails(newDetails)
+  }
+
+
+  const fields = [
+
+    { key: 'name', _style: { width: '15%' } },
+    { key: 'description', _style: { width: '30%' } },
+
+    { key: 'startDate', _style: { width: '15%' } },
+    { key: 'assignBy', _style: { width: '15%' } },
+    { key: 'assignTo', _style: { width: '30%' } },
+
+    {
+      key: 'show_details',
+      label: '',
+      _style: { width: '1%' },
+      filter: false
+    }
+  ]
+
   return (
-    <CRow>
-      <CCol sm="12">
-        <CCard>
-          <CCardHeader>
-            <CIcon name="cil-grid" /> Projects
-            <DocsLink name="CDataTable" />
-          </CCardHeader>
-          <DemoTable />
-        </CCard>
+    <CCardBody>
+      {
+        loading ? (
+          <Loader />
+        ) : (
+          <CDataTable
+            items={projectsArray}
+            fields={fields}
+            columnFilter
+            tableFilter
+            cleaner
+            itemsPerPageSelect
+            itemsPerPage={5}
+            hover
+            sorter
+            pagination
+            // loading
+            onRowClick={(item, index, col, e) => console.log(item, index, col, e)}
+            onPageChange={(val) => console.log('new page:', val)}
+            onPagesChange={(val) => console.log('new pages:', val)}
+            onPaginationChange={(val) => console.log('new pagination:', val)}
+            onFilteredItemsChange={(val) => console.log('new filtered items:', val)}
+            onSorterValueChange={(val) => console.log('new sorter value:', val)}
+            onTableFilterChange={(val) => console.log('new table filter:', val)}
+            onColumnFilterChange={(val) => console.log('new column filter:', val)}
+            scopedSlots={{
 
-      </CCol>
-    </CRow>
-  )
+              'edit':
+                item => {
+                  return (
+                    <td className="py-2">
+                      <CButton
+                        color="primary"
+                        variant="outline"
+                        shape="square"
+                        size="sm"
+                        onClick={() => { toggleDetails(item._id) }}
+                      >
+                        {details.includes(item.id) ? 'Hide' : <i class="cil"></i>}
+                      </CButton>
+                    </td>
+                  )
+                },
+              'show_details':
+                item => {
+                  return (
+                    <td className="py-2">
+                      <CButton
+                        color="primary"
+                        variant="outline"
+                        shape="square"
+                        size="sm"
+                        onClick={() => { toggleDetails(item._id) }}
+                      >
+                        {details.includes(item._id) ? 'Hide' : 'Action'}
+                      </CButton>
+                    </td>
+                  )
+                },
+              'details':
+                item => {
+                  return (
+                    <>
+                      <CCollapse show={details.includes(item._id)}>
+                        <CCardBody>
+
+                          <CButton size="sm" color="info" onClick={
+                            () => {
+                              var [project] = projects.filter((obj) => {
+                                return (obj._id == item._id);
+                              })
+                              // var [projectOj] = project;
+                              // console.log("this is projejct", project)
+
+                              history.push('/editProject', project);
+                            }
+                          }>
+                            Edit
+                          </CButton>
+                          <CButton size="sm" color="danger" className="ml-1"
+                            disabled={submitting}
+
+                            onClick={() => {
+                              setSubmitting(true)
+                              const id = item._id;
+                              dispatch(deleteProject({ id, setSubmitting }))
+
+                            }}>
+                            {submitting ? "Wait..." : "Delete"}
+                          </CButton>
+                          <CButton
+                            size="sm"
+                            color="primary"
+                            className="ml-1"
+                            onClick={() => {
+                              history.push(`/viewproject/${item._id}`, { item });
+                            }}
+                          >
+                            View
+                          </CButton>
+                        </CCardBody>
+
+                      </CCollapse>
+
+
+                    </>
+                  )
+                }
+            }}
+          />
+        )}
+    </CCardBody>
+
+  );
 }
 
-export default AdvancedTables
+export default ProjectTable

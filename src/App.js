@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./scss/style.scss";
+import history from "./hisotry";
 import { ProtectedRouteForLogin, ProtectedRoute } from "./views/pages/loginTimeTrack/loginAuth";
 
 const loading = (
@@ -27,7 +28,7 @@ const Page500 = React.lazy(() => import("./views/pages/page500/Page500"));
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
+      <BrowserRouter history={history}>
         <React.Suspense fallback={loading}>
           <Switch>
             {/* <PrivateRoute exact path="/" name="Home" render={props => <Login {...props} />} /> */}

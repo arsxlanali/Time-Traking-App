@@ -88,6 +88,10 @@ const key = localStorage.getItem("key");
 const EditTask = ({ flag, onClose, date, task }) => {
   const dispatch = useDispatch();
   const [duration, setDuration] = useState(task.totalMins);
+  const inputH = parseInt(task.totalMins / 60);
+  const inputM = parseInt(task.totalMins % 60);
+  // console.log("input d", inputH, inputM)
+  const [durationInput, setDurationInput] = useState(inputH + ':' + inputM);
   const darkMode = useSelector((state) => state?.slideBar?.darkMode);
   // console.log("this is stask", task);
   const empProject = useSelector((state) => state?.viewProjects?.projects);
@@ -111,17 +115,32 @@ const EditTask = ({ flag, onClose, date, task }) => {
 
   useEffect(() => {
     dispatch(getProjects());
-  }, [dispatch]);
+    const timeI = durationInput;
+    if (timeI !== undefined) {
+      const hour = parseInt(timeI.slice(0, 1));
+      const min = parseInt(timeI.slice(2, 4))
+      // setDuration(hour * 60 + min);
+      // console.log("this is time", hour, min)
+    }
+    const time = duration;
+    if (time !== undefined) {
+      const hour = parseInt(time / 60);
+      const min = parseInt(time % 60);
+      setDurationInput(hour + ':' + min);
+      // console.log("this is time", hour, min)
+    }
+  }, [dispatch, durationInput, duration]);
 
   // console.log("This is be", task._id);
-  const onSubmit1 = (values) => {
+  const onSubmit1 = (values, { setSubmitting }) => {
     const data = {
       ...values, date, projectId: projectValue.value,
       duration: { hours: parseInt(duration / 60), minutes: parseInt(duration % 60) }
     };
-    const UserId = task._id;
+    const id = task._id;
+    // console.log("flag onClose date task", flag, onClose, date, task)
     // console.log("this is id data", data, UserId)
-    dispatch(editTask({ data, UserId }));
+    dispatch(editTask({ data, id, setSubmitting, onClose }));
   }
 
 
@@ -131,7 +150,7 @@ const EditTask = ({ flag, onClose, date, task }) => {
     projectId: task.projectId,
   };
 
-
+  // { console.log("isSubmitting", isSubmitting) }
   return (
 
     <CModal show={flag} onClose={onClose} size="lg">
@@ -156,7 +175,8 @@ const EditTask = ({ flag, onClose, date, task }) => {
                 isSubmitting,
                 isValid,
               }) => (
-                <CRow >
+
+                < CRow >
                   <CCol>
                     <CForm onSubmit={handleSubmit} noValidate name='simpleForm4'>
                       <CFormGroup>
@@ -216,6 +236,28 @@ const EditTask = ({ flag, onClose, date, task }) => {
                         <CInvalidFeedback>{errors.projectId}</CInvalidFeedback>
                       </CFormGroup>
                       <CFormGroup>
+                        <CLabel>Duration</CLabel>
+                        <CInputGroup>
+                          <CInputGroupPrepend>
+                            <CInputGroupText><CIcon name="cil-calendar" /></CInputGroupText>
+                          </CInputGroupPrepend>
+                          <TextMask
+                            mask={[/\d/, ':', /\d/, /\d/]}
+                            Component={InputAdapter}
+                            className="form-control"
+                            value={durationInput}
+                            onChange={(e) => {
+                              if (e.target.value.length <= 4) {
+                                setDurationInput(e.target.value);
+                              }
+                            }}
+                          />
+                        </CInputGroup>
+                        <CFormText color="muted">
+                          ex. 1:23 min
+                        </CFormText>
+                      </CFormGroup>
+                      <CFormGroup>
                         <CLabel htmlFor="duration">Duration</CLabel>
                         <div>
                           <input type="range" name="points" min="0" max="120" value={duration} onChange={(e) => setDuration(e.target.value)}
@@ -234,11 +276,9 @@ const EditTask = ({ flag, onClose, date, task }) => {
                       </CFormGroup>
                       <CFormGroup>
                         <CButton type="submit" color="primary" className="mr-1"
-                        // onClick={
-                        //   onClose
-
-                        // }
-                        >Add Project</CButton>
+                          // onClick={() => console.log("isSubmmmitng", isSubmitting)}
+                          disabled={isSubmitting || !isValid}
+                        >{isSubmitting ? "Wait..." : "Update"}</CButton>
                       </CFormGroup>
                     </CForm>
                   </CCol>

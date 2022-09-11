@@ -92,6 +92,7 @@ const key = localStorage.getItem("key");
 const AddTask = ({ flag, onClose, date }) => {
   const dispatch = useDispatch();
   const [duration, setDuration] = useState(0);
+  const [durationInput, setDurationInput] = useState();
   const darkMode = useSelector((state) => state?.slideBar?.darkMode);
   const [value, setValue] = React.useState([]);
   const empProject = useSelector((state) => state?.viewProjects?.projects);
@@ -100,17 +101,31 @@ const AddTask = ({ flag, onClose, date }) => {
     const result = (({ _id, name }) => ({ _id, name }))(emp)
     projectOptions.push({ "value": result._id, "label": result.name });
   })
-
+  // console.log("This is duration 1", durationInput, typeof durationInput)
   useEffect(() => {
     dispatch(getProjects());
-  }, [dispatch]);
+    const timeI = durationInput;
+    if (timeI !== undefined) {
+      var hour = parseInt(timeI.slice(0, 1));
+      var min = parseInt(timeI.slice(2, 4))
+      setDuration(hour * 60 + min);
+      // console.log("this is time", hour, min)
+    }
+    const time = duration;
+    if (time !== undefined) {
+      const hour = parseInt(time / 60);
+      const min = parseInt(time % 60);
+      setDurationInput(hour + ':' + min);
+      // console.log("this is time", hour, min)
+    }
+  }, [dispatch, durationInput, duration]);
 
-  const onSubmit = (values) => {
+  const onSubmit = (values, { setSubmitting, resetForm }) => {
     const data = {
       ...values, date, projectId: value.value,
       duration: { hours: parseInt(duration / 60), minutes: parseInt(duration % 60) }
     };
-    dispatch(addTask({ data }));
+    dispatch(addTask({ data, setSubmitting, resetForm }));
   }
 
 
@@ -206,6 +221,28 @@ const AddTask = ({ flag, onClose, date }) => {
                         <CInvalidFeedback>{errors.projectId}</CInvalidFeedback>
                       </CFormGroup>
                       <CFormGroup>
+                        <CLabel>Duration</CLabel>
+                        <CInputGroup>
+                          <CInputGroupPrepend>
+                            <CInputGroupText><CIcon name="cil-calendar" /></CInputGroupText>
+                          </CInputGroupPrepend>
+                          <TextMask
+                            mask={[/\d/, ':', /\d/, /\d/]}
+                            Component={InputAdapter}
+                            className="form-control"
+                            value={durationInput}
+                            onChange={(e) => {
+                              if (e.target.value.length <= 4) {
+                                setDurationInput(e.target.value);
+                              }
+                            }}
+                          />
+                        </CInputGroup>
+                        <CFormText color="muted">
+                          ex. 1:23 min
+                        </CFormText>
+                      </CFormGroup>
+                      <CFormGroup>
                         <CLabel htmlFor="duration">Duration</CLabel>
                         <div>
                           <input type="range" name="points" min="0" max="120" value={duration} onChange={(e) => setDuration(e.target.value)}
@@ -223,8 +260,21 @@ const AddTask = ({ flag, onClose, date }) => {
 
                       </CFormGroup>
                       <CFormGroup>
-                        <CButton type="submit" color="primary" className="mr-1"
-                          onClick={onClose}>Add Task</CButton>
+                        <CRow className={"mt-2"}>
+                          <CCol xs="6">
+                            <CButton
+                              type="submit"
+                              color="primary"
+                              className="mr-1"
+                              disabled={isSubmitting || !isValid}
+                            >
+                              {isSubmitting ? "Adding..." : "Add Task"}
+                            </CButton>
+                          </CCol>
+                          <CCol xs="6" className="text-right">
+                            <CButton color="secondary" className="mr-1" onClick={onClose}>Close</CButton>
+                          </CCol>
+                        </CRow>
                       </CFormGroup>
                     </CForm>
                   </CCol>
