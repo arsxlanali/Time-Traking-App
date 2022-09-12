@@ -180,27 +180,26 @@ export const editTask = createAsyncThunk(
   }
 );
 export const submitTasks = createAsyncThunk(
-  "tasks/delete",
+  "tasks/submitTasks",
 
-  async ({ date, setSubmitting }, thunkAPI) => {
-    console.log("taskid", date, SubmitEvent);
+  async ({ date, setSubmit }, thunkAPI) => {
+    const data = { date: date }
+    console.log("submitTasks", data, setSubmit);
     try {
-      const res = await axios.delete(
+      const res = await axios.post(
         `${baseURL}/tasks/submit`,
-        date,
+        data,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("Token")}`,
           }
         }
       );
-      setSubmitting(false)
+      setSubmit(false)
       swal("Submmited", { icon: "success" })
-      // const UserId = localStorage.getItem('key');
-      // thunkAPI.dispatch(viewTimeSheet({ UserId, date }));
       return res?.data;
     } catch (error) {
-      setSubmitting(false)
+      setSubmit(false)
       if (error.response.data == 'Unauthorized') {
 
         setTimeout(history.push('/login'), 2000)
@@ -218,6 +217,37 @@ export const submitTasks = createAsyncThunk(
     }
   }
 );
+export const checkSubmit = createAsyncThunk(
+  'tasks/checkSubmit',
+  async ({ UserId, date }, thunkAPI) => {
+    console.log("checkSubmit", UserId, date);
+    try {
+      const res = await axios
+        .get(`${baseURL}/tasks/checksubmit/user/${UserId}/date/${date}`, {
+          // authLink();
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("Token")}`,
+          }
+        });
+      return res.data;
+    }
+    catch (error) {
+      if (error.response.data == 'Unauthorized') {
+        // setTimeout(history.push('/login'), 2000)
+        swal("Opps!", "Session Expired", "error")
+        localStorage.clear();
+        thunkAPI.dispatch(clearEmployee())
+        thunkAPI.dispatch(clearProjects())
+        thunkAPI.dispatch(clearLogin())
+        thunkAPI.dispatch(clearTimeSheet())
+      }
+      else {
+        swal("Opps!", error.response.data.message, "error")
+      }
+    }
+  })
+
+
 export const viewTimeSheetSlice = createSlice({
   name: 'viewTimeSheet',
   initialState,
@@ -244,9 +274,18 @@ export const viewTimeSheetSlice = createSlice({
       state.submitted = false
     },
     [submitTasks.fulfilled]: (state, { payload }) => {
-      state.submitted = payload.acknowledged;
+      state.submitted = true;
     },
     [submitTasks.rejected]: (state) => {
+      state.submitted = false
+    },
+    [checkSubmit.pending]: (state) => {
+      state.submitted = false
+    },
+    [checkSubmit.fulfilled]: (state, { payload }) => {
+      state.submitted = payload;
+    },
+    [checkSubmit.rejected]: (state) => {
       state.submitted = false
     },
 

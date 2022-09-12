@@ -1,6 +1,6 @@
 import Loader from "../../loader/Loader";
 import React, { useState } from "react";
-import { viewTimeSheet, deleteTask, submitTasks } from "src/redux/Slice/viewTimeSheetSlice";
+import { viewTimeSheet, deleteTask, submitTasks, checkSubmit } from "src/redux/Slice/viewTimeSheetSlice";
 import AddTask from "../addTask/AddTask";
 import EditTask from "../editTask/editTask";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
@@ -44,12 +44,13 @@ import "react-dates/lib/css/_datepicker.css";
 const SheetTable = () => {
   const [details, setDetails] = useState([]);
   const [model, setModel] = useState(false);
-  const [largeForEditTask, setLargeForEditTask] = useState(false);
+  // const [largeForEditTask, setLargeForEditTask] = useState(false);
   const UserId = localStorage.getItem('key');
   const dispatch = useDispatch();
   const { timeSheet, loading, submitted } = useSelector((state) => state.viewTimeSheet);
   const [taskId, setTaskId] = useState(undefined);
   const [submitting, setSubmitting] = useState(false);
+  const [submit, setSubmit] = useState(false)
   // console.log("taskkkkkkkk", taskId)
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, '0');
@@ -65,10 +66,9 @@ const SheetTable = () => {
   })
   // const token = localStorage.getItem("Token");
   useEffect(() => {
-    // if (token) {
+    dispatch(checkSubmit({ UserId, date }));
     dispatch(viewTimeSheet({ UserId, date }));
-    // }
-  }, [dispatch])
+  }, [dispatch, date, submit])
 
   const toggleDetails = (index) => {
     const position = details.indexOf(index);
@@ -113,6 +113,7 @@ const SheetTable = () => {
           <CInput type="date" name="date-input" placeholder="date"
             value={date}
             onChange={handleChange}
+            max={date}
           // onFocus={(e) => e.showPicker()}
           />
         </CCol>
@@ -120,6 +121,7 @@ const SheetTable = () => {
         <CCol>
           <CButton onClick={() => setModel(true)}
             color="primary"
+            hidden={submitted}
             className={"float-right"}
           >
             Add Task
@@ -167,15 +169,17 @@ const SheetTable = () => {
                       <CCardBody>
                         <h4>{item.username}</h4>
 
-                        <CButton size="sm" color="info" onClick={() => {
-                          setModel(true)
-                          setTaskId(item)
+                        <CButton size="sm" color="info"
+                          hidden={submitted}
+                          onClick={() => {
+                            setModel(true)
+                            setTaskId(item)
 
-                        }} >
+                          }} >
                           Edit
                         </CButton>
                         <CButton size="sm" color="danger" className="ml-2"
-                          disabled={submitting}
+                          hidden={submitted}
                           onClick={() => {
                             setSubmitting(true)
                             // console.log("this is item", item)
@@ -199,9 +203,16 @@ const SheetTable = () => {
       </CCardBody>
       <div className="mb-4">
         <CButton color="primary" className={"float-right mr-4"}
-          onClick={() => dispatch(submitTasks({ date }))}
+          hidden={submitted}
+          onClick={() => {
+            setSubmit(true);
+            dispatch(submitTasks({ date, setSubmit }))
+            dispatch(checkSubmit({ UserId, date }));
+            // dispatch(viewTimeSheet({ UserId, date }));
+          }
+          }
         >
-          End My Day
+          {submit ? "Waiting..." : "End My Day"}
         </CButton>
       </div>
     </>

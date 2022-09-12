@@ -105,20 +105,20 @@ const AddTask = ({ flag, onClose, date }) => {
   useEffect(() => {
     dispatch(getProjects());
     const timeI = durationInput;
+    const time = duration;
     if (timeI !== undefined) {
       var hour = parseInt(timeI.slice(0, 1));
       var min = parseInt(timeI.slice(2, 4))
       setDuration(hour * 60 + min);
       // console.log("this is time", hour, min)
     }
-    const time = duration;
-    if (time !== undefined) {
-      const hour = parseInt(time / 60);
-      const min = parseInt(time % 60);
-      setDurationInput(hour + ':' + min);
-      // console.log("this is time", hour, min)
-    }
-  }, [dispatch, durationInput, duration]);
+    // if (time !== 0) {
+    //   const hour = parseInt(time / 60);
+    //   const min = parseInt(time % 60);
+    //   setDurationInput(hour + ':' + min);
+    //   // console.log("this is time", hour, min)
+    // }
+  }, [dispatch, durationInput]);
 
   const onSubmit = (values, { setSubmitting, resetForm }) => {
     const data = {

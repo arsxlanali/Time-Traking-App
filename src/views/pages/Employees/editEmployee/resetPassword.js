@@ -20,9 +20,9 @@ import { resetPassword } from "src/redux/Slice/employeesSlice";
 const validationSchema = function (values) {
 	return Yup.object().shape({
 		password: Yup.string()
-			.min(6, `Password has to be at least ${6} characters!`)
+			.min(8, `Password has to be at least ${8} characters!`)
 			.matches(
-				/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/,
+				/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/,
 				"Password must contain: numbers, uppercase and lowercase letters\n"
 			)
 			.required("Password is required"),
@@ -72,7 +72,8 @@ const ResetPassword = () => {
 	const history = useHistory();
 	const onSubmit = (values, { setSubmitting }) => {
 		values["id"] = user._id;
-		dispatch(resetPassword({ values, setSubmitting }));
+		console.log("thiis rest pass", values);
+		dispatch(resetPassword({ values, setSubmitting, history }));
 		// setSubmitting(isSubmitting);
 	};
 	const initialValues = {

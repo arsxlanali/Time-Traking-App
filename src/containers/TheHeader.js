@@ -10,6 +10,7 @@ import {
   CLink,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+import icon from '../assets/icons/icon1.png'
 
 // routes config
 import routes from "../routes";
@@ -39,7 +40,7 @@ const TheHeader = () => {
   };
   const role = localStorage.getItem("Role");
   if (role == "EMPLOYEE") {
-    console.log("this is routes", routes);
+    // console.log("this is routes", routes);
     var filteredRoutes = routes.filter((obj) => {
       return (obj.path == "/viewsheet" || obj.path == "/reports");
     })
@@ -61,18 +62,19 @@ const TheHeader = () => {
         onClick={toggleSidebar}
       />
       <CHeaderBrand className="mx-auto d-lg-none" to="/">
-        <CIcon name="cil-task" height="48" alt="Logo" />
+        {/* <CIcon name="logo" height="48" alt="Logo" /> */}
+        <img src={icon} alt="TDC Logo" style={{ width: 'auto', height: '40px' }} />
       </CHeaderBrand>
 
       <CHeaderNav className="d-md-down-none mr-auto">
       </CHeaderNav>
 
       <CHeaderNav className="px-3">
-        <CIcon
+        {/* <CIcon
           name="cil-switch"
           className="c-d-dark-none"
           alt="CoreUI Icons Moon"
-        />
+        /> */}
         <CToggler
           inHeader
           className="ml-3 d-md-down-none c-d-legacy-none"

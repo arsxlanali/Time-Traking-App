@@ -134,6 +134,10 @@ export const editProject = createAsyncThunk(
 
   async ({ data, id, setSubmitting }, thunkAPI) => {
     // const projectInfo = data();
+    const assignBy = data['assignBy']
+    delete data["assignBy"]
+    data.assignBy = assignBy[0];
+    // console.log("this is edit project", values)
     console.log("projectInfo: ", data)
     try {
       const res = await axios.patch(

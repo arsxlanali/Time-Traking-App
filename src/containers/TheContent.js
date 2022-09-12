@@ -14,7 +14,7 @@ const loading = (
 const TheContent = () => {
   const role = localStorage.getItem("Role");
   if (role == "EMPLOYEE") {
-    console.log("this is routes", routes);
+    // console.log("this is routes", routes);
     var filteredRoutes = routes.filter((obj) => {
       return (obj.path == "/viewsheet" || obj.path == "/reports");
     })

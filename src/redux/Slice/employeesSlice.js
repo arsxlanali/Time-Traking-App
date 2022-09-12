@@ -14,9 +14,7 @@ const initialState = {
   isLoading: false,
   isScuessfull: false,
 };
-function Redirect() {
-  window.location = "http://localhost:3000/listemployee";
-}
+
 export const getEmployees = createAsyncThunk(
   //action type string
   "employees/getall",
@@ -94,7 +92,7 @@ export const deleteEmployee = createAsyncThunk(
   "employees/deleteEmployee",
   async ({ id, setSubmitting }, thunkAPI) => {
     try {
-      const res = await axios.post(`${baseUrl}/users/admin/deleteuser/${id}`, {
+      const res = await axios.delete(`${baseUrl}/users/admin/deleteuser/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("Token")}`,
         }
@@ -131,8 +129,10 @@ export const editEmployee = createAsyncThunk(
     const id = values["id"];
     delete values["id"];
     delete values["accept"];
+
+
     try {
-      const res = await axios.post(
+      const res = await axios.patch(
         `${baseUrl}/users/admin/updateuser/${id}`,
         values,
         {
@@ -166,15 +166,16 @@ export const editEmployee = createAsyncThunk(
 );
 export const resetPassword = createAsyncThunk(
   "employees/resetPassword",
-  async ({ data, setSubmitting }, thunkAPI) => {
-    const id = data["id"];
-    delete data["id"];
-    delete data["accept1"];
-    delete data["confirmPassword"];
+  async ({ values, setSubmitting, history }, thunkAPI) => {
+    const id = values["id"];
+    delete values["id"];
+    delete values["accept1"];
+    delete values["confirmPassword"];
+    console.log("this is passwrod", values)
     try {
-      const res = await axios.post(
+      const res = await axios.patch(
         `${baseUrl}/users/admin/updateuser/${id}`,
-        data,
+        values,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("Token")}`,
@@ -182,6 +183,9 @@ export const resetPassword = createAsyncThunk(
         }
       );
       setSubmitting(false);
+      swal("Password Update", { icon: "success" })
+
+      history.push("/listemployee")
       thunkAPI.dispatch(getEmployees());
       return res?.data;
     } catch (error) {
