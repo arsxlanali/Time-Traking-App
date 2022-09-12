@@ -5,22 +5,18 @@ import {
   CToggler,
   CHeaderBrand,
   CHeaderNav,
-  CHeaderNavItem,
-  CHeaderNavLink,
   CSubheader,
   CBreadcrumbRouter,
   CLink,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+import icon from '../assets/icons/icon1.png'
 
 // routes config
 import routes from "../routes";
 
 import {
-  TheHeaderDropdown,
-  TheHeaderDropdownMssg,
-  TheHeaderDropdownNotif,
-  TheHeaderDropdownTasks,
+  TheHeaderDropdown
 } from "./index";
 
 const TheHeader = () => {
@@ -42,7 +38,17 @@ const TheHeader = () => {
       : "responsive";
     dispatch({ type: "set", sidebarShow: val });
   };
-
+  const role = localStorage.getItem("Role");
+  if (role == "EMPLOYEE") {
+    // console.log("this is routes", routes);
+    var filteredRoutes = routes.filter((obj) => {
+      return (obj.path == "/viewsheet" || obj.path == "/reports");
+    })
+  }
+  else {
+    var filteredRoutes = routes.slice();
+  }
+  // console.log("this is filtered routes", filteredRoutes);
   return (
     <CHeader withSubheader>
       <CToggler
@@ -56,22 +62,19 @@ const TheHeader = () => {
         onClick={toggleSidebar}
       />
       <CHeaderBrand className="mx-auto d-lg-none" to="/">
-        <CIcon name="logo" height="48" alt="Logo" />
+        {/* <CIcon name="logo" height="48" alt="Logo" /> */}
+        <img src={icon} alt="TDC Logo" style={{ width: 'auto', height: '40px' }} />
       </CHeaderBrand>
 
       <CHeaderNav className="d-md-down-none mr-auto">
-        <CHeaderNavItem className="px-3">
-          <CHeaderNavLink to="/dashboard">Home</CHeaderNavLink>
-        </CHeaderNavItem>
-        <CHeaderNavItem className="px-3">
-          <CHeaderNavLink to="/users">Users</CHeaderNavLink>
-        </CHeaderNavItem>
-        <CHeaderNavItem className="px-3">
-          <CHeaderNavLink>Settings</CHeaderNavLink>
-        </CHeaderNavItem>
       </CHeaderNav>
 
       <CHeaderNav className="px-3">
+        {/* <CIcon
+          name="cil-switch"
+          className="c-d-dark-none"
+          alt="CoreUI Icons Moon"
+        /> */}
         <CToggler
           inHeader
           className="ml-3 d-md-down-none c-d-legacy-none"
@@ -89,39 +92,22 @@ const TheHeader = () => {
             alt="CoreUI Icons Sun"
           />
         </CToggler>
-        <TheHeaderDropdownNotif />
-        <TheHeaderDropdownTasks />
-        <TheHeaderDropdownMssg />
         <TheHeaderDropdown />
-        <CToggler
-          inHeader
-          className="d-md-down-none"
-          onClick={() => dispatch({ type: "set", asideShow: !asideShow })}
-        >
-          <CIcon className="mr-2" size="lg" name="cil-applications-settings" />
-        </CToggler>
       </CHeaderNav>
 
       <CSubheader className="px-3 justify-content-between">
         <CBreadcrumbRouter
           className="border-0 c-subheader-nav m-0 px-0 px-md-3"
-          routes={routes}
+          routes={filteredRoutes}
         />
         <div className="d-md-down-none mfe-2 c-subheader-nav">
-          <CLink className="c-subheader-nav-link" href="#">
-            <CIcon name="cil-speech" alt="Settings" />
-          </CLink>
           <CLink
             className="c-subheader-nav-link"
             aria-current="page"
-            to="/dashboard"
+            to="/viewsheet"
           >
-            <CIcon name="cil-graph" alt="Dashboard" />
-            &nbsp;Dashboard
-          </CLink>
-          <CLink className="c-subheader-nav-link" href="#">
-            <CIcon name="cil-settings" alt="Settings" />
-            &nbsp;Settings
+            <CIcon name="cil-graph" alt="TimeSheet" />
+            &nbsp;Time Sheet
           </CLink>
         </div>
       </CSubheader>

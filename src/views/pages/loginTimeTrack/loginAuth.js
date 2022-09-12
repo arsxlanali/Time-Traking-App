@@ -1,28 +1,51 @@
 import { Route, Redirect } from "react-router-dom";
-import { useRecoilValue } from "recoil";
 
-import { authAtom } from "_state";
-
-export { PrivateRoute };
-
-function PrivateRoute({ component: Component, ...rest }) {
-  const auth = useRecoilValue(authAtom);
+export const ProtectedRoute = ({ path, component: Component, render, ...rest }) => {
+  const auth = localStorage.getItem('Token');
   return (
     <Route
       {...rest}
-      render={(props) => {
+      render={props => {
         if (!auth) {
-          // not logged in so redirect to login page with the return url
           return (
             <Redirect
-              to={{ pathname: "/loginTimeTrack", state: { from: props.location } }}
+              to={{
+                pathname: "/login",
+                state: { from: props.location }
+              }}
             />
           );
         }
-
-        // authorized so return component
-        return <Component {...props} />;
+        else {
+          return Component ? <Component {...props} /> : render(props);
+        }
       }}
     />
   );
-}
+};
+
+
+
+export const ProtectedRouteForLogin = ({ path, component: Component, render, ...rest }) => {
+  const auth = localStorage.getItem('Token');
+  return (
+    <Route
+      {...rest}
+      render={props => {
+        if (auth) {
+          return (
+            <Redirect
+              to={{
+                pathname: "/viewsheet",
+                state: { from: props.location }
+              }}
+            />
+          );
+        }
+        else {
+          return Component ? <Component {...props} /> : render(props);
+        }
+      }}
+    />
+  );
+};

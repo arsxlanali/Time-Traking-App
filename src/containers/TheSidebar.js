@@ -14,14 +14,27 @@ import {
   CSidebarNavItem,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-
+import icon from '../assets/icons/icon1.png'
+import icon2 from '../assets/icons/icon2.png'
 // sidebar nav config
 import navigation from "./_nav";
 
 const TheSidebar = () => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state?.slideBar?.sidebarShow);
-  console.log("this is side bar show.", show)
+  const role = localStorage.getItem("Role");
+  if (role == "EMPLOYEE") {
+    // console.log("this is nav");
+    navigation = navigation.filter((obj) => {
+      return (obj.name !== "Projects" && obj.name !== "Employee");
+    })
+    var filteredNav = navigation.slice();
+    // console.log("this is nav", navigation)
+  }
+  else {
+    var filteredNav = navigation.slice();
+  }
+  // console.log("this is employee nav", navigation);
   return (
     <CSidebar
       show={show}
@@ -31,18 +44,20 @@ const TheSidebar = () => {
       <CSidebarBrand className="d-md-down-none" to="/">
         <CIcon
           className="c-sidebar-brand-full"
+          src={icon}
           name="logo-negative"
           height={35}
         />
         <CIcon
           className="c-sidebar-brand-minimized"
+          src={icon2}
           name="sygnet"
           height={35}
         />
       </CSidebarBrand>
       <CSidebarNav>
         <CCreateElement
-          items={navigation}
+          items={filteredNav}
           components={{
             CSidebarNavDivider,
             CSidebarNavDropdown,

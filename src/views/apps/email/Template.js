@@ -12,17 +12,16 @@ import {
 import CIcon from '@coreui/icons-react'
 
 import {
-  TheAside,
   TheFooter,
   TheHeader
 } from '../../../containers'
 
-const EmailNav = ({children}) => {
+const EmailNav = ({ children }) => {
   return (
     <div className="c-app">
       <CSidebar
         unfoldable
-        fixed={true} 
+        fixed={true}
         colorScheme="light"
       >
         <CSidebarBrand className="d-md-down-none" to="/apps/email">
@@ -38,36 +37,36 @@ const EmailNav = ({children}) => {
           />
         </CSidebarBrand>
         <CSidebarNav>
-          <CSidebarNavItem 
+          <CSidebarNavItem
             color="success"
             to="./compose"
             icon="cil-pencil"
             name="Compose"
-          /> 
-          <CSidebarNavItem 
+          />
+          <CSidebarNavItem
             to="./inbox"
             icon="cil-inbox"
             name="Inbox"
             badge={{ text: 4, color: 'danger' }}
-          />      
-          <CSidebarNavItem 
+          />
+          <CSidebarNavItem
             icon="cil-star"
             name="Stared"
           />
-          <CSidebarNavItem 
+          <CSidebarNavItem
             icon="cil-paper-plane"
             name="Sent"
           />
-          <CSidebarNavItem 
+          <CSidebarNavItem
             icon="cil-trash"
             name="Trash"
           />
-          <CSidebarNavItem 
+          <CSidebarNavItem
             icon="cil-bookmark"
             name="Important"
             badge={{ text: 5, color: 'info' }}
           />
-          <CSidebarNavItem 
+          <CSidebarNavItem
             icon="cil-inbox"
             name="Spam"
             badge={{ text: 25, color: 'warning' }}
@@ -80,11 +79,10 @@ const EmailNav = ({children}) => {
             badge={{ text: 'NEW', color: 'info' }}
           />
         </CSidebarNav>
-        <CSidebarMinimizer/>
+        <CSidebarMinimizer />
       </CSidebar>
-      <TheAside/>
       <div className="c-wrapper">
-        <TheHeader/>
+        <TheHeader />
         <div className="c-body">
           <div className="c-main">
             <CContainer fluid>
@@ -96,7 +94,7 @@ const EmailNav = ({children}) => {
             </CContainer>
           </div>
         </div>
-        <TheFooter/>
+        <TheFooter />
       </div>
     </div>
   )

@@ -34,35 +34,31 @@ import {
   CInputGroupText,
 } from '@coreui/react'
 
-import { Formik } from "formik";
-import * as Yup from "yup";
-import { useDispatch } from 'react-redux';
-import { TextMask, InputAdapter } from "react-text-mask-hoc";
+import { useSelector } from "react-redux";
+import { Formik } from 'formik'
+import * as Yup from 'yup'
+import { useDispatch } from 'react-redux'
 import CIcon from "@coreui/icons-react";
+import { TextMask, InputAdapter } from "react-text-mask-hoc";
+import { getEmployees } from 'src/redux/Slice/employeesSlice';
+import states from 'src/views/forms/advanced-forms/states';
+import Select from "react-select";
+import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { getProjects } from 'src/redux/Slice/projectSlice';
+// import { values } from 'core-js/core/array';
+
 const validationSchema = function (values) {
   return Yup.object().shape({
-
-    projectId: Yup.string()
-      .min(1, `Address has to be at least 1 character`)
-      .required("Address is required"),
-
-    name: Yup.string()
-      .min(2, `Name has to be at least 2 characters`)
-      .required("Name is required"),
     type: Yup.string()
-      .min(1, `Task type has to be at least 1 character`)
-      .required("Task type is required"),
+      .min(2, `Project name has to be at least 2 characters`)
+      .required('Project name is required'),
+
     description: Yup.string()
       .min(5, `Description has to be at least 5 characters`)
-      .required("Description is required"),
-    date: Yup.string()
-      .required("Date is required!"),
-    duration: Yup.string()
-      .required("Duration is required!"),
-
-  });
-};
-
+      .required('Description is required'),
+  })
+}
 const validate = (getValidationSchema) => {
   return (values) => {
     const validationSchema = getValidationSchema(values);
@@ -87,84 +83,75 @@ const getErrorsFromValidationError = (validationError) => {
 
 
 
-const findFirstError = (formName, hasError) => {
-  const form = document.forms[formName];
-  for (let i = 0; i < form.length; i++) {
-    if (hasError(form[i].name)) {
-      form[i].focus();
-      break;
-    }
-  }
-};
 
-const validateForm = (errors) => {
-  findFirstError("simpleForm", (fieldName) => {
-    return Boolean(errors[fieldName]);
-  });
-};
 
-const touchAll = (setTouched, errors) => {
-  setTouched({
-    name: true,
-    type: true,
-    description: true,
-    duration: true,
-    date: true,
-    projectId: true,
-    duration: true
-  });
-  validateForm(errors);
-};
 
 const key = localStorage.getItem("key");
 
 
-const AddTask = (props) => {
+const AddTask = ({ flag, onClose, date }) => {
+  const dispatch = useDispatch();
+  const [duration, setDuration] = useState(0);
+  const [durationInput, setDurationInput] = useState();
+  const darkMode = useSelector((state) => state?.slideBar?.darkMode);
+  const [value, setValue] = React.useState([]);
+  const empProject = useSelector((state) => state?.viewProjects?.projects);
+  const projectOptions = [];
+  empProject.forEach(emp => {
+    const result = (({ _id, name }) => ({ _id, name }))(emp)
+    projectOptions.push({ "value": result._id, "label": result.name });
+  })
+  // console.log("This is duration 1", durationInput, typeof durationInput)
+  useEffect(() => {
+    dispatch(getProjects());
+    const timeI = durationInput;
+    const time = duration;
+    if (timeI !== undefined) {
+      var hour = parseInt(timeI.slice(0, 1));
+      var min = parseInt(timeI.slice(2, 4))
+      setDuration(hour * 60 + min);
+      // console.log("this is time", hour, min)
+    }
+    // if (time !== 0) {
+    //   const hour = parseInt(time / 60);
+    //   const min = parseInt(time % 60);
+    //   setDurationInput(hour + ':' + min);
+    //   // console.log("this is time", hour, min)
+    // }
+  }, [dispatch, durationInput]);
 
+  const onSubmit = (values, { setSubmitting, resetForm }) => {
+    const data = {
+      ...values, date, projectId: value.value,
+      duration: { hours: parseInt(duration / 60), minutes: parseInt(duration % 60) }
+    };
+    dispatch(addTask({ data, setSubmitting, resetForm }));
+  }
 
 
   const initialValues = {
-    name: "",
     type: "",
     description: "",
-    date: "",
     projectId: "",
-    duration: "",
   };
 
-
-  const dispatch = useDispatch();
-
-
-  const onSubmit = (values, { setSubmitting, setErrors }) => {
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2));
-
-      // console.log('User has been successfully saved!', values)
-      setSubmitting(false);
-    }, 2000);
-    console.log("values", values)
-    dispatch(addTask(values));
-  };
-
-  const [large, setLarge] = useState();
 
 
   return (
 
-    <CModal show={props.flag} onClose={() => setLarge(!props.flag)} size="lg">
+    <CModal show={flag} onClose={onClose} size="lg">
       <CModalHeader closeButton>
         <CModalTitle>Add Task</CModalTitle>
       </CModalHeader>
       <CModalBody>
-        <CCard>
-          <CCardBody>
-            <Formik
-              initialValues={initialValues}
-              validate={validate(validationSchema)}
-              onSubmit={onSubmit}
-            >
-              {({
+        <CCardBody>
+          <Formik
+            initialValues={initialValues}
+            validate={validate(validationSchema)}
+            onSubmit={onSubmit}
+          >
+            {
+              ({
                 values,
                 errors,
                 touched,
@@ -174,323 +161,128 @@ const AddTask = (props) => {
                 isSubmitting,
                 isValid,
               }) => (
-                <CRow>
-                  <CCol lg="6">
-                    <CForm
-                      onSubmit={handleSubmit}
-                      noValidate
-                      name="simpleForm"
-                    >
-                      {/* <CFormGroup>
-                  <CLabel htmlFor="userId">User Id</CLabel>
-                  <CInput
-                    type="text"
-                    name="userId"
-                    id="userId"
-                    placeholder="User Id"
-                    autoComplete="given-name"
-                    valid={!errors.userId}
-                    invalid={touched.userId && !!errors.userId}
-                    autoFocus={true}
-                    required
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.userId}
-                  />
-                  <CInvalidFeedback>{errors.userId}</CInvalidFeedback>
-                </CFormGroup> */}
-                      <CFormGroup row>
-                        <CCol md="12">
-                          <CLabel htmlFor="select">Project</CLabel>
-                        </CCol>
-                        <CCol xs="12" md="12">
-                          <CSelect
-                            custom
-                            name="project"
-                            id="project"
-                            required
-                            valid={!errors.project}
-                            invalid={touched.project && !!errors.project}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.project}
-                          >
-                            <option value="">Please select</option>
-                            <option value="P1">P1</option>
-                            <option value="P2">P2</option>
-                            <option value="P3">P3</option>
-                            <option value="P4">P4</option>
-                          </CSelect>
-                        </CCol>
-                        <CInvalidFeedback>{errors.project}</CInvalidFeedback>
-                      </CFormGroup>
-
+                <CRow >
+                  <CCol>
+                    <CForm onSubmit={handleSubmit} noValidate name='simpleForm5'>
                       <CFormGroup>
-                        <CLabel htmlFor="projectId">Project Id</CLabel>
-                        <CInput
-                          type="text"
-                          name="projectId"
-                          id="projectId"
-                          placeholder="Project Id"
+                        <CLabel htmlFor="type">Task Type</CLabel>
+                        <CInput type="text"
+                          name="type"
+                          id="type"
+                          placeholder="Task Type"
                           autoComplete="given-name"
-                          valid={!errors.projectId}
-                          invalid={touched.projectId && !!errors.projectId}
+                          valid={!errors.type}
+                          invalid={touched.type && !!errors.type}
                           autoFocus={true}
                           required
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          value={values.projectId}
+                          value={values.type} />
+                        <CInvalidFeedback>{errors.type}</CInvalidFeedback>
+                      </CFormGroup>
+                      <CFormGroup>
+                        <CLabel htmlFor="description">Description</CLabel>
+                        <CInput type="text"
+                          name="description"
+                          id="description"
+                          placeholder="Description"
+                          autoComplete="description"
+                          valid={!errors.description}
+                          invalid={touched.description && !!errors.description}
+                          required
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.description} />
+                        <CInvalidFeedback>{errors.description}</CInvalidFeedback>
+                      </CFormGroup>
+                      <CFormGroup>
+                        <CLabel htmlFor="projectId">Projects</CLabel>
+                        <Select
+                          type="projectId"
+                          name="projectId"
+                          id="projectId"
+                          placeholder="Project Name"
+                          value={value}
+                          options={projectOptions}
+                          onChange={setValue}
+                          invalid={touched.projectId}
+                          onBlur={handleBlur}
+                          theme={(theme) => ({
+                            ...theme,
+                            colors: {
+                              ...theme.colors,
+                              primary: darkMode ? "black" : theme.colors.primary,
+                              primary25: darkMode ? "black" : theme.colors.primary25,
+                              dangerLight: darkMode ? "black" : theme.colors.dangerLight,
+                              neutral0: darkMode ? "#2a2b36" : theme.colors.neutral0,
+                            },
+                          })}
                         />
                         <CInvalidFeedback>{errors.projectId}</CInvalidFeedback>
                       </CFormGroup>
                       <CFormGroup>
-                        <CLabel htmlFor="name">Name</CLabel>
-                        <CInput
-                          type="text"
-                          name="name"
-                          id="name"
-                          placeholder="Task Name"
-                          autoComplete="given-name"
-                          valid={!errors.name}
-                          invalid={touched.name && !!errors.name}
-                          autoFocus={true}
-                          required
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.name}
-                        />
-                        <CInvalidFeedback>{errors.name}</CInvalidFeedback>
-                      </CFormGroup>
-                      {/* <CFormGroup>
-                        <CLabel htmlFor="type">Type</CLabel>
-                        <CInput
-                          type="text"
-                          name="type"
-                          id="type"
-                          description
-                          placeholder="Task Type"
-                          autoComplete="family-name"
-                          valid={!errors.type}
-                          invalid={touched.type && !!errors.type}
-                          required
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.type}
-                        />
-                        <CInvalidFeedback>{errors.type}</CInvalidFeedback>
-                      </CFormGroup> */}
-
-                      <CFormGroup row>
-                        <CCol md="12">
-                          <CLabel htmlFor="select">Task Type</CLabel>
-                        </CCol>
-                        <CCol xs="12" md="12">
-                          <CSelect
-                            custom
-                            name="type"
-                            id="type"
-                            required
-                            valid={!errors.type}
-                            invalid={touched.type && !!errors.type}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.type}
-                          >
-                            <option value="">Please select</option>
-                            <option value="t1">Frontend</option>
-                            <option value="t2">Backend</option>
-                            <option value="t3">UI?UX</option>
-                          </CSelect>
-                        </CCol>
-                        <CInvalidFeedback>{errors.type}</CInvalidFeedback>
-                      </CFormGroup>
-
-
-                      <CFormGroup>
-                        <CLabel htmlFor="description">Description</CLabel>
-                        <CInput
-                          type="text"
-                          name="description"
-                          id="description"
-                          placeholder="Description"
-                          autoComplete="description-name"
-                          valid={!errors.description}
-                          invalid={
-                            touched.description && !!errors.description
-                          }
-                          required
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.description}
-                        />
-                        <CInvalidFeedback>
-                          {errors.description}
-                        </CInvalidFeedback>
-                      </CFormGroup>
-
-                      <CFormGroup>
-                        <CLabel htmlFor="duration">Duration</CLabel>
-                        {/* < CDropdown className="m-1">
-                          <CDropdownToggle>
-                            Hours
-                          </CDropdownToggle>
-                          <CDropdownMenu>
-                            <CDropdownItem>1</CDropdownItem>
-                            <CDropdownDivider />
-                            <CDropdownItem>2</CDropdownItem>
-                            <CDropdownDivider />
-                            <CDropdownItem>3</CDropdownItem>
-                            <CDropdownDivider />
-                            <CDropdownItem>4</CDropdownItem>
-                            <CDropdownDivider />
-                            <CDropdownItem>5</CDropdownItem>
-                            <CDropdownDivider />
-                            <CDropdownItem>6</CDropdownItem>
-                            <CDropdownDivider />
-                            <CDropdownItem>7</CDropdownItem>
-                            <CDropdownDivider />
-                            <CDropdownItem>8</CDropdownItem>
-                          </CDropdownMenu>
-                        </CDropdown>
-                        < CDropdown className="m-1">
-                          <CDropdownToggle>
-                            Minutes
-                          </CDropdownToggle>
-                          <CDropdownMenu>
-                            <CDropdownItem>1</CDropdownItem>
-                            <CDropdownDivider />
-                            <CDropdownItem>2</CDropdownItem>
-                            <CDropdownDivider />
-                            <CDropdownItem>3</CDropdownItem>
-                            <CDropdownDivider />
-                            <CDropdownItem>4</CDropdownItem>
-                            <CDropdownDivider />
-                            <CDropdownItem>5</CDropdownItem>
-                            <CDropdownDivider />
-                            <CDropdownItem>6</CDropdownItem>
-                            <CDropdownDivider />
-                            <CDropdownItem>7</CDropdownItem>
-                            <CDropdownDivider />
-                            <CDropdownItem>8</CDropdownItem>
-                          </CDropdownMenu>
-                        </CDropdown> */}
-
-                        <CInput
-                          type="text"
-                          name="duration"
-                          id="duration"
-                          placeholder="Duration"
-                          autoComplete="duration-name"
-                          valid={!errors.duration}
-                          invalid={
-                            touched.duration && !!errors.duration
-                          }
-                          required
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.duration}
-                        />
-                        <CInvalidFeedback>
-                          {errors.description}
-                        </CInvalidFeedback>
-                      </CFormGroup>
-
-                      <CFormGroup>
-                        <CLabel htmlFor="date">Date</CLabel>
-                        <CInputGroup 
-                        type="text"
-                          name="date"
-                          id="date"
-                          placeholder="Date"
-                          autoComplete="date-name"
-                          valid={!errors.date}
-                          invalid={touched.date && !!errors.date}
-                          required
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.date}
-                        >
-                        <TextMask
-                          mask={[
-                            /\d/,
-                            /\d/,
-                            "/",
-                            /\d/,
-                            /\d/,
-                            "/",
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                            /\d/,
-                          ]}
-                          Component={InputAdapter}
-                          />
-                         </CInputGroup>
-                        <CInvalidFeedback>{errors.date}</CInvalidFeedback>
-                      </CFormGroup>
-
-                      {/* <CFormGroup>
-                        <CLabel htmlFor="date">Select Date</CLabel>
-                        <CInputGroup
-                          type="text"
-                          name="date"
-                          id="date"
-                          placeholder="Date"
-                          autoComplete="date-name"
-                          valid={!errors.date}
-                          invalid={touched.date && !!errors.date}
-                          required
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.date}>
-
+                        <CLabel>Duration</CLabel>
+                        <CInputGroup>
+                          <CInputGroupPrepend>
+                            <CInputGroupText><CIcon name="cil-calendar" /></CInputGroupText>
+                          </CInputGroupPrepend>
                           <TextMask
-                            mask={[
-                              /\d/,
-                              /\d/,
-                              "/",
-                              /\d/,
-                              /\d/,
-                              "/",
-                              /\d/,
-                              /\d/,
-                              /\d/,
-                              /\d/,
-                            ]}
+                            mask={[/\d/, ':', /\d/, /\d/]}
                             Component={InputAdapter}
                             className="form-control"
+                            value={durationInput}
+                            onChange={(e) => {
+                              if (e.target.value.length <= 4) {
+                                setDurationInput(e.target.value);
+                              }
+                            }}
                           />
                         </CInputGroup>
-                        <CInvalidFeedback>{errors.date}</CInvalidFeedback>
-                      </CFormGroup> */}
-
+                        <CFormText color="muted">
+                          ex. 1:23 min
+                        </CFormText>
+                      </CFormGroup>
                       <CFormGroup>
-                        <CButton
-                          type="submit"
-                          color="primary"
-                          className="mr-1"
-                          disabled={isSubmitting || !isValid}
-                        >
-                          {isSubmitting ? "Wait..." : "Add Task"}
-                        </CButton>
+                        <CLabel htmlFor="duration">Duration</CLabel>
+                        <div>
+                          <input type="range" name="points" min="0" max="120" value={duration} onChange={(e) => setDuration(e.target.value)}
+                            style={{ width: "100%" }} />
 
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <div>0 min</div>
+                          <div>
+                            {parseInt(duration / 60)} <strong>{' hr '}</strong>
+                            {parseInt(duration % 60)} <strong>{' min'}</strong>
+                          </div>
+                          <div>120 min</div>
+                        </div>
+
+                      </CFormGroup>
+                      <CFormGroup>
+                        <CRow className={"mt-2"}>
+                          <CCol xs="6">
+                            <CButton
+                              type="submit"
+                              color="primary"
+                              className="mr-1"
+                              disabled={isSubmitting || !isValid}
+                            >
+                              {isSubmitting ? "Adding..." : "Add Task"}
+                            </CButton>
+                          </CCol>
+                          <CCol xs="6" className="text-right">
+                            <CButton color="secondary" className="mr-1" onClick={onClose}>Close</CButton>
+                          </CCol>
+                        </CRow>
                       </CFormGroup>
                     </CForm>
                   </CCol>
                 </CRow>
               )}
-            </Formik>
-          </CCardBody>
-        </CCard>
+          </Formik>
+        </CCardBody>
       </CModalBody>
-      {/* <CModalFooter>
-        <CButton color="primary" onClick={() => setLarge(!large)}>
-          Add
-        </CButton>{" "}
-        <CButton color="secondary" onClick={() => setLarge(!large)}>
-          Cancel
-        </CButton>
-      </CModalFooter> */}
     </CModal >
   )
 }

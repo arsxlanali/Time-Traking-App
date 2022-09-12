@@ -22,26 +22,29 @@ import {
 } from "../../../../redux/Slice/employeesSlice";
 // import { getEmployee } from "src/redux/Slice/employeeSllice";
 import Loader from "../../loader/Loader";
-const DemoTable = () => {
+const EmployeeTable = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const queryPage = useLocation().search.match(/page=([0-9]+)/, "");
   const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1);
   const { employeesView, isLoading } = useSelector((state) => state.employees);
-
+  const [submitting, setSubmitting] = useState(false);
   const [page, setPage] = useState(currentPage);
   const [pageLength, setPageLength] = useState(1);
 
   const pageChange = (newPage) => {
     currentPage !== newPage && history.push(`/listemployee?page=${newPage}`);
   };
+  const token = localStorage.getItem("Token");
   useEffect(() => {
-    currentPage !== page && setPage(currentPage);
-    dispatch(getEmployees());
-    if (employeesView.length > 1)
-      setPageLength(Math.ceil(employeesView.length / 5));
-  }, [setPageLength, currentPage, dispatch, employeesView.length, page]);
-  console.log("this is emp lenght;", employeesView.length, pageLength);
+    if (token) {
+      currentPage !== page && setPage(currentPage);
+      dispatch(getEmployees());
+      if (employeesView.length > 1)
+        setPageLength(Math.ceil(employeesView.length / 5));
+    }
+  }, [setPageLength, currentPage, dispatch, employeesView.length, page, token]);
+  // console.log("this is emp lenght;", employeesView.length, pageLength);
 
   const [modal, setModal] = useState(false);
   const [details, setDetails] = useState([]);
@@ -152,14 +155,16 @@ const DemoTable = () => {
                         will not be able to recover deleted information letter.
                       </CModalBody>
                       <CModalFooter>
-                        <CButton
-                          color="danger"
+                        <CButton size="sm" color="danger" className="ml-1"
+                          disabled={submitting}
+
                           onClick={() => {
-                            dispatch(deleteEmployee(item._id));
-                            setModal(false);
-                          }}
-                        >
-                          Delete
+                            setSubmitting(true)
+                            const id = item._id;
+                            dispatch(deleteEmployee({ id, setSubmitting }))
+
+                          }}>
+                          {submitting ? "Wait..." : "Delete"}
                         </CButton>{" "}
                         <CButton
                           color="secondary"
@@ -187,4 +192,4 @@ const DemoTable = () => {
   );
 };
 
-export default DemoTable;
+export default EmployeeTable;

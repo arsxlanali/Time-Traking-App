@@ -1,51 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { login } from "src/redux/Slice/loginSlice";
-// import { useDispatch, useSelector } from "react-redux";
-// import { useHistory } from "react-router-dom";
-
+import { Formik } from "formik";
+import Loader from "../loader/Loader";
+import * as Yup from "yup";
 import {
   CButton,
   CCard,
-  CToast,
-  CToastBody,
-  CToastHeader,
-  CToaster,
-  CCardBody,
-  CCardGroup,
   CCol,
   CContainer,
   CForm,
   CInput,
-  CInputGroup,
-  CInputGroupPrepend,
-  CInputGroupText,
-  CRow,
-} from "@coreui/react";
-import CIcon from "@coreui/icons-react";
-import {
   CInvalidFeedback,
-  CInputCheckbox,
   CFormGroup,
   CLabel,
+  CRow,
 } from "@coreui/react";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom";
-// import Toaster from "src/views/notifications/toaster/Toaster";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-// import { resetPassword } from "src/redux/Slice/employeesSlice"
-// import loginSlice from "src/redux/Slice/loginSlice";
-// import { login } from "src/redux/Slice/loginSlice";
+
+
 const validationSchema = function (values) {
   return Yup.object().shape({
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required!"),
     password: Yup.string()
-      .min(6, `Password has to be at least ${6} characters!`)
+      .min(8, `Password has to be at least ${8} characters!`)
       .matches(
-        /(?=.*\d)(?=.*[a-z]).{6,}/,
+        /(?=.*\d)(?=.*[a-z]).{8,}/,
         "Password must contain: numbers, uppercase and lowercase letters\n"
       )
       .required("Password is required")
@@ -75,23 +57,24 @@ const getErrorsFromValidationError = (validationError) => {
 };
 
 function LoginApp() {
-  const { isLoading, isScuessfull } = useSelector((state) => state.login);
+  const { isLoading } = useSelector((state) => state.login);
   const dispatch = useDispatch();
   const history = useHistory();
-  const onSubmit = (values, setSubmitting) => {
-    // values["id"] = user._id;
-    dispatch(login(values));
-    setSubmitting(isLoading);
+
+  const onSubmit = (values, { setSubmitting }) => {
+    initialValues.email = values.email;
+    initialValues.password = values.password;
+    dispatch(login({ values, history, setSubmitting }));
+    // setSubmitting(isLoading);
   };
-  // console.log("this is issuccessfful", isScuessfull)
-  if (isScuessfull) {
-    setTimeout(() => history.push(`/dashboard`), 5000);
-    // return (
-    //   <div>
-    //     <Toaster></Toaster>
-    //   </div>
-    // );
-  }
+  // if (isLoading) {
+  //   return (
+  //     // <div className="vh-100">
+  //     <Loader />
+  //     // </div>
+
+  //   );
+  // }
   const initialValues = {
     email: "",
     password: "",
@@ -116,7 +99,7 @@ function LoginApp() {
                   handleChange,
                   handleBlur,
                   handleSubmit,
-                  isLoading,
+                  isSubmitting,
                   isValid,
                 }) => (
                   <CRow>
@@ -124,25 +107,6 @@ function LoginApp() {
                       <CForm onSubmit={handleSubmit} noValidate name="simpleForm1">
                         <h1>Login</h1>
                         <p className="text-muted">Sign In to your account</p>
-                        {/* <CCol> */}
-                        <CFormGroup>
-                          <CLabel htmlFor="password">Password</CLabel>
-                          <CInput
-                            type="password"
-                            name="password"
-                            id="password"
-                            placeholder="Password"
-                            autoComplete="new-password"
-                            valid={!errors.password}
-                            invalid={touched.password && !!errors.password}
-                            required
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.password}
-                          />
-                          <CInvalidFeedback>{errors.password}</CInvalidFeedback>
-                        </CFormGroup>
-                        {/* </CCol> */}
                         {/* <CCol> */}
                         <CFormGroup>
                           <CLabel htmlFor="email">Email</CLabel>
@@ -161,25 +125,38 @@ function LoginApp() {
                           />
                           <CInvalidFeedback>{errors.email}</CInvalidFeedback>
                         </CFormGroup>
-                        {/* </CCol> */}
-
-                        {/* <CFormGroup> */}
+                        <CFormGroup>
+                          <CLabel htmlFor="password">Password</CLabel>
+                          <CInput
+                            type="password"
+                            name="password"
+                            id="password"
+                            placeholder="Password"
+                            autoComplete="new-password"
+                            valid={!errors.password}
+                            invalid={touched.password && !!errors.password}
+                            required
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.password}
+                          />
+                          <CInvalidFeedback>{errors.password}</CInvalidFeedback>
+                        </CFormGroup>
                         <CRow>
                           <CCol xs="6">
                             <CButton
                               type="submit"
                               color="primary"
                               className="mr-1"
-                              disabled={isLoading || !isValid}
+                              disabled={isSubmitting || !isValid}
                             >
-                              {isLoading ? "Wait..." : "Login"}
+                              {isSubmitting ? "Wait..." : "Login"}
                             </CButton>
                           </CCol>
                           <CCol xs="6" className="text-right">
                             <CButton color="link" className="px-0">Forgot password?</CButton>
                           </CCol>
                         </CRow>
-                        {/* </CFormGroup> */}
                       </CForm>
                     </CCol>
                   </CRow>

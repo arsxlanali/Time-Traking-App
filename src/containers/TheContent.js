@@ -12,12 +12,22 @@ const loading = (
 );
 
 const TheContent = () => {
+  const role = localStorage.getItem("Role");
+  if (role == "EMPLOYEE") {
+    // console.log("this is routes", routes);
+    var filteredRoutes = routes.filter((obj) => {
+      return (obj.path == "/viewsheet" || obj.path == "/reports");
+    })
+  }
+  else {
+    var filteredRoutes = routes.slice();
+  }
   return (
     <main className="c-main">
       <CContainer fluid>
         <Suspense fallback={loading}>
           <Switch>
-            {routes.map((route, idx) => {
+            {filteredRoutes.map((route, idx) => {
               return (
                 route.component && (
                   <Route
@@ -34,7 +44,7 @@ const TheContent = () => {
                 )
               );
             })}
-            <Redirect from="/" to="/dashboard" />
+            <Redirect from="/" to="/viewsheet" />
           </Switch>
         </Suspense>
       </CContainer>

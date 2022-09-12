@@ -4,7 +4,7 @@ import classNames from "classnames";
 import {
   TheContent,
   TheSidebar,
-  TheAside,
+  // TheAside,
   TheFooter,
   TheHeader,
 } from "./index";
@@ -19,7 +19,7 @@ const TheLayout = () => {
   return (
     <div className={classes}>
       <TheSidebar />
-      <TheAside />
+      {/* <TheAside /> */}
       <div className="c-wrapper">
         <TheHeader />
         <div className="c-body">
