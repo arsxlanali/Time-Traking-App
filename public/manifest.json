@@ -1,9 +1,9 @@
 {
-  "short_name": "CoreUI-React",
-  "name": "CoreUI-React sample",
+  "short_name": "Time Traking",
+  "name": "Time Traking | TDC",
   "icons": [
     {
-      "src": "./assets/img/favicon.png",
+      "src": "/public/icon2.png",
       "sizes": "100x100",
       "type": "image/png"
     }
