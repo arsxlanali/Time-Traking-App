@@ -109,7 +109,7 @@ const SheetTable = () => {
       }} date={date} task={taskId} />}
 
       <CRow className={"d-flex justify-content-between mt-4 mx-2"}>
-        <CCol xs="12" md="4">
+        <CCol xs="7" md="4">
           <CInput type="date" name="date-input" placeholder="date"
             value={date}
             onChange={handleChange}
