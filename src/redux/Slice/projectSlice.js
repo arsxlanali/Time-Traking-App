@@ -132,16 +132,17 @@ export const addProject = createAsyncThunk(
 export const editProject = createAsyncThunk(
   "projects/update",
 
-  async ({ data, id, setSubmitting }, thunkAPI) => {
+  async ({ data, id, setSubmitting, history }, thunkAPI) => {
     // const projectInfo = data();
     const assignBy = data['assignBy']
     delete data["assignBy"]
-    data.assignBy = assignBy[0];
+    const id1 = id[0]
+    // data.assignBy = assignBy[0];
     // console.log("this is edit project", values)
-    console.log("projectInfo: ", data)
+    // console.log("projectInfo: ", data, id1)
     try {
       const res = await axios.patch(
-        `${baseURL}/projects/update/${id}`,
+        `${baseURL}/projects/update/${id1}`,
         data,
         {
           headers: {
@@ -151,6 +152,7 @@ export const editProject = createAsyncThunk(
       );
       setSubmitting(false);
       swal("Project Update", { icon: "success" })
+      history.push('/viewproject')
       thunkAPI.dispatch(viewProjects());
       return res?.data;
     } catch (error) {
@@ -158,7 +160,7 @@ export const editProject = createAsyncThunk(
       setSubmitting(false);
       if (error.response.data == 'Unauthorized') {
 
-        setTimeout(history.push('/login'), 2000)
+        // setTimeout(history.push('/login'), 2000)
         swal("Opps!", "Session Expired", "error")
         localStorage.clear();
         thunkAPI.dispatch(clearEmployee())
@@ -223,7 +225,7 @@ export const viewProjectsSlice = createSlice({
     [viewProjects.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.projects = payload;
-      console.log(payload)
+      // console.log(payload)
     },
     [viewProjects.rejected]: (state) => {
       state.loading = false;

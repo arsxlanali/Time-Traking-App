@@ -115,10 +115,10 @@ const ValidationForms = () => {
       selectedEmp.push(val.value);
     })
     const data = { ...values, assignTo: selectedEmp }
-    console.log("this is data", data);
+    // console.log("this is data", data);
 
 
-    dispatch(editProject({ data, id, setSubmitting }));
+    dispatch(editProject({ data, id, setSubmitting, history }));
 
   }
 
