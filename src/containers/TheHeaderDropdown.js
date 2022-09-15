@@ -17,6 +17,7 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom'
 const TheHeaderDropdown = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const role = localStorage.getItem('Role')
   return (
     <CDropdown
       inNav
@@ -40,7 +41,7 @@ const TheHeaderDropdown = () => {
           color="light"
           className="text-center"
         >
-          <strong>Settings</strong>
+          <strong>{role}</strong>
         </CDropdownItem>
         {/* <CDropdownItem>
           <CIcon name="cil-user" className="mfe-2" />Profile
