@@ -47,12 +47,10 @@ import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { getProjects } from 'src/redux/Slice/projectSlice';
 // import { values } from 'core-js/core/array';
-
+import tasks from '../Tasks/Tasks'
 const validationSchema = function (values) {
   return Yup.object().shape({
-    type: Yup.string()
-      .min(2, `Project name has to be at least 2 characters`)
-      .required('Project name is required'),
+    // type: Yup.string().required("Color is required!"),
 
     description: Yup.string()
       .min(5, `Description has to be at least 5 characters`)
@@ -86,21 +84,26 @@ const getErrorsFromValidationError = (validationError) => {
 
 
 
-const key = localStorage.getItem("key");
 
 
 const AddTask = ({ flag, onClose, date }) => {
+  const department = localStorage.getItem("Department");
+  // console.log("this is department", department)
   const dispatch = useDispatch();
   const [duration, setDuration] = useState(0);
   const [durationInput, setDurationInput] = useState();
   const darkMode = useSelector((state) => state?.slideBar?.darkMode);
   const [value, setValue] = React.useState([]);
+  const [task, setTask] = React.useState(
+    [{ value: 'General', label: 'General' }]
+  )
   const empProject = useSelector((state) => state?.viewProjects?.projects);
   const projectOptions = [];
   empProject.forEach(emp => {
     const result = (({ _id, name }) => ({ _id, name }))(emp)
     projectOptions.push({ "value": result._id, "label": result.name });
   })
+
   // console.log("This is duration 1", durationInput, typeof durationInput)
   useEffect(() => {
     dispatch(getProjects());
@@ -122,7 +125,7 @@ const AddTask = ({ flag, onClose, date }) => {
 
   const onSubmit = (values, { setSubmitting, resetForm }) => {
     const data = {
-      ...values, date, projectId: value.value,
+      ...values, date, projectId: value.value, type: task.value,
       duration: { hours: parseInt(duration / 60), minutes: parseInt(duration % 60) }
     };
     dispatch(addTask({ data, setSubmitting, resetForm }));
@@ -166,18 +169,28 @@ const AddTask = ({ flag, onClose, date }) => {
                     <CForm onSubmit={handleSubmit} noValidate name='simpleForm5'>
                       <CFormGroup>
                         <CLabel htmlFor="type">Task Type</CLabel>
-                        <CInput type="text"
+                        <Select
+                          as="select"
+                          type="type"
                           name="type"
                           id="type"
-                          placeholder="Task Type"
-                          autoComplete="given-name"
-                          valid={!errors.type}
-                          invalid={touched.type && !!errors.type}
-                          autoFocus={true}
-                          required
-                          onChange={handleChange}
+                          // placeholder="Project Name"
+                          value={task}
+                          options={tasks[department]}
+                          onChange={setTask}
+                          // invalid={touched.type}
                           onBlur={handleBlur}
-                          value={values.type} />
+                          theme={(theme) => ({
+                            ...theme,
+                            colors: {
+                              ...theme.colors,
+                              primary: darkMode ? "black" : theme.colors.primary,
+                              primary25: darkMode ? "black" : theme.colors.primary25,
+                              dangerLight: darkMode ? "black" : theme.colors.dangerLight,
+                              neutral0: darkMode ? "#2a2b36" : theme.colors.neutral0,
+                            },
+                          })}
+                        />
                         <CInvalidFeedback>{errors.type}</CInvalidFeedback>
                       </CFormGroup>
                       <CFormGroup>
