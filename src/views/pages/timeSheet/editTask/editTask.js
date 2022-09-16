@@ -43,12 +43,12 @@ import states from 'src/views/forms/advanced-forms/states';
 import Select from "react-select";
 import { useEffect } from 'react';
 import { getProjects } from 'src/redux/Slice/projectSlice';
-
+import tasks from '../Tasks/Tasks'
 const validationSchema = function (values) {
   return Yup.object().shape({
-    type: Yup.string()
-      .min(2, `Project name has to be at least 2 characters`)
-      .required('Project name is required'),
+    // type: Yup.string()
+    //   .min(2, `Project name has to be at least 2 characters`)
+    //   .required('Project name is required'),
 
     description: Yup.string()
       .min(5, `Description has to be at least 5 characters`)
@@ -86,11 +86,15 @@ const key = localStorage.getItem("key");
 
 
 const EditTask = ({ flag, onClose, date, task }) => {
+  const department = localStorage.getItem("Department");
   const dispatch = useDispatch();
   const [duration, setDuration] = useState(task.totalMins);
   const inputH = parseInt(task.totalMins / 60);
   const inputM = parseInt(task.totalMins % 60);
   // console.log("input d", inputH, inputM)
+  const [taskField, setTaskFiled] = React.useState(
+    [{ value: task.type, label: task.type }]
+  )
   const [durationInput, setDurationInput] = useState(inputH + ':' + inputM);
   const darkMode = useSelector((state) => state?.slideBar?.darkMode);
   // console.log("this is stask", task);
@@ -104,53 +108,38 @@ const EditTask = ({ flag, onClose, date, task }) => {
   const projectValue1 = {};
   projectOptions.forEach((project) => {
     if (project.value == task.projectId) {
-      // setProjectValue()
       projectValue1.value = project.value;
       projectValue1.label = project.label;
     }
   })
   var [projectValue, setProjectValue] = React.useState(projectValue1);
-
-  // console.log("this is set valye,", projectValue);
-
   useEffect(() => {
     dispatch(getProjects());
     const timeI = durationInput;
-    if (timeI !== undefined) {
-      const hour = parseInt(timeI.slice(0, 1));
-      const min = parseInt(timeI.slice(2, 4))
-      // setDuration(hour * 60 + min);
-      // console.log("this is time", hour, min)
-    }
+    // if (timeI !== undefined) {
+    //   const hour = parseInt(timeI.slice(0, 1));
+    //   const min = parseInt(timeI.slice(2, 4))
+    // }
     const time = duration;
     if (time !== undefined) {
       const hour = parseInt(time / 60);
       const min = parseInt(time % 60);
       setDurationInput(hour + ':' + min);
-      // console.log("this is time", hour, min)
     }
   }, [dispatch, durationInput, duration]);
-
-  // console.log("This is be", task._id);
   const onSubmit1 = (values, { setSubmitting }) => {
     const data = {
-      ...values, date, projectId: projectValue.value,
+      ...values, date, projectId: projectValue.value, type: taskField.value,
       duration: { hours: parseInt(duration / 60), minutes: parseInt(duration % 60) }
     };
     const id = task._id;
-    // console.log("flag onClose date task", flag, onClose, date, task)
-    // console.log("this is id data", data, UserId)
     dispatch(editTask({ data, id, setSubmitting, onClose }));
   }
-
-
   const initialValues = {
     type: task.type,
     description: task.description,
     projectId: task.projectId,
   };
-
-  // { console.log("isSubmitting", isSubmitting) }
   return (
 
     <CModal show={flag} onClose={onClose} size="lg">
@@ -181,25 +170,35 @@ const EditTask = ({ flag, onClose, date, task }) => {
                     <CForm onSubmit={handleSubmit} noValidate name='simpleForm4'>
                       <CFormGroup>
                         <CLabel htmlFor="type">Task Type</CLabel>
-                        <CInput type="text"
+                        <Select
+                          as="select"
+                          type="type"
                           name="type"
                           id="type"
-                          placeholder="Task Type"
-                          autoComplete="given-name"
-                          valid={!errors.type}
-                          invalid={touched.type && !!errors.type}
-                          autoFocus={true}
-                          required
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.type} />
-                        <CInvalidFeedback>{errors.type}</CInvalidFeedback>
+                          // placeholder="Project Name"
+                          value={taskField}
+                          options={tasks[department]}
+                          onChange={setTaskFiled}
+                          // invalid={touched.type}
+                          // onBlur={handleBlur}
+                          theme={(theme) => ({
+                            ...theme,
+                            colors: {
+                              ...theme.colors,
+                              primary: darkMode ? "black" : theme.colors.primary,
+                              primary25: darkMode ? "black" : theme.colors.primary25,
+                              dangerLight: darkMode ? "black" : theme.colors.dangerLight,
+                              neutral0: darkMode ? "#2a2b36" : theme.colors.neutral0,
+                            },
+                          })}
+                        />
+                        {/* <CInvalidFeedback>{errors.type}</CInvalidFeedback> */}
                       </CFormGroup>
                       <CFormGroup>
-                        <CLabel htmlFor="description1">Description</CLabel>
+                        <CLabel htmlFor="description">Description</CLabel>
                         <CInput type="text"
-                          name="description1"
-                          id="description1"
+                          name="description"
+                          id="description"
                           placeholder="Description"
                           autoComplete="description"
                           valid={!errors.description}
