@@ -95,7 +95,7 @@ const AddTask = ({ flag, onClose, date }) => {
   const darkMode = useSelector((state) => state?.slideBar?.darkMode);
   const [value, setValue] = React.useState([]);
   const [task, setTask] = React.useState(
-    [{ value: 'General', label: 'General' }]
+    [{ value: 'Miscellaneous ', label: 'Miscellaneous ' }]
   )
   const empProject = useSelector((state) => state?.viewProjects?.projects);
   const projectOptions = [];
