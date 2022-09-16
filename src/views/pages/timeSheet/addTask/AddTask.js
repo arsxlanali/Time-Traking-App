@@ -95,7 +95,7 @@ const AddTask = ({ flag, onClose, date }) => {
   const darkMode = useSelector((state) => state?.slideBar?.darkMode);
   const [value, setValue] = React.useState([]);
   const [task, setTask] = React.useState(
-    [{ value: 'Miscellaneous ', label: 'Miscellaneous ' }]
+    [{ value: 'Miscellaneous', label: 'Miscellaneous' }]
   )
   const empProject = useSelector((state) => state?.viewProjects?.projects);
   const projectOptions = [];
@@ -103,10 +103,11 @@ const AddTask = ({ flag, onClose, date }) => {
     const result = (({ _id, name }) => ({ _id, name }))(emp)
     projectOptions.push({ "value": result._id, "label": result.name });
   })
-
-  // console.log("This is duration 1", durationInput, typeof durationInput)
   useEffect(() => {
     dispatch(getProjects());
+  }, [dispatch])
+  useEffect(() => {
+
     const timeI = durationInput;
     const time = duration;
     if (timeI !== undefined) {
@@ -115,13 +116,14 @@ const AddTask = ({ flag, onClose, date }) => {
       setDuration(hour * 60 + min);
       // console.log("this is time", hour, min)
     }
+    console.log("this is duration", time)
     // if (time !== 0) {
     //   const hour = parseInt(time / 60);
     //   const min = parseInt(time % 60);
     //   setDurationInput(hour + ':' + min);
     //   // console.log("this is time", hour, min)
     // }
-  }, [dispatch, durationInput]);
+  }, [durationInput, duration]);
 
   const onSubmit = (values, { setSubmitting, resetForm }) => {
     const data = {
@@ -205,7 +207,9 @@ const AddTask = ({ flag, onClose, date }) => {
                           required
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          value={values.description} />
+                          value={values.description}
+
+                        />
                         <CInvalidFeedback>{errors.description}</CInvalidFeedback>
                       </CFormGroup>
                       <CFormGroup>

@@ -180,7 +180,7 @@ const EditTask = ({ flag, onClose, date, task }) => {
                           options={tasks[department]}
                           onChange={setTaskFiled}
                           // invalid={touched.type}
-                          onBlur={handleBlur}
+                          // onBlur={handleBlur}
                           theme={(theme) => ({
                             ...theme,
                             colors: {
@@ -192,13 +192,13 @@ const EditTask = ({ flag, onClose, date, task }) => {
                             },
                           })}
                         />
-                        <CInvalidFeedback>{errors.type}</CInvalidFeedback>
+                        {/* <CInvalidFeedback>{errors.type}</CInvalidFeedback> */}
                       </CFormGroup>
                       <CFormGroup>
-                        <CLabel htmlFor="description1">Description</CLabel>
+                        <CLabel htmlFor="description">Description</CLabel>
                         <CInput type="text"
-                          name="description1"
-                          id="description1"
+                          name="description"
+                          id="description"
                           placeholder="Description"
                           autoComplete="description"
                           valid={!errors.description}
