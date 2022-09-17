@@ -27,7 +27,7 @@ const validationSchema = function (values) {
     name: Yup.string()
       .min(2, `Name has to be at least 2 characters`)
       .required("Name is required"),
-    phone: Yup.string()
+    phone: Yup.NumberSchema()
       .min(11, `Phone has to be at least 11 characters`)
       .required("phone is required"),
     email: Yup.string()
@@ -112,6 +112,7 @@ const ValidationForms = () => {
 
     // setSubmitting(isLoading);
   };
+  const darkMode = useSelector((state) => state?.slideBar?.darkMode);
 
   return (
     <CRow className={"d-flex justify-content-center"}>
@@ -146,7 +147,6 @@ const ValidationForms = () => {
                           name="name"
                           id="name"
                           placeholder="Name"
-                          autoComplete="given-name"
                           valid={!errors.name}
                           invalid={touched.name && !!errors.name}
                           autoFocus={true}
@@ -164,7 +164,6 @@ const ValidationForms = () => {
                           name="email"
                           id="email"
                           placeholder="Email"
-                          autoComplete="email"
                           valid={!errors.email}
                           invalid={touched.email && !!errors.email}
                           required
@@ -181,7 +180,6 @@ const ValidationForms = () => {
                           name="phone"
                           id="phone"
                           placeholder="Phone"
-                          autoComplete="phone"
                           valid={!errors.phone}
                           invalid={touched.phone && !!errors.phone}
                           required
@@ -209,6 +207,7 @@ const ValidationForms = () => {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.department}
+
                           >
                             <option value="">Please select</option>
                             <option value="HR">HR</option>

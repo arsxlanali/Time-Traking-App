@@ -32,10 +32,6 @@ const validationSchema = function (values) {
     description: Yup.string()
       .min(5, `Description has to be at least 5 characters`)
       .required('Description is required'),
-    // assignBy: Yup.string()
-    //   .required('Assignment is required!'),
-    // assignTo: Yup.string()
-    //   .required('Assignment is required!'),
   }
   )
 }
@@ -63,14 +59,7 @@ const getErrorsFromValidationError = (validationError) => {
 }
 
 
-
-
-
-
-
-
 const ValidationForms = () => {
-
   const dispatch = useDispatch();
   const darkMode = useSelector((state) => state?.slideBar?.darkMode);
   const empOptions = [];
@@ -80,15 +69,14 @@ const ValidationForms = () => {
   }, [dispatch]);
   const history = useHistory();
   const location = useLocation();
-
   const allEmployees = useSelector((state) => state?.employees?.employeesView);
   const employees = allEmployees.filter(emp => emp['role'] == 'EMPLOYEE');
+
   employees.forEach(emp => {
     const result = (({ _id, name }) => ({ _id, name }))(emp)
     empOptions.push({ "value": result._id, "label": result.name });
   })
 
-  // console.log("this is assigned to", location.state.assignTo)
   const assigned = location.state.assignTo;
   assigned.forEach(emp => {
     const result = (({ _id, name }) => ({ _id, name }))(emp)
@@ -202,10 +190,14 @@ const ValidationForms = () => {
                               ...theme,
                               colors: {
                                 ...theme.colors,
-                                primary: darkMode ? "black" : theme.colors.primary,
-                                primary25: darkMode ? "black" : theme.colors.primary25,
-                                dangerLight: darkMode ? "black" : theme.colors.dangerLight,
-                                neutral0: darkMode ? "#2a2b36" : theme.colors.neutral0,
+                                primary: darkMode ? "rgba(255, 255, 255, 0.87)" : theme.colors.primary,
+                                primary25: darkMode ? "rgba(255, 255, 255, 0.20)" : theme.colors.primary25,
+                                primary75: darkMode ? "rgba(255, 255, 0, 0.20)" : theme.colors.primary75,
+                                dangerLight: darkMode ? "#484c54" : theme.colors.dangerLight,
+                                neutral0: darkMode ? "#30343c" : theme.colors.neutral0,
+                                neutral30: darkMode ? "green" : theme.colors.neutral30, //hover
+                                neutral10: darkMode ? "gray" : theme.colors.neutral10,// selected boxes
+                                neutral80: darkMode ? "white" : theme.colors.neutral80, //boxt text
                               },
                             })}
                           />

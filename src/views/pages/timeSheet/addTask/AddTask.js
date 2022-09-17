@@ -95,7 +95,7 @@ const AddTask = ({ flag, onClose, date }) => {
   const darkMode = useSelector((state) => state?.slideBar?.darkMode);
   const [value, setValue] = React.useState([]);
   const [task, setTask] = React.useState(
-    [{ value: 'Miscellaneous', label: 'Miscellaneous' }]
+    []
   )
   const empProject = useSelector((state) => state?.viewProjects?.projects);
   const projectOptions = [];
@@ -113,15 +113,23 @@ const AddTask = ({ flag, onClose, date }) => {
     if (timeI !== undefined) {
       var hour = parseInt(timeI.slice(0, 1));
       var min = parseInt(timeI.slice(2, 4))
-      setDuration(hour * 60 + min);
-      // console.log("this is time", hour, min)
+      if (min) {
+        setDuration(hour * 60 + min);
+      }
+      else if (hour) {
+        setDuration(hour * 60);
+      }
+      else {
+        setDuration(0);
+      }
     }
-    console.log("this is duration", time)
+    // console.log("this is duration", time)
     // if (time !== 0) {
-    //   const hour = parseInt(time / 60);
-    //   const min = parseInt(time % 60);
-    //   setDurationInput(hour + ':' + min);
-    //   // console.log("this is time", hour, min)
+    //   const hour = parseInt(time / 60).toString();
+    //   const min = parseInt(time % 60).toString();
+    //   if (min.length == 1) {
+    //     console.log("this is hour and min", hour, min);
+    //   }
     // }
   }, [durationInput, duration]);
 
@@ -176,22 +184,26 @@ const AddTask = ({ flag, onClose, date }) => {
                           type="type"
                           name="type"
                           id="type"
-                          // placeholder="Project Name"
+                          // disabled="disabled" selected="selected"
                           value={task}
                           options={tasks[department]}
                           onChange={setTask}
                           // invalid={touched.type}
                           onBlur={handleBlur}
-                          theme={(theme) => ({
+                          // style={{ color: "red" }}
+                          theme={(theme) =>
+                          ({
                             ...theme,
                             colors: {
                               ...theme.colors,
-                              primary: darkMode ? "black" : theme.colors.primary,
-                              primary25: darkMode ? "black" : theme.colors.primary25,
-                              dangerLight: darkMode ? "black" : theme.colors.dangerLight,
-                              neutral0: darkMode ? "#2a2b36" : theme.colors.neutral0,
+                              primary: darkMode ? "rgba(255, 255, 255, 0.87);" : theme.colors.primary,
+                              primary25: darkMode ? "rgba(255, 255, 255, 0.20)" : theme.colors.primary25,
+                              dangerLight: darkMode ? "#484c54" : theme.colors.dangerLight,
+                              neutral0: darkMode ? "#484c54" : theme.colors.neutral0,
+                              neutral80: darkMode ? "rgba(255, 255, 255, 0.87)" : theme.colors.neutral80,
                             },
-                          })}
+                          })
+                          }
                         />
                         <CInvalidFeedback>{errors.type}</CInvalidFeedback>
                       </CFormGroup>
@@ -201,7 +213,6 @@ const AddTask = ({ flag, onClose, date }) => {
                           name="description"
                           id="description"
                           placeholder="Description"
-                          autoComplete="description"
                           valid={!errors.description}
                           invalid={touched.description && !!errors.description}
                           required
@@ -228,10 +239,11 @@ const AddTask = ({ flag, onClose, date }) => {
                             ...theme,
                             colors: {
                               ...theme.colors,
-                              primary: darkMode ? "black" : theme.colors.primary,
-                              primary25: darkMode ? "black" : theme.colors.primary25,
-                              dangerLight: darkMode ? "black" : theme.colors.dangerLight,
-                              neutral0: darkMode ? "#2a2b36" : theme.colors.neutral0,
+                              primary: darkMode ? "rgba(255, 255, 255, 0.87);" : theme.colors.primary,
+                              primary25: darkMode ? "rgba(255, 255, 255, 0.20)" : theme.colors.primary25,
+                              dangerLight: darkMode ? "#484c54" : theme.colors.dangerLight,
+                              neutral0: darkMode ? "#484c54" : theme.colors.neutral0,
+                              neutral80: darkMode ? "rgba(255, 255, 255, 0.87)" : theme.colors.neutral80,
                             },
                           })}
                         />

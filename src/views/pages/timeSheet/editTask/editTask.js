@@ -116,10 +116,10 @@ const EditTask = ({ flag, onClose, date, task }) => {
   useEffect(() => {
     dispatch(getProjects());
     const timeI = durationInput;
-    // if (timeI !== undefined) {
-    //   const hour = parseInt(timeI.slice(0, 1));
-    //   const min = parseInt(timeI.slice(2, 4))
-    // }
+    if (timeI !== undefined) {
+      const hour = parseInt(timeI.slice(0, 1));
+      const min = parseInt(timeI.slice(2, 4))
+    }
     const time = duration;
     if (time !== undefined) {
       const hour = parseInt(time / 60);
@@ -181,16 +181,20 @@ const EditTask = ({ flag, onClose, date, task }) => {
                           onChange={setTaskFiled}
                           // invalid={touched.type}
                           // onBlur={handleBlur}
-                          theme={(theme) => ({
-                            ...theme,
-                            colors: {
-                              ...theme.colors,
-                              primary: darkMode ? "black" : theme.colors.primary,
-                              primary25: darkMode ? "black" : theme.colors.primary25,
-                              dangerLight: darkMode ? "black" : theme.colors.dangerLight,
-                              neutral0: darkMode ? "#2a2b36" : theme.colors.neutral0,
-                            },
-                          })}
+                          theme={(theme) => { console.log("theme", theme) }
+                            //   ({
+                            //   ...theme,
+                            //   colors: {
+                            //     ...theme.colors,
+                            //     primary: darkMode ? "rgba(255, 255, 255, 0.87);" : theme.colors.primary,
+                            //     primary25: darkMode ? "rgba(255, 255, 255, 0.20)" : theme.colors.primary25,
+                            //     dangerLight: darkMode ? "#484c54" : theme.colors.dangerLight,
+                            //     neutral0: darkMode ? "#484c54" : theme.colors.neutral0,
+                            //     neutral80: darkMode ? "rgba(255, 255, 255, 0.87)" : theme.colors.neutral80,
+
+                            //   },
+                            // })
+                          }
                         />
                         {/* <CInvalidFeedback>{errors.type}</CInvalidFeedback> */}
                       </CFormGroup>
@@ -200,7 +204,6 @@ const EditTask = ({ flag, onClose, date, task }) => {
                           name="description"
                           id="description"
                           placeholder="Description"
-                          autoComplete="description"
                           valid={!errors.description}
                           invalid={touched.description && !!errors.description}
                           required
@@ -225,10 +228,11 @@ const EditTask = ({ flag, onClose, date, task }) => {
                             ...theme,
                             colors: {
                               ...theme.colors,
-                              primary: darkMode ? "black" : theme.colors.primary,
-                              primary25: darkMode ? "black" : theme.colors.primary25,
-                              dangerLight: darkMode ? "black" : theme.colors.dangerLight,
-                              neutral0: darkMode ? "#2a2b36" : theme.colors.neutral0,
+                              primary: darkMode ? "rgba(255, 255, 255, 0.87);" : theme.colors.primary,
+                              primary25: darkMode ? "rgba(255, 255, 255, 0.20)" : theme.colors.primary25,
+                              dangerLight: darkMode ? "#484c54" : theme.colors.dangerLight,
+                              neutral0: darkMode ? "#484c54" : theme.colors.neutral0,
+                              neutral80: darkMode ? "rgba(255, 255, 255, 0.87)" : theme.colors.neutral80,
                             },
                           })}
                         />

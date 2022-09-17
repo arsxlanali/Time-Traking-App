@@ -30,6 +30,9 @@ input.form-control[type="date"]::-webkit-calendar-picker-indicator {
   color: transparent;
   background: transparent;
 }
+.custom-select.is-valid,.custom-select.is-invalid {
+  background: none;
+}
 // input.form-control[type="date"]::-moz-focus-inner {
 //   h
 // }

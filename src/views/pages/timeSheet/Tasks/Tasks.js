@@ -1,5 +1,31 @@
 const _tasks = {
+    GENERAL: [
+        { value: 'Miscellaneous', label: 'Miscellaneous' },
+        { value: 'Development', label: 'Development' },
+        { value: 'Meeting', label: 'Meeting' },
+        { value: 'Leading', label: 'Leading' },
+        { value: 'Learning', label: 'Learning' },
+        { value: 'Traning', label: 'Traning' },
+        { value: 'Code Review', label: 'Code Review' },
+        { value: 'Code Analysis', label: 'Code Analysis' },
+        { value: 'Code Analysis', label: 'Code Analysis' },
+        { value: 'Code Refactoring', label: 'Code Refactoring' },
+        { value: 'Session', label: 'Session' },
+        { value: 'Discussion', label: 'Discussion' },
+        { value: 'Debugging', label: 'Debugging' },
+        { value: 'Reporting', label: 'Reporting' },
+        { value: 'Writing Docs', label: 'Writing Docs' },
+        { value: 'Designing', label: 'Designing' },
+        { value: 'Project Setup', label: 'Project Setup' },
+        { value: 'Code Merging', label: 'Code Merging' },
+        { value: 'Automated Testing', label: 'Automated Testing' },
+        { value: 'Unit Testing', label: 'Unit Testing' },
+        { value: 'Integration Testing', label: 'Integration Testing' },
+
+
+    ],
     DEVELOPMENT: [
+        { value: 'Miscellaneous', label: 'Miscellaneous' },
         { value: 'Development', label: 'Development' },
         { value: 'Meeting', label: 'Meeting' },
         { value: 'Leading', label: 'Leading' },
