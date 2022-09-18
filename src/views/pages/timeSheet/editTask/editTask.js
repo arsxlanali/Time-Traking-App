@@ -44,6 +44,7 @@ import Select from "react-select";
 import { useEffect } from 'react';
 import { getProjects } from 'src/redux/Slice/projectSlice';
 import tasks from '../Tasks/Tasks'
+import { string } from 'prop-types';
 const validationSchema = function (values) {
   return Yup.object().shape({
     // type: Yup.string()
@@ -99,6 +100,7 @@ const EditTask = ({ flag, onClose, date, task }) => {
   const darkMode = useSelector((state) => state?.slideBar?.darkMode);
   // console.log("this is stask", task);
   const empProject = useSelector((state) => state?.viewProjects?.projects);
+  // console.log("this is projecccts", projectValue)
   // const timeSheet = useSelector((state) => state?.viewTimeSheet?.timeSheet);
   const projectOptions = [];
   empProject.forEach(emp => {
@@ -115,18 +117,22 @@ const EditTask = ({ flag, onClose, date, task }) => {
   var [projectValue, setProjectValue] = React.useState(projectValue1);
   useEffect(() => {
     dispatch(getProjects());
-    const timeI = durationInput;
-    // if (timeI !== undefined) {
-    //   const hour = parseInt(timeI.slice(0, 1));
-    //   const min = parseInt(timeI.slice(2, 4))
-    // }
-    const time = duration;
-    if (time !== undefined) {
-      const hour = parseInt(time / 60);
-      const min = parseInt(time % 60);
-      setDurationInput(hour + ':' + min);
-    }
-  }, [dispatch, durationInput, duration]);
+  }, [dispatch])
+  // useEffect(() => {
+  //   const timeI = durationInput;
+  //   if (typeof timeI == 'string') {
+  //     const hour = parseInt(timeI.slice(0, 1));
+  //     const min = parseInt(timeI.slice(2, 4))
+  //     // setDuration(hour * 60 + min);
+  //     console.log('thisi si time', typeof timeI, timeI)
+  //   }
+  //   const time = duration;
+  //   if (time !== undefined) {
+  //     const hour = parseInt(time / 60);
+  //     const min = parseInt(time % 60);
+  //     setDurationInput(hour + ':' + min);
+  //   }
+  // }, [durationInput, duration]);
   const onSubmit1 = (values, { setSubmitting }) => {
     const data = {
       ...values, date, projectId: projectValue.value, type: taskField.value,
@@ -140,6 +146,7 @@ const EditTask = ({ flag, onClose, date, task }) => {
     description: task.description,
     projectId: task.projectId,
   };
+  const handleFocus = (event) => event.target.select();
   return (
 
     <CModal show={flag} onClose={onClose} size="lg">
@@ -181,16 +188,20 @@ const EditTask = ({ flag, onClose, date, task }) => {
                           onChange={setTaskFiled}
                           // invalid={touched.type}
                           // onBlur={handleBlur}
-                          theme={(theme) => ({
+                          theme={(theme) =>
+                          ({
                             ...theme,
                             colors: {
                               ...theme.colors,
-                              primary: darkMode ? "black" : theme.colors.primary,
-                              primary25: darkMode ? "black" : theme.colors.primary25,
-                              dangerLight: darkMode ? "black" : theme.colors.dangerLight,
-                              neutral0: darkMode ? "#2a2b36" : theme.colors.neutral0,
+                              primary: darkMode ? "rgba(255, 255, 255, 0.87);" : theme.colors.primary,
+                              primary25: darkMode ? "rgba(255, 255, 255, 0.20)" : theme.colors.primary25,
+                              dangerLight: darkMode ? "#484c54" : theme.colors.dangerLight,
+                              neutral0: darkMode ? "#484c54" : theme.colors.neutral0,
+                              neutral80: darkMode ? "rgba(255, 255, 255, 0.87)" : theme.colors.neutral80,
+
                             },
-                          })}
+                          })
+                          }
                         />
                         {/* <CInvalidFeedback>{errors.type}</CInvalidFeedback> */}
                       </CFormGroup>
@@ -200,11 +211,12 @@ const EditTask = ({ flag, onClose, date, task }) => {
                           name="description"
                           id="description"
                           placeholder="Description"
-                          autoComplete="description"
+                          autoComplete="off"
                           valid={!errors.description}
                           invalid={touched.description && !!errors.description}
                           required
                           onChange={handleChange}
+                          onFocus={handleFocus}
                           onBlur={handleBlur}
                           value={values.description} />
                         <CInvalidFeedback>{errors.description}</CInvalidFeedback>
@@ -225,10 +237,11 @@ const EditTask = ({ flag, onClose, date, task }) => {
                             ...theme,
                             colors: {
                               ...theme.colors,
-                              primary: darkMode ? "black" : theme.colors.primary,
-                              primary25: darkMode ? "black" : theme.colors.primary25,
-                              dangerLight: darkMode ? "black" : theme.colors.dangerLight,
-                              neutral0: darkMode ? "#2a2b36" : theme.colors.neutral0,
+                              primary: darkMode ? "rgba(255, 255, 255, 0.87);" : theme.colors.primary,
+                              primary25: darkMode ? "rgba(255, 255, 255, 0.20)" : theme.colors.primary25,
+                              dangerLight: darkMode ? "#484c54" : theme.colors.dangerLight,
+                              neutral0: darkMode ? "#484c54" : theme.colors.neutral0,
+                              neutral80: darkMode ? "rgba(255, 255, 255, 0.87)" : theme.colors.neutral80,
                             },
                           })}
                         />
@@ -245,9 +258,23 @@ const EditTask = ({ flag, onClose, date, task }) => {
                             Component={InputAdapter}
                             className="form-control"
                             value={durationInput}
+                            onFocus={handleFocus}
                             onChange={(e) => {
                               if (e.target.value.length <= 4) {
+                                const timeI = e.target.value;
                                 setDurationInput(e.target.value);
+                                const hour = parseInt(timeI.slice(0, 1));
+                                const min = parseInt(timeI.slice(2, 4))
+                                if (min) {
+                                  setDuration(hour * 60 + min);
+
+                                }
+                                else if (hour) {
+                                  setDuration(hour * 60);
+                                }
+                                else {
+                                  setDuration(0);
+                                }
                               }
                             }}
                           />
@@ -259,7 +286,17 @@ const EditTask = ({ flag, onClose, date, task }) => {
                       <CFormGroup>
                         <CLabel htmlFor="duration">Duration</CLabel>
                         <div>
-                          <input type="range" name="points" min="0" max="120" value={duration} onChange={(e) => setDuration(e.target.value)}
+
+                          <input type="range" min="0" max="120" value={duration} onChange={(e) => {
+                            const time = e.target.value;
+                            setDuration(time);
+                            const hour = parseInt(time / 60).toString();
+                            const min = parseInt(time % 60).toString();
+                            if (min.length == 1) {
+                              setDurationInput(hour + ':0' + min);
+                            }
+                            setDurationInput(hour + ':0' + min);
+                          }}
                             style={{ width: "100%" }} />
 
                         </div>

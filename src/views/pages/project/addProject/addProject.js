@@ -160,7 +160,7 @@ const ValidationForms = () => {
                             name="name"
                             id="name"
                             placeholder="Project Name"
-                            autoComplete="given-name"
+                            autoComplete="off"
                             valid={!errors.name}
                             invalid={touched.name && !!errors.name}
                             autoFocus={true}
@@ -176,7 +176,7 @@ const ValidationForms = () => {
                             name="description"
                             id="description"
                             placeholder="Description"
-                            autoComplete="description"
+                            autoComplete="off"
                             valid={!errors.description}
                             invalid={touched.description && !!errors.description}
                             required
@@ -200,14 +200,19 @@ const ValidationForms = () => {
                             // valid={!errors.assignTo}
                             invalid={touched.assignTo}
                             onBlur={handleBlur}
+                            // theme={(e) => console.log(e)}
                             theme={(theme) => ({
                               ...theme,
                               colors: {
                                 ...theme.colors,
-                                primary: darkMode ? "black" : theme.colors.primary,
-                                primary25: darkMode ? "black" : theme.colors.primary25,
-                                dangerLight: darkMode ? "black" : theme.colors.dangerLight,
-                                neutral0: darkMode ? "#2a2b36" : theme.colors.neutral0,
+                                primary: darkMode ? "rgba(255, 255, 255, 0.87)" : theme.colors.primary,
+                                primary25: darkMode ? "rgba(255, 255, 255, 0.20)" : theme.colors.primary25,
+                                primary75: darkMode ? "rgba(255, 255, 0, 0.20)" : theme.colors.primary75,
+                                dangerLight: darkMode ? "#484c54" : theme.colors.dangerLight,
+                                neutral0: darkMode ? "#30343c" : theme.colors.neutral0,
+                                neutral30: darkMode ? "green" : theme.colors.neutral30, //hover
+                                neutral10: darkMode ? "gray" : theme.colors.neutral10,// selected boxes
+                                neutral80: darkMode ? "white" : theme.colors.neutral80, //boxt text
                               },
                             })}
                           />

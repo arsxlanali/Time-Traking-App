@@ -3,105 +3,102 @@ import React, { useState } from "react";
 import { viewTimeSheet, deleteTask, submitTasks, checkSubmit } from "src/redux/Slice/viewTimeSheetSlice";
 import AddTask from "../addTask/AddTask";
 import EditTask from "../editTask/editTask";
-import { useHistory } from "react-router-dom/cjs/react-router-dom";
-
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import 'spinkit/spinkit.min.css'
-import Spinners from "../../loader/Loader";
 import {
-  CCard,
   CCardBody,
-  CForm,
-  CInvalidFeedback,
-  CFormGroup,
-  CLabel,
   CInput,
-  CBadge,
   CButton,
-  CCollapse,
   CDataTable,
-  CModal,
-  CModalBody,
-  CModalFooter,
-  CModalHeader,
-  CModalTitle,
   CRow,
   CCol,
-  CInputGroup,
-  CInputGroupPrepend,
-  CInputGroupText,
-  // CDatePicker
-
+  CButtonGroup,
 } from "@coreui/react";
 import "react-dates/initialize";
-import "react-dates/lib/css/_datepicker.css";
-// import { set } from "core-js/core/dict";
 
+import { SingleDatePicker } from "react-dates";
+import moment from 'moment';
 
+function dateGetter(params, dayAhead) {
+  var today = params;
+  var dd = String(today.getDate() + dayAhead).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0');
+  var yyyy = today.getFullYear();
+  return yyyy + '-' + mm + '-' + dd;
+}
 
 
 const SheetTable = () => {
   const [details, setDetails] = useState([]);
   const [model, setModel] = useState(false);
-  // const [largeForEditTask, setLargeForEditTask] = useState(false);
   const UserId = localStorage.getItem('key');
   const dispatch = useDispatch();
   const { timeSheet, loading, submitted } = useSelector((state) => state.viewTimeSheet);
+  const { projects } = useSelector((state) => state.viewProjects);
   const [taskId, setTaskId] = useState(undefined);
   const [submitting, setSubmitting] = useState(false);
   const [submit, setSubmit] = useState(false)
-  // console.log("taskkkkkkkk", taskId)
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0');
-  var yyyy = today.getFullYear();
-  today = yyyy + '-' + mm + '-' + dd;
+  const [focused, setFocused] = useState();
+  const [date1, setDate1] = useState({ date: moment() });
+  // var today = date1.date._d;
+  var today = dateGetter(new Date(), 0);
   const [date, setDate] = useState(today)
+  // console.log("they this is date", date)
 
   const newArray = timeSheet.map((sheet) => {
     return {
       ...sheet, duration: `${sheet?.duration?.hours}:${sheet?.duration?.minutes} mins`, totalMins: sheet?.duration?.hours * 60 + sheet?.duration?.minutes
+      , project: projects.map((project) => {
+        if (project._id == sheet.projectId) {
+          return project.name;
+        }
+      })
     }
   })
-  // const token = localStorage.getItem("Token");
+  const finalData = newArray.map((array) => {
+    const index = array.project.findIndex((element) => element != undefined)
+    const projectName = array.project[index]
+    return { ...array, project: projectName }
+  })
+  // console.log("this is array", finalData)
   useEffect(() => {
     dispatch(checkSubmit({ UserId, date }));
     dispatch(viewTimeSheet({ UserId, date }));
   }, [dispatch, date, submit])
-
-  const toggleDetails = (index) => {
-    const position = details.indexOf(index);
-    let newDetails = details.slice();
-    if (position !== -1) {
-      newDetails.splice(position, 1);
-    } else {
-      newDetails = [...details, index];
-    }
-    setDetails(newDetails);
-  };
   const fields = [
-    { key: "type", _style: { width: "15%" } },
-    { key: "description", _style: { width: "40%" } },
+    { key: "type", _style: { width: "17%" } },
+    { key: "description", _style: { width: "35%" } },
+    { key: "project", _style: { width: "20%" } },
     { key: "duration", _style: { width: "10%" } },
-    // { key: "date", _style: { width: "20%" } },
     {
-      key: "show_details",
-      label: "",
-      _style: { width: "1%" },
+      key: "Actions",
+      // _style: { float: "right" },
       filter: false,
     },
   ];
+  if (submitted) {
+    fields.pop();
+  }
   const handleChange = event => {
     // setMessage(event.target.value);
-    const date = event.target.value;
-    setDate(event.target.value);
+    const date = dateGetter(event._d, 0);
+    setDate(date);
     dispatch(viewTimeSheet({ UserId, date }));
     // console.log('value is:fjd', event.target.value);
   };
+  var count = 0;
+  var array1 = [true, true, true, true, true, true, true, true, true, true, false, true, true, true, true, true, true, true, true, true, true, false,
+    true, true, true, true, true, true, true, true, true, true, false, true, true, true, true, true, true, true, true, true, true, false,
+    true, true, true, true, true, true, true, true, true, true, false,
+    true, true, true, true, true, true, true, true, true, true, false,
+    true, true, true, true, true, true, true, true, true, true, false,
+    true, true, true, true, true, true, true, true, true, true, false,
+    true, true, true, true]
   // timeSheet.forEach((sheet) => { console.log("This is sheet", sheet.description) })
   return (
     <>
+
       <AddTask flag={model} onClose={() => setModel(!model)} date={date} />
       {taskId && <EditTask flag={model} onClose={() => {
         setModel(!model)
@@ -110,14 +107,46 @@ const SheetTable = () => {
 
       <CRow className={"d-flex justify-content-between mt-4 mx-2"}>
         <CCol xs="7" md="4">
-          <CInput type="date" name="date-input" placeholder="date"
-            value={date}
-            onChange={handleChange}
-            max={date}
-          // onFocus={(e) => e.showPicker()}
+          <SingleDatePicker
+            date={date1.date} // momentPropTypes.momentObj or null
+            onDateChange={date1 => {
+              setDate1({ date: date1 })
+              setFocused(false)
+              const date = dateGetter(date1._d, 0);
+              setDate(date);
+              dispatch(viewTimeSheet({ UserId, date }));
+            }}
+            keepOpenOnDateSelect
+            numberOfMonths={1}
+            block={true}
+            onNextMonthClick={(e) => {
+              count = 0;
+            }
+            }
+            onPrevMonthClick={(e) => {
+              count = 0;
+            }}
+            isDayHighlighted={() => {
+              count++;
+              return array1[count]
+            }}
+            focused={focused} // PropTypes.bool
+            onFocusChange={() => setFocused(true)} // PropTypes.func.isRequired
+            isOutsideRange={(e) => {
+              var today = dateGetter(new Date(), 1);
+              today = new Date(today);
+              var previous = dateGetter(e._d, 0)
+              previous = new Date(previous)
+              return previous >= today;
+            }}
+            // withPortal
+            displayFormat="Y MMM D"
+            showDefaultInputIcon
+            inputIconPosition="after"
+            small
+            hideKeyboardShortcutsPanel
           />
         </CCol>
-        {/* <input type="date" onfocus={showPicker}></input> */}
         <CCol>
           <CButton onClick={() => setModel(true)}
             color="primary"
@@ -129,75 +158,53 @@ const SheetTable = () => {
         </CCol>
 
       </CRow>
-      {/* <CCol>
-
-      </CCol> */}
-
       <CCardBody>
         {
           loading ? (
             <Loader />
           ) : (
             <CDataTable
-              items={newArray}
+              items={finalData}
               fields={fields}
               columnFilter
               hover
               sorter
               pagination
-              scopedSlots={{
-                show_details: (item) => {
-                  return (
-                    <td className="py-2">
-                      <CButton
-                        color="primary"
-                        variant="outline"
-                        shape="square"
-                        size="sm"
-                        onClick={() => {
-                          toggleDetails(item._id);
-                        }}
-                      >
-                        {details.includes(item._id) ? "Action" : "Action"}
-                      </CButton>
-                    </td>
-                  );
-                },
-                details: (item) => {
-                  return (
-                    <CCollapse show={details.includes(item._id)}>
-                      <CCardBody>
-                        <h4>{item.username}</h4>
-
-                        <CButton size="sm" color="info"
+              class="table-responsive"
+              style={{ verticalAlign: "middle" }}
+              scopedSlots={
+                {
+                  Actions: (item) => {
+                    return (
+                      <td>
+                        <CButton size="sm"
+                          color="primary"
+                          // variant="outline"
+                          shape="square"
+                          className="my-2 float-right"
                           hidden={submitted}
                           onClick={() => {
                             setModel(true)
                             setTaskId(item)
-
                           }} >
-                          Edit
+                          {'Update'}
                         </CButton>
-                        <CButton size="sm" color="danger" className="ml-2"
+                        <CButton size="sm"
+                          shape="square"
+                          color="danger" className="my-2 float-right"
                           hidden={submitted}
                           onClick={() => {
                             setSubmitting(true)
-                            // console.log("this is item", item)
                             const id = item._id;
                             const date = item.date;
                             dispatch(deleteTask({ id, date, setSubmitting }));
-
                           }}>
-                          {submitting ? "Wait..." : "Delete"}
+                          {submitting ? "Wait..." : "Delete "}
                         </CButton>
-
-
-                      </CCardBody>
-                    </CCollapse>
-                  );
-                },
-              }}
-
+                      </td>
+                    );
+                  },
+                }}
             />
           )}
       </CCardBody>
@@ -208,7 +215,6 @@ const SheetTable = () => {
             setSubmit(true);
             dispatch(submitTasks({ date, setSubmit }))
             dispatch(checkSubmit({ UserId, date }));
-            // dispatch(viewTimeSheet({ UserId, date }));
           }
           }
         >
