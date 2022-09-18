@@ -44,7 +44,7 @@ const SheetTable = () => {
   // var today = date1.date._d;
   var today = dateGetter(new Date(), 0);
   const [date, setDate] = useState(today)
-  console.log("they this is date", date)
+  // console.log("they this is date", date)
 
   const newArray = timeSheet.map((sheet) => {
     return {
@@ -88,6 +88,13 @@ const SheetTable = () => {
     // console.log('value is:fjd', event.target.value);
   };
   var count = 0;
+  var array1 = [true, true, true, true, true, true, true, true, true, true, false, true, true, true, true, true, true, true, true, true, true, false,
+    true, true, true, true, true, true, true, true, true, true, false, true, true, true, true, true, true, true, true, true, true, false,
+    true, true, true, true, true, true, true, true, true, true, false,
+    true, true, true, true, true, true, true, true, true, true, false,
+    true, true, true, true, true, true, true, true, true, true, false,
+    true, true, true, true, true, true, true, true, true, true, false,
+    true, true, true, true]
   // timeSheet.forEach((sheet) => { console.log("This is sheet", sheet.description) })
   return (
     <>
@@ -112,18 +119,17 @@ const SheetTable = () => {
             keepOpenOnDateSelect
             numberOfMonths={1}
             block={true}
-            // isDayBlocked={() => true}
-            isDayHighlighted={(e) => {
-              if (count % 2 == 0) {
-                count++;
-                return true;
-              }
-              else {
-                count++;
-                return false
-              }
+            onNextMonthClick={(e) => {
+              count = 0;
+            }
+            }
+            onPrevMonthClick={(e) => {
+              count = 0;
             }}
-            // enableOutsideDays={true}
+            isDayHighlighted={() => {
+              count++;
+              return array1[count]
+            }}
             focused={focused} // PropTypes.bool
             onFocusChange={() => setFocused(true)} // PropTypes.func.isRequired
             isOutsideRange={(e) => {
@@ -135,8 +141,8 @@ const SheetTable = () => {
             }}
             // withPortal
             displayFormat="Y MMM D"
-            // showDefaultInputIcon
-            // inputIconPosition="after"
+            showDefaultInputIcon
+            inputIconPosition="after"
             small
             hideKeyboardShortcutsPanel
           />
