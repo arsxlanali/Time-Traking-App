@@ -16,9 +16,17 @@ import {
   CButtonGroup,
 } from "@coreui/react";
 import "react-dates/initialize";
-import "react-dates/lib/css/_datepicker.css";
 
+import { SingleDatePicker } from "react-dates";
+import moment from 'moment';
 
+function dateGetter(params, dayAhead) {
+  var today = params;
+  var dd = String(today.getDate() + dayAhead).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0');
+  var yyyy = today.getFullYear();
+  return yyyy + '-' + mm + '-' + dd;
+}
 
 
 const SheetTable = () => {
@@ -31,12 +39,12 @@ const SheetTable = () => {
   const [taskId, setTaskId] = useState(undefined);
   const [submitting, setSubmitting] = useState(false);
   const [submit, setSubmit] = useState(false)
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0');
-  var yyyy = today.getFullYear();
-  today = yyyy + '-' + mm + '-' + dd;
+  const [focused, setFocused] = useState();
+  const [date1, setDate1] = useState({ date: moment() });
+  // var today = date1.date._d;
+  var today = dateGetter(new Date(), 0);
   const [date, setDate] = useState(today)
+  console.log("they this is date", date)
 
   const newArray = timeSheet.map((sheet) => {
     return {
@@ -74,14 +82,16 @@ const SheetTable = () => {
   }
   const handleChange = event => {
     // setMessage(event.target.value);
-    const date = event.target.value;
-    setDate(event.target.value);
+    const date = dateGetter(event._d, 0);
+    setDate(date);
     dispatch(viewTimeSheet({ UserId, date }));
     // console.log('value is:fjd', event.target.value);
   };
+  var count = 0;
   // timeSheet.forEach((sheet) => { console.log("This is sheet", sheet.description) })
   return (
     <>
+
       <AddTask flag={model} onClose={() => setModel(!model)} date={date} />
       {taskId && <EditTask flag={model} onClose={() => {
         setModel(!model)
@@ -90,10 +100,45 @@ const SheetTable = () => {
 
       <CRow className={"d-flex justify-content-between mt-4 mx-2"}>
         <CCol xs="7" md="4">
-          <CInput type="date" name="date-input" placeholder="date"
-            value={date}
-            onChange={handleChange}
-            max={date}
+          <SingleDatePicker
+            date={date1.date} // momentPropTypes.momentObj or null
+            onDateChange={date1 => {
+              setDate1({ date: date1 })
+              setFocused(false)
+              const date = dateGetter(date1._d, 0);
+              setDate(date);
+              dispatch(viewTimeSheet({ UserId, date }));
+            }}
+            keepOpenOnDateSelect
+            numberOfMonths={1}
+            block={true}
+            // isDayBlocked={() => true}
+            isDayHighlighted={(e) => {
+              if (count % 2 == 0) {
+                count++;
+                return true;
+              }
+              else {
+                count++;
+                return false
+              }
+            }}
+            // enableOutsideDays={true}
+            focused={focused} // PropTypes.bool
+            onFocusChange={() => setFocused(true)} // PropTypes.func.isRequired
+            isOutsideRange={(e) => {
+              var today = dateGetter(new Date(), 1);
+              today = new Date(today);
+              var previous = dateGetter(e._d, 0)
+              previous = new Date(previous)
+              return previous >= today;
+            }}
+            // withPortal
+            displayFormat="Y MMM D"
+            // showDefaultInputIcon
+            // inputIconPosition="after"
+            small
+            hideKeyboardShortcutsPanel
           />
         </CCol>
         <CCol>

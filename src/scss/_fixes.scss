@@ -16,18 +16,99 @@ button {
 
 .c-dark-theme{
   input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:active
+
+  {
     box-shadow: 0 0 0 30px #353640 inset !important;
-}
-input:-webkit-autofill{
+  }
+    nput:-webkit-autofill{
     -webkit-text-fill-color: white !important;
+  }
+}
+
+.c-dark-theme {
+  .CalendarDay__selected {
+    background: #4638c2;
+    color: white;
+  }
+  .CalendarDay__selected:hover 
+  {
+    background: #231880;
+    color: white;
+  }
+.CalendarDay__default {
+  // border: 1px solid #ffffff;
+  color: wheat;
+  background: #30343c;
+}
+.CalendarDay__default:hover {
+  background: #231880;
+  // border: 1px solid #5bc8c8;
+  color: inherit
+}
+.CalendarDay__blocked_out_of_range,
+.CalendarDay__blocked_out_of_range:active,
+.CalendarDay__blocked_out_of_range:hover {
+  background: #30343c6d;
+  border: 1px solid #e4e7e7;
+  color: #cacccd
+}
+.CalendarMonth {
+  background: gray;
+}
+
+.CalendarMonth_caption {
+  color: white;
+}
+.CalendarMonthGrid {
+  background: gray;
+  // text-align: left;
+  // z-index: 0
+}
+.DateInput_fangStroke {
+  fill: gray;
+}
+.DayPickerNavigation_button__default {
+  // border: 1px solid #e4e7e7;
+  background-color: rgb(76, 67, 67);
+  color: white;
+}
+// .DayPickerNavigation_button__disabled {
+//   cursor: default;
+//   border: 1px solid #f2f2f2
+// }
+// .DayPickerNavigation_button__disabled:focus,
+// .DayPickerNavigation_button__disabled:hover {
+//   border: 1px solid #f2f2f2
+// }
+.DayPicker__horizontal {
+  background: gray
+}
+.DayPicker {
+  background: gray;
+  position: relative;
+  text-align: left
+}
+.DayPicker_weekHeader{
+  color: white;
+}
+.DateInput_input__focused{
+  border: none;
+}
+.CalendarDay__highlighted_calendar{
+  background-color: rgb(80, 153, 80);
 }
 }
-// todo: brand button icon margin
-.btn-brand:not(:only-child) {
-  .c-icon {
+
+
+
+  // todo: brand button icon margin
+.btn-brand:not(:only-child) 
+{
+  .c-icon 
+  {
     margin-top: 0 !important;
   }
 }
