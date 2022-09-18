@@ -58,6 +58,7 @@ const getErrorsFromValidationError = (validationError) => {
 
 function LoginApp() {
   const { isLoading } = useSelector((state) => state.login);
+  const darkMode = useSelector((state) => state?.slideBar?.darkMode);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -67,26 +68,32 @@ function LoginApp() {
     dispatch(login({ values, history, setSubmitting }));
     // setSubmitting(isLoading);
   };
-  // if (isLoading) {
-  //   return (
-  //     // <div className="vh-100">
-  //     <Loader />
-  //     // </div>
-
-  //   );
-  // }
   const initialValues = {
     email: "",
     password: "",
   };
 
-
+  if (darkMode) {
+    var text = "text-white c-dark-theme"
+    var backgorund = {
+      backgroundColor: '#181924'
+    }
+    var carStyle = {
+      backgroundColor: '#2a2b36'
+    }
+    var inputColor = {
+      backgroundColor: "rgba(255, 255, 255, 0.05)"
+      , color: "white"
+    }
+  }
   return (
-    <div className="c-app c-default-layout flex-row align-items-center">
-      <CContainer>
+    <div className={`c-app c-default-layout flex-row align-items-center ${text}`}
+      style={backgorund} >
+      <CContainer >
         <CRow className="justify-content-center">
-          <CCol md="8">
-            <CCard className="p-4">
+          <CCol lg="5">
+            <CCard className="p-4"
+              style={carStyle}>
               <Formik
                 initialValues={initialValues}
                 validate={validate(validationSchema)}
@@ -107,7 +114,6 @@ function LoginApp() {
                       <CForm onSubmit={handleSubmit} noValidate name="simpleForm1">
                         <h1>Login</h1>
                         <p className="text-muted">Sign In to your account</p>
-                        {/* <CCol> */}
                         <CFormGroup>
                           <CLabel htmlFor="email">Email</CLabel>
                           <CInput
@@ -116,12 +122,14 @@ function LoginApp() {
                             id="email"
                             placeholder="Email"
                             autoComplete="email"
+
                             valid={!errors.email}
                             invalid={touched.email && !!errors.email}
                             required
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.email}
+                            style={inputColor}
                           />
                           <CInvalidFeedback>{errors.email}</CInvalidFeedback>
                         </CFormGroup>
@@ -139,6 +147,7 @@ function LoginApp() {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.password}
+                            style={inputColor}
                           />
                           <CInvalidFeedback>{errors.password}</CInvalidFeedback>
                         </CFormGroup>

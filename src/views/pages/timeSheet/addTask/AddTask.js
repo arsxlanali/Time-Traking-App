@@ -1,33 +1,19 @@
 import React, { useState } from 'react'
 import { addTask } from 'src/redux/Slice/viewTimeSheetSlice';
-
 import {
   CButton,
-  CCard,
   CCardBody,
-  CCardHeader,
   CCol,
   CModal,
   CModalBody,
-  CModalFooter,
   CModalHeader,
   CModalTitle,
   CRow,
-  CSelect,
-  CDropdown,
-  CDropdownDivider,
-  CDropdownHeader,
-  CDropdownItem,
-  CDropdownMenu,
-  CDropdownToggle,
-
   CForm,
   CInvalidFeedback,
-  CInputCheckbox,
   CFormGroup,
   CLabel,
   CInput,
-
   CFormText,
   CInputGroup,
   CInputGroupPrepend,
@@ -40,23 +26,19 @@ import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
 import CIcon from "@coreui/icons-react";
 import { TextMask, InputAdapter } from "react-text-mask-hoc";
-import { getEmployees } from 'src/redux/Slice/employeesSlice';
-import states from 'src/views/forms/advanced-forms/states';
 import Select from "react-select";
 import { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import { getProjects } from 'src/redux/Slice/projectSlice';
-// import { values } from 'core-js/core/array';
 import tasks from '../Tasks/Tasks'
+
 const validationSchema = function (values) {
   return Yup.object().shape({
-    // type: Yup.string().required("Color is required!"),
-
     description: Yup.string()
       .min(5, `Description has to be at least 5 characters`)
       .required('Description is required'),
   })
 }
+
 const validate = (getValidationSchema) => {
   return (values) => {
     const validationSchema = getValidationSchema(values);
@@ -79,25 +61,15 @@ const getErrorsFromValidationError = (validationError) => {
   }, {});
 };
 
-
-
-
-
-
-
-
 const AddTask = ({ flag, onClose, date }) => {
+  const empProject = useSelector((state) => state?.viewProjects?.projects);
+  const darkMode = useSelector((state) => state?.slideBar?.darkMode);
   const department = localStorage.getItem("Department");
-  // console.log("this is department", department)
   const dispatch = useDispatch();
   const [duration, setDuration] = useState(0);
   const [durationInput, setDurationInput] = useState();
-  const darkMode = useSelector((state) => state?.slideBar?.darkMode);
   const [value, setValue] = React.useState([]);
-  const [task, setTask] = React.useState(
-    []
-  )
-  const empProject = useSelector((state) => state?.viewProjects?.projects);
+  const [task, setTask] = React.useState([])
   const projectOptions = [];
   empProject.forEach(emp => {
     const result = (({ _id, name }) => ({ _id, name }))(emp)
@@ -106,32 +78,6 @@ const AddTask = ({ flag, onClose, date }) => {
   useEffect(() => {
     dispatch(getProjects());
   }, [dispatch])
-  useEffect(() => {
-
-    const timeI = durationInput;
-    const time = duration;
-    if (timeI !== undefined) {
-      var hour = parseInt(timeI.slice(0, 1));
-      var min = parseInt(timeI.slice(2, 4))
-      if (min) {
-        setDuration(hour * 60 + min);
-      }
-      else if (hour) {
-        setDuration(hour * 60);
-      }
-      else {
-        setDuration(0);
-      }
-    }
-    // console.log("this is duration", time)
-    // if (time !== 0) {
-    //   const hour = parseInt(time / 60).toString();
-    //   const min = parseInt(time % 60).toString();
-    //   if (min.length == 1) {
-    //     console.log("this is hour and min", hour, min);
-    //   }
-    // }
-  }, [durationInput, duration]);
 
   const onSubmit = (values, { setSubmitting, resetForm }) => {
     const data = {
@@ -141,15 +87,13 @@ const AddTask = ({ flag, onClose, date }) => {
     dispatch(addTask({ data, setSubmitting, resetForm }));
   }
 
-
   const initialValues = {
     type: "",
     description: "",
     projectId: "",
   };
 
-
-
+  const handleFocus = (event) => event.target.select();
   return (
 
     <CModal show={flag} onClose={onClose} size="lg">
@@ -184,11 +128,12 @@ const AddTask = ({ flag, onClose, date }) => {
                           type="type"
                           name="type"
                           id="type"
+
                           // disabled="disabled" selected="selected"
                           value={task}
                           options={tasks[department]}
                           onChange={setTask}
-                          // invalid={touched.type}
+                          onFocus={handleFocus}
                           onBlur={handleBlur}
                           // style={{ color: "red" }}
                           theme={(theme) =>
@@ -213,11 +158,14 @@ const AddTask = ({ flag, onClose, date }) => {
                           name="description"
                           id="description"
                           placeholder="Description"
+                          autoComplete="off"
+
                           valid={!errors.description}
                           invalid={touched.description && !!errors.description}
                           required
                           onChange={handleChange}
                           onBlur={handleBlur}
+                          onFocus={handleFocus}
                           value={values.description}
 
                         />
@@ -235,6 +183,7 @@ const AddTask = ({ flag, onClose, date }) => {
                           onChange={setValue}
                           invalid={touched.projectId}
                           onBlur={handleBlur}
+                          onFocus={handleFocus}
                           theme={(theme) => ({
                             ...theme,
                             colors: {
@@ -260,9 +209,23 @@ const AddTask = ({ flag, onClose, date }) => {
                             Component={InputAdapter}
                             className="form-control"
                             value={durationInput}
+                            onFocus={handleFocus}
                             onChange={(e) => {
                               if (e.target.value.length <= 4) {
+                                const timeI = e.target.value;
                                 setDurationInput(e.target.value);
+                                const hour = parseInt(timeI.slice(0, 1));
+                                const min = parseInt(timeI.slice(2, 4))
+                                if (min) {
+                                  setDuration(hour * 60 + min);
+
+                                }
+                                else if (hour) {
+                                  setDuration(hour * 60);
+                                }
+                                else {
+                                  setDuration(0);
+                                }
                               }
                             }}
                           />
@@ -274,7 +237,16 @@ const AddTask = ({ flag, onClose, date }) => {
                       <CFormGroup>
                         <CLabel htmlFor="duration">Duration</CLabel>
                         <div>
-                          <input type="range" name="points" min="0" max="120" value={duration} onChange={(e) => setDuration(e.target.value)}
+                          <input type="range" min="0" max="120" value={duration} onChange={(e) => {
+                            const time = e.target.value;
+                            setDuration(time);
+                            const hour = parseInt(time / 60).toString();
+                            const min = parseInt(time % 60).toString();
+                            if (min.length == 1) {
+                              setDurationInput(hour + ':0' + min);
+                            }
+                            setDurationInput(hour + ':0' + min);
+                          }}
                             style={{ width: "100%" }} />
 
                         </div>
@@ -290,17 +262,28 @@ const AddTask = ({ flag, onClose, date }) => {
                       </CFormGroup>
                       <CFormGroup>
                         <CRow className={"mt-2"}>
-                          <CCol xs="6">
+                          <CCol xs="4">
                             <CButton
                               type="submit"
                               color="primary"
                               className="mr-1"
                               disabled={isSubmitting || !isValid}
                             >
-                              {isSubmitting ? "Adding..." : "Add Task"}
+                              {isSubmitting ? "Adding..." : "Save & Add"}
+                            </CButton>
+
+                          </CCol>
+                          <CCol xs="4">
+                            <CButton
+                              type="submit"
+                              color="primary"
+                              className="mr-1"
+                              disabled={isSubmitting || !isValid}
+                            >
+                              {isSubmitting ? "Adding..." : "Save & Close"}
                             </CButton>
                           </CCol>
-                          <CCol xs="6" className="text-right">
+                          <CCol xs="4" className="text-right">
                             <CButton color="secondary" className="mr-1" onClick={onClose}>Close</CButton>
                           </CCol>
                         </CRow>

@@ -87,7 +87,7 @@ const ValidationForms = () => {
 
   // const assignedBy = (({ _id }) => ({ _id }))(location.state.assignBy)
   const assignedBy = [location.state.assignBy._id]
-
+  const handleFocus = (event) => event.target.select();
   const initialValues = {
     name: location.state.name,
     description: location.state.description,
@@ -144,14 +144,15 @@ const ValidationForms = () => {
                           <CInput type="text"
                             name="name"
                             id="name"
+                            autoComplete="off"
                             placeholder="Project Name"
-                            autoComplete="given-name"
                             valid={!errors.name}
                             invalid={touched.name && !!errors.name}
                             autoFocus={true}
                             required
                             onChange={handleChange}
                             onBlur={handleBlur}
+                            onFocus={handleFocus}
                             value={values.name} />
                           <CInvalidFeedback>{errors.name}</CInvalidFeedback>
                         </CFormGroup>
@@ -160,13 +161,15 @@ const ValidationForms = () => {
                           <CInput type="text"
                             name="description"
                             id="description"
+                            autoComplete="off"
+
                             placeholder="Description"
-                            autoComplete="description"
                             valid={!errors.description}
                             invalid={touched.description && !!errors.description}
                             required
                             onChange={handleChange}
                             onBlur={handleBlur}
+                            onFocus={handleFocus}
                             value={values.description} />
                           <CInvalidFeedback>{errors.description}</CInvalidFeedback>
                         </CFormGroup>

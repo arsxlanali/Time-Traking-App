@@ -71,7 +71,8 @@ const getErrorsFromValidationError = (validationError) => {
 
 const PasswordReset = () => {
   const userId = useLocation().state;
-  console.log("this is user", userId);
+  // console.log("this is user", userId);
+  const darkMode = useSelector((state) => state?.slideBar?.darkMode);
   const { isLoading } = useSelector((state) => state.login);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -89,12 +90,27 @@ const PasswordReset = () => {
     confirmPassword: "",
     accept2: false,
   };
+  if (darkMode) {
+    var text = "text-white c-dark-theme"
+    var backgorund = {
+      backgroundColor: '#181924'
+    }
+    var carStyle = {
+      backgroundColor: '#2a2b36'
+    }
+    var inputColor = {
+      backgroundColor: "rgba(255, 255, 255, 0.05)"
+      , color: "white"
+    }
+  }
   return (
-    <div className="c-app c-default-layout flex-row align-items-center">
+    <div className={`c-app c-default-layout flex-row align-items-center ${text}`}
+    >
       <CContainer>
         <CRow className="justify-content-center">
-          <CCol md="8">
-            <CCard className="p-4">
+          <CCol lg="5">
+            <CCard className="p-4"
+              style={carStyle}>
               <Formik
                 initialValues={initialValues}
                 validate={validate(validationSchema)}
@@ -131,6 +147,7 @@ const PasswordReset = () => {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.newPassword}
+                            style={inputColor}
                           />
                           <CInvalidFeedback>{errors.newPassword}</CInvalidFeedback>
                         </CFormGroup>
@@ -150,6 +167,7 @@ const PasswordReset = () => {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.confirmPassword}
+                            style={inputColor}
                           />
                           <CInvalidFeedback>
                             {errors.confirmPassword}

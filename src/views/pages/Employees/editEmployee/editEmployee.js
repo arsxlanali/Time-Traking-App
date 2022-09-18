@@ -32,6 +32,7 @@ const validationSchema = function (values) {
       .required("Name is required"),
     phone: Yup.string()
       .min(11, `Phone has to be at least 11 characters`)
+      .max(11, `Phone cannot exceed 11 characters`)
       .required("phone is required"),
     email: Yup.string()
       .email("Invalid email address")
@@ -161,7 +162,8 @@ const EditEmployee = ({ match }) => {
                           name="name"
                           id="name"
                           placeholder="Name"
-                          autoComplete="given-name"
+                          autoComplete="off"
+
                           valid={!errors.name}
                           invalid={touched.name && !!errors.name}
                           autoFocus={true}
@@ -179,7 +181,8 @@ const EditEmployee = ({ match }) => {
                           name="email"
                           id="email"
                           placeholder="Email"
-                          autoComplete="email"
+                          autoComplete="off"
+
                           valid={!errors.email}
                           invalid={touched.email && !!errors.email}
                           required
@@ -193,11 +196,12 @@ const EditEmployee = ({ match }) => {
                       <CFormGroup>
                         <CLabel htmlFor="phone">Phone</CLabel>
                         <CInput
-                          type="text"
+                          type="number"
                           name="phone"
                           id="phone"
                           placeholder="Phone"
-                          autoComplete="phone"
+                          autoComplete="off"
+
                           valid={!errors.phone}
                           invalid={touched.phone && !!errors.phone}
                           required

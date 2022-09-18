@@ -111,7 +111,8 @@ const ResetPassword = () => {
 											name="password"
 											id="password"
 											placeholder="Password"
-											autoComplete="new-password"
+											autocomplete="off"
+
 											valid={!errors.password}
 											invalid={touched.password && !!errors.password}
 											required
@@ -130,7 +131,8 @@ const ResetPassword = () => {
 											name="confirmPassword"
 											id="confirmPassword"
 											placeholder="Confirm password"
-											autoComplete="new-password"
+											autocomplete="off"
+
 											valid={!errors.confirmPassword}
 											invalid={
 												touched.confirmPassword && !!errors.confirmPassword

@@ -13,6 +13,7 @@ import {
   CDataTable,
   CRow,
   CCol,
+  CButtonGroup,
 } from "@coreui/react";
 import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
@@ -52,23 +53,25 @@ const SheetTable = () => {
     const projectName = array.project[index]
     return { ...array, project: projectName }
   })
-  console.log("this is array", finalData)
+  // console.log("this is array", finalData)
   useEffect(() => {
     dispatch(checkSubmit({ UserId, date }));
     dispatch(viewTimeSheet({ UserId, date }));
   }, [dispatch, date, submit])
   const fields = [
-    { key: "type", _style: { width: "10%" } },
-    { key: "description", _style: { width: "15%" } },
-    { key: "project", _style: { width: "5%" } },
-    { key: "duration", _style: { width: "5%" } },
+    { key: "type", _style: { width: "17%" } },
+    { key: "description", _style: { width: "35%" } },
+    { key: "project", _style: { width: "20%" } },
+    { key: "duration", _style: { width: "10%" } },
     {
-      key: "show_details",
-      label: "hehheh",
-      _style: { width: "10%" },
+      key: "Actions",
+      // _style: { float: "right" },
       filter: false,
     },
   ];
+  if (submitted) {
+    fields.pop();
+  }
   const handleChange = event => {
     // setMessage(event.target.value);
     const date = event.target.value;
@@ -116,39 +119,36 @@ const SheetTable = () => {
               hover
               sorter
               pagination
+              class="table-responsive"
+              style={{ verticalAlign: "middle" }}
               scopedSlots={
                 {
-                  show_details: (item) => {
+                  Actions: (item) => {
                     return (
-                      <td className="py-2">
-                        <CButton
+                      <td>
+                        <CButton size="sm"
                           color="primary"
-                          variant="outline"
+                          // variant="outline"
                           shape="square"
-                          size="sm"
-                        >
-                          {details.includes(item._id) ? "Action" : "Action"}
-                        </CButton>
-                        <CButton size="sm" color="info"
+                          className="my-2 float-right"
                           hidden={submitted}
                           onClick={() => {
                             setModel(true)
                             setTaskId(item)
-
                           }} >
-                          Edit
+                          {'Update'}
                         </CButton>
-                        <CButton size="sm" color="danger" className="ml-2"
+                        <CButton size="sm"
+                          shape="square"
+                          color="danger" className="my-2 float-right"
                           hidden={submitted}
                           onClick={() => {
                             setSubmitting(true)
-                            // console.log("this is item", item)
                             const id = item._id;
                             const date = item.date;
                             dispatch(deleteTask({ id, date, setSubmitting }));
-
                           }}>
-                          {submitting ? "Wait..." : "Delete"}
+                          {submitting ? "Wait..." : "Delete "}
                         </CButton>
                       </td>
                     );

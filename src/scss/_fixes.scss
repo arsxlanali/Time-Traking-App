@@ -14,6 +14,17 @@ button {
   border: 1px solid #23282c;
 }
 
+.c-dark-theme{
+  input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    box-shadow: 0 0 0 30px #353640 inset !important;
+}
+input:-webkit-autofill{
+    -webkit-text-fill-color: white !important;
+}
+}
 // todo: brand button icon margin
 .btn-brand:not(:only-child) {
   .c-icon {

@@ -69,21 +69,28 @@ export const deleteTask = createAsyncThunk(
         }
       );
       setSubmitting(false)
-      swal("Deleted", { icon: "success" })
+      swal("Deleted", { icon: "success", timer: 1500, buttons: false })
       const UserId = localStorage.getItem('key');
       thunkAPI.dispatch(viewTimeSheet({ UserId, date }));
       return res?.data;
     } catch (error) {
       setSubmitting(false)
       if (error.response.data == 'Unauthorized') {
-
-        setTimeout(history.push('/login'), 2000)
-        swal("Opps!", "Session Expired", "error")
         localStorage.clear();
         thunkAPI.dispatch(clearEmployee())
         thunkAPI.dispatch(clearProjects())
         thunkAPI.dispatch(clearLogin())
         thunkAPI.dispatch(clearTimeSheet())
+        swal({
+          title: 'Login Success',
+          text: 'Redirecting...',
+          icon: 'success',
+          timer: 2000,
+          buttons: false,
+        })
+          .then(() => {
+            history.push('/login');
+          })
       }
       else {
         swal("Opps!", error.response.data.message, "error")
@@ -154,7 +161,7 @@ export const editTask = createAsyncThunk(
       // console.log("This is onClose", onClose);
       onClose();
       setSubmitting(false);
-      swal("Updated", { icon: "success" })
+      swal("Updated", { icon: "success", timer: 1500, buttons: false })
       const UserId = localStorage.getItem('key');
       const date = data.date;
       thunkAPI.dispatch(viewTimeSheet({ UserId, date }));
@@ -196,7 +203,7 @@ export const submitTasks = createAsyncThunk(
         }
       );
       setSubmit(false)
-      swal("Submmited", { icon: "success" })
+      swal("Submmited", { icon: "success", timer: 1500, buttons: false })
       return res?.data;
     } catch (error) {
       setSubmit(false)

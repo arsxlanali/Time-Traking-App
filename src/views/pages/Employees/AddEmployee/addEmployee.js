@@ -27,8 +27,9 @@ const validationSchema = function (values) {
     name: Yup.string()
       .min(2, `Name has to be at least 2 characters`)
       .required("Name is required"),
-    phone: Yup.NumberSchema()
+    phone: Yup.string()
       .min(11, `Phone has to be at least 11 characters`)
+      .max(11, `Phone cannot exceed 11 characters`)
       .required("phone is required"),
     email: Yup.string()
       .email("Invalid email address")
@@ -107,6 +108,7 @@ const ValidationForms = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const onSubmit = (values, { setSubmitting }) => {
+    console.log("this is vlue", values)
     dispatch(addEmployee({ values, setSubmitting, history }));
     // console.log("this is employeeeeee", values)
 
@@ -148,6 +150,8 @@ const ValidationForms = () => {
                           id="name"
                           placeholder="Name"
                           valid={!errors.name}
+                          autoComplete="off"
+
                           invalid={touched.name && !!errors.name}
                           autoFocus={true}
                           required
@@ -163,8 +167,10 @@ const ValidationForms = () => {
                           type="email"
                           name="email"
                           id="email"
+                          autoComplete="off"
+
                           placeholder="Email"
-                          valid={!errors.email}
+                          valid={!errors.eautoCompletemail}
                           invalid={touched.email && !!errors.email}
                           required
                           onChange={handleChange}
@@ -176,10 +182,13 @@ const ValidationForms = () => {
                       <CFormGroup>
                         <CLabel htmlFor="phone">Phone</CLabel>
                         <CInput
-                          type="text"
+                          type="number"
                           name="phone"
                           id="phone"
                           placeholder="Phone"
+                          autoComplete="off"
+                          // maxLength="11"
+                          // max="11"
                           valid={!errors.phone}
                           invalid={touched.phone && !!errors.phone}
                           required
@@ -202,6 +211,8 @@ const ValidationForms = () => {
                             name="department"
                             id="department"
                             required
+                            autoComplete="off"
+
                             valid={!errors.department}
                             invalid={touched.department && !!errors.department}
                             onChange={handleChange}
@@ -209,7 +220,7 @@ const ValidationForms = () => {
                             value={values.department}
 
                           >
-                            <option value="">Please select</option>
+                            <option value="" defaultValue disabled hidden>Please select</option>
                             <option value="HR">HR</option>
                             <option value="DEVELOPMENT">Development</option>
                             <option value="BUSINESS">Business</option>
@@ -234,7 +245,7 @@ const ValidationForms = () => {
                             onBlur={handleBlur}
                             value={values.position}
                           >
-                            <option value="">Please select</option>
+                            <option value="" defaultValue disabled hidden>Please select</option>
                             <option value="Backend">Backend</option>
                             <option value="Frontend">Frontend</option>
                             <option value="SQA">SQA</option>
@@ -258,7 +269,7 @@ const ValidationForms = () => {
                             value={values.role}
                             required
                           >
-                            <option value="">Please select</option>
+                            <option value="" defaultValue disabled hidden>Please select</option>
                             <option value="MANAGEMENT">Managment</option>
                             <option value="EMPLOYEE">Employee</option>
                           </CSelect>

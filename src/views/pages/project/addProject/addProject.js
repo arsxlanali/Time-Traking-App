@@ -160,7 +160,7 @@ const ValidationForms = () => {
                             name="name"
                             id="name"
                             placeholder="Project Name"
-                            autoComplete="given-name"
+                            autoComplete="off"
                             valid={!errors.name}
                             invalid={touched.name && !!errors.name}
                             autoFocus={true}
@@ -176,7 +176,7 @@ const ValidationForms = () => {
                             name="description"
                             id="description"
                             placeholder="Description"
-                            autoComplete="description"
+                            autoComplete="off"
                             valid={!errors.description}
                             invalid={touched.description && !!errors.description}
                             required
