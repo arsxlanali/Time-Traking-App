@@ -216,7 +216,10 @@ const AddTask = ({ flag, onClose, date }) => {
                                 setDurationInput(e.target.value);
                                 const hour = parseInt(timeI.slice(0, 1));
                                 const min = parseInt(timeI.slice(2, 4))
-                                if (min) {
+                                if (hour > 2) {
+                                  setDuration(2 * 60);
+                                }
+                                else if (min) {
                                   setDuration(hour * 60 + min);
 
                                 }
@@ -231,7 +234,7 @@ const AddTask = ({ flag, onClose, date }) => {
                           />
                         </CInputGroup>
                         <CFormText color="muted">
-                          ex. 1:23 min
+                          ex. 1:23 max 2 hours
                         </CFormText>
                       </CFormGroup>
                       <CFormGroup>
@@ -242,10 +245,15 @@ const AddTask = ({ flag, onClose, date }) => {
                             setDuration(time);
                             const hour = parseInt(time / 60).toString();
                             const min = parseInt(time % 60).toString();
-                            if (min.length == 1) {
+                            if (min == 0) {
+                              setDurationInput(hour + ":00");
+                            }
+                            else if (min.length == 1) {
                               setDurationInput(hour + ':0' + min);
                             }
-                            setDurationInput(hour + ':0' + min);
+                            else {
+                              setDurationInput(hour + ':' + min);
+                            }
                           }}
                             style={{ width: "100%" }} />
 
@@ -273,7 +281,7 @@ const AddTask = ({ flag, onClose, date }) => {
                             </CButton>
 
                           </CCol>
-                          <CCol xs="4">
+                          {/* <CCol xs="4" className="flex-d justify-center">
                             <CButton
                               type="submit"
                               color="primary"
@@ -285,7 +293,7 @@ const AddTask = ({ flag, onClose, date }) => {
                           </CCol>
                           <CCol xs="4" className="text-right">
                             <CButton color="secondary" className="mr-1" onClick={onClose}>Close</CButton>
-                          </CCol>
+                          </CCol> */}
                         </CRow>
                       </CFormGroup>
                     </CForm>

@@ -153,7 +153,7 @@ const routes = [
   },
   {
     path: "/listemployee",
-    name: "View Eployees",
+    name: "View Employees",
     component: listEmployee,
     exact: true,
   },

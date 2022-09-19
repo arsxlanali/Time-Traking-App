@@ -22,6 +22,7 @@ export const login = createAsyncThunk(
       .then((response) => {
         setSubmitting(false);
         localStorage.setItem("Token", response.data.accessToken);
+        console.log("this is login", response.data)
         localStorage.setItem("Role", response.data.data.role);
         localStorage.setItem("key", response.data.data._id)
         localStorage.setItem("Department", response.data.data.department)
@@ -36,20 +37,8 @@ export const login = createAsyncThunk(
         return response.data;
       }).catch((error) => {
         setSubmitting(false);
-        if (error.response.data == 'Unauthorized') {
 
-          setTimeout(history.push('/login'), 2000)
-          swal("Opps!", "Session Expired", "error")
-          localStorage.clear();
-          thunkAPI.dispatch(clearEmployee())
-          thunkAPI.dispatch(clearProjects())
-          thunkAPI.dispatch(clearLogin())
-          thunkAPI.dispatch(clearTimeSheet())
-        }
-        else {
-          swal("Opps!", error.response.data.message, "error")
-
-        }
+        swal("Opps!", error.response.data.message, "error")
 
       }
       )

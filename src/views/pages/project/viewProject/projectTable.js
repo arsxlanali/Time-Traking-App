@@ -76,22 +76,11 @@ const ProjectTable = () => {
             items={projectsArray}
             fields={fields}
             columnFilter
-            tableFilter
-            cleaner
             itemsPerPageSelect
             itemsPerPage={5}
             hover
             sorter
             pagination
-            // loading
-            // onRowClick={(item, index, col, e) => console.log(item, index, col, e)}
-            // onPageChange={(val) => console.log('new page:', val)}
-            // onPagesChange={(val) => console.log('new pages:', val)}
-            // onPaginationChange={(val) => console.log('new pagination:', val)}
-            // onFilteredItemsChange={(val) => console.log('new filtered items:', val)}
-            // onSorterValueChange={(val) => console.log('new sorter value:', val)}
-            // onTableFilterChange={(val) => console.log('new table filter:', val)}
-            // onColumnFilterChange={(val) => console.log('new column filter:', val)}
             scopedSlots={{
 
               'edit':
@@ -121,7 +110,7 @@ const ProjectTable = () => {
                         size="sm"
                         onClick={() => { toggleDetails(item._id) }}
                       >
-                        {details.includes(item._id) ? 'Hide' : 'Action'}
+                        {details.includes(item._id) ? 'Actions' : 'Actions'}
                       </CButton>
                     </td>
                   )
