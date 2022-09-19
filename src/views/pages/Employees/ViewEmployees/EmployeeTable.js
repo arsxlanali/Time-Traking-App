@@ -80,15 +80,11 @@ const EmployeeTable = () => {
           items={employeesView}
           fields={fields}
           columnFilter
-          // tableFilter
-          cleaner
-          loading={isLoading}
           itemsPerPageSelect
-          striped
           itemsPerPage={5}
-          activePage={page}
           hover
           sorter
+          pagination
           scopedSlots={{
             email: (item) => (
               <td>
@@ -181,13 +177,13 @@ const EmployeeTable = () => {
           }}
         />
       )}
-      <CPagination
+      {/* <CPagination
         activePage={page}
         onActivePageChange={pageChange}
         pages={pageLength}
         doubleArrows={false}
         align="center"
-      />
+      /> */}
     </CCardBody>
   );
 };

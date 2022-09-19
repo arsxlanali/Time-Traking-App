@@ -53,7 +53,10 @@ export const addEmployee = createAsyncThunk(
   "employees/addEmployee",
   async ({ values, setSubmitting, history }, thunkAPI) => {
     delete values["accept"];
-    console.log("this is employee add data", values, setSubmitting);
+    const phone = '0' + values['phone'].toString();
+    delete values["phone"];
+    values["phone"] = phone;
+    // console.log("this is employee add data", values, setSubmitting);
     try {
       const res = await axios.post(
         `${baseUrl}/users/admin/addnewuser`,
@@ -129,7 +132,9 @@ export const editEmployee = createAsyncThunk(
     const id = values["id"];
     delete values["id"];
     delete values["accept"];
-
+    const phone = '0' + values['phone'].toString();
+    delete values["phone"];
+    values["phone"] = phone;
 
     try {
       const res = await axios.patch(

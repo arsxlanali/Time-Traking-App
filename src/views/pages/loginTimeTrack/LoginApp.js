@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "src/redux/Slice/loginSlice";
 import { Formik } from "formik";
-import Loader from "../loader/Loader";
 import * as Yup from "yup";
 import {
   CButton,
@@ -16,9 +15,11 @@ import {
   CFormGroup,
   CLabel,
   CRow,
+  CToaster
 } from "@coreui/react";
-
-
+import { useState } from "react";
+import { useRef } from "react";
+import exampleToast from "../toast/Toast";
 const validationSchema = function (values) {
   return Yup.object().shape({
     email: Yup.string()
@@ -61,7 +62,8 @@ function LoginApp() {
   const darkMode = useSelector((state) => state?.slideBar?.darkMode);
   const dispatch = useDispatch();
   const history = useHistory();
-
+  const [toast, addToast] = useState(0)
+  // const toaster = useRef()
   const onSubmit = (values, { setSubmitting }) => {
     initialValues.email = values.email;
     initialValues.password = values.password;
@@ -162,9 +164,11 @@ function LoginApp() {
                               {isSubmitting ? "Wait..." : "Login"}
                             </CButton>
                           </CCol>
-                          <CCol xs="6" className="text-right">
+                          {/* <CCol xs="6" className="text-right">
                             <CButton color="link" className="px-0">Forgot password?</CButton>
-                          </CCol>
+                          </CCol> */}
+                          <CButton onClick={() => addToast(exampleToast)}>Send a toast</CButton>
+                          {/* <CToaster ref={toaster} push={toast} placement="top-end" /> */}
                         </CRow>
                       </CForm>
                     </CCol>

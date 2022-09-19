@@ -108,17 +108,7 @@ const EditEmployee = ({ match }) => {
   const onSubmit = (values, { setSubmitting }) => {
     values["id"] = user._id;
     dispatch(editEmployee({ values, setSubmitting, history }));
-    // setSubmitting(isLoading);
   };
-  // console.log("this is issuccessfful", isScuessfull)
-  // if (isScuessfull) {
-  //   setTimeout(() => history.push(`/listemployee`), 5000);
-  //   return (
-  //     <div>
-  //       <Toaster></Toaster>
-  //     </div>
-  //   );
-  // }
   var initialValues = {
     name: user.name,
     address: user.address,
@@ -129,6 +119,7 @@ const EditEmployee = ({ match }) => {
     role: user.role,
     accept: false,
   };
+  const role = localStorage.getItem("Role")
   return (
     <CRow className={"d-flex justify-content-center"}>
       <CCol lg={8}>
@@ -280,7 +271,7 @@ const EditEmployee = ({ match }) => {
                             required
                           >
                             <option value="">Please select</option>
-                            <option value="MANAGEMENT">Managment</option>
+                            <option value="MANAGEMENT">Management</option>
                             <option value="EMPLOYEE">Employee</option>
                           </CSelect>
                         </CCol>

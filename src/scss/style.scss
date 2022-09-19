@@ -16,7 +16,9 @@
 //   background-color: #2b2c30;
 //   color: #2b2c30;
 // }
-
+nav > .pagination {
+  justify-content: center !important;
+}
 .swal-button {
   padding: 7px 19px;
   border-radius: 2px;
@@ -35,8 +37,11 @@ input.form-control[type="date"]::-webkit-calendar-picker-indicator {
   color: transparent;
   background: transparent;
 }
+.c-dark-theme{
 .custom-select.is-valid,.custom-select.is-invalid {
   background:#30343c;
+  color: white;
+}
 }
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,

@@ -110,11 +110,9 @@ const ValidationForms = () => {
   const onSubmit = (values, { setSubmitting }) => {
     console.log("this is vlue", values)
     dispatch(addEmployee({ values, setSubmitting, history }));
-    // console.log("this is employeeeeee", values)
-
-    // setSubmitting(isLoading);
   };
   const darkMode = useSelector((state) => state?.slideBar?.darkMode);
+  const role = localStorage.getItem("Role")
 
   return (
     <CRow className={"d-flex justify-content-center"}>
@@ -270,7 +268,7 @@ const ValidationForms = () => {
                             required
                           >
                             <option value="" defaultValue disabled hidden>Please select</option>
-                            <option value="MANAGEMENT">Managment</option>
+                            {role == 'MANAGEMENT' && <option value="MANAGEMENT">Management</option>}
                             <option value="EMPLOYEE">Employee</option>
                           </CSelect>
                         </CCol>
