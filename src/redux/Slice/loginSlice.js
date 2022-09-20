@@ -22,11 +22,11 @@ export const login = createAsyncThunk(
       .then((response) => {
         setSubmitting(false);
         localStorage.setItem("Token", response.data.accessToken);
-        console.log("this is login", response.data)
-        localStorage.setItem("Role", response.data.data.role);
-        localStorage.setItem("key", response.data.data._id)
-        localStorage.setItem("Department", response.data.data.department)
-        localStorage.setItem("isDefualt", response.data.data.isDefault)
+        // console.log("this is login", response.data)
+        // localStorage.setItem("Role", response.data.data.role);
+        // localStorage.setItem("key", response.data.data._id)
+        // localStorage.setItem("Department", response.data.data.department)
+        // localStorage.setItem("isDefualt", response.data.data.isDefault)
 
         if (response?.data?.data?.isDefault) {
           history.push('/passwordrest', response?.data?.data?._id)
