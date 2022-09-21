@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'react-dates/lib/css/_datepicker.css';
-import 'react-dates/lib/css/react_dates_overrides.css';
+// import 'react-dates/lib/css/react_dates_overrides.css';
 import { icons } from './assets/icons'
 
 import { Provider } from 'react-redux'

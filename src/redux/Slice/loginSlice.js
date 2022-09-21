@@ -13,21 +13,18 @@ const initialState = {
 }
 
 
-
 export const login = createAsyncThunk(
   'users/login',
-  async ({ values, history, setSubmitting }, thunkAPI) => {
+  async ({ values, history, setSubmitting, setErrors }) => {
     axios
       .post(`${baseURL}/users/login`, values)
       .then((response) => {
         setSubmitting(false);
         localStorage.setItem("Token", response.data.accessToken);
-        console.log("this is login", response.data)
         localStorage.setItem("Role", response.data.data.role);
         localStorage.setItem("key", response.data.data._id)
         localStorage.setItem("Department", response.data.data.department)
         localStorage.setItem("isDefualt", response.data.data.isDefault)
-
         if (response?.data?.data?.isDefault) {
           history.push('/passwordrest', response?.data?.data?._id)
         }
@@ -37,16 +34,16 @@ export const login = createAsyncThunk(
         return response.data;
       }).catch((error) => {
         setSubmitting(false);
-
-        swal("Opps!", error.response.data.message, "error")
-
-      }
-      )
-
+        if (error.code == "ERR_NETWORK") {
+          swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
+        } else {
+          setErrors({ email: error.response.data.message })
+        }
+      })
   })
 export const PasswordRest = createAsyncThunk(
   "PasswordRest",
-  async ({ values, history, setSubmitting }, thunkAPI) => {
+  async ({ values, history, setSubmitting, setErrors }) => {
 
     const id = values["id"];
     delete values["id"];
@@ -71,19 +68,10 @@ export const PasswordRest = createAsyncThunk(
       return res?.data;
     } catch (error) {
       setSubmitting(false);
-      if (error.response.data == 'Unauthorized') {
-
-        setTimeout(history.push('/login'), 2000)
-        swal("Opps!", "Session Expired", "error")
-        localStorage.clear();
-        thunkAPI.dispatch(clearEmployee())
-        thunkAPI.dispatch(clearProjects())
-        thunkAPI.dispatch(clearLogin())
-        thunkAPI.dispatch(clearTimeSheet())
-      }
-      else {
-        swal("Opps!", error.response.data.message, "error")
-
+      if (error.code == "ERR_NETWORK") {
+        swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
+      } else {
+        setErrors({ email: error.response.data.message })
       }
     }
   }
@@ -96,9 +84,6 @@ export const loginSlice = createSlice({
     clearLogin: (state) => {
       state.entities = [];
     },
-    // logOut: (state) => {
-    //   state.
-    // }
   },
   extraReducers: {
     [login.pending]: (state) => {
@@ -107,7 +92,6 @@ export const loginSlice = createSlice({
     [login.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
       state.entities = payload
-
     },
     [PasswordRest.rejected]: (state) => {
       state.isLoading = false;

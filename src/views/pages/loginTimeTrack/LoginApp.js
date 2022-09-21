@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "src/redux/Slice/loginSlice";
@@ -36,6 +36,7 @@ const validationSchema = function (values) {
 };
 
 const validate = (getValidationSchema) => {
+
   return (values) => {
     const validationSchema = getValidationSchema(values);
     try {
@@ -46,9 +47,11 @@ const validate = (getValidationSchema) => {
     }
   };
 };
-
+var count = 0;
 const getErrorsFromValidationError = (validationError) => {
+  count++;
   const FIRST_ERROR = 0;
+  console.log("Hay this is validation", FIRST_ERROR)
   return validationError.inner.reduce((errors, error) => {
     return {
       ...errors,
@@ -64,10 +67,10 @@ function LoginApp() {
   const history = useHistory();
   const [toast, addToast] = useState(0)
   // const toaster = useRef()
-  const onSubmit = (values, { setSubmitting }) => {
+  const onSubmit = (values, { setSubmitting, setErrors }) => {
     initialValues.email = values.email;
     initialValues.password = values.password;
-    dispatch(login({ values, history, setSubmitting }));
+    dispatch(login({ values, history, setSubmitting, setErrors }));
     // setSubmitting(isLoading);
   };
   const initialValues = {
@@ -88,6 +91,12 @@ function LoginApp() {
       , color: "white"
     }
   }
+  // useEffect(() => {
+  //   if (count == 0)
+  //     inputColor['border'] = 'none';
+  //   else
+  //     inputColor['border'] = 'green';
+  // }, [count])
   return (
     <div className={`c-app c-default-layout flex-row align-items-center ${text}`}
       style={backgorund} >
