@@ -71,23 +71,6 @@ const initialValues = {
 
 }
 
-// const onSubmit = (values, { setSubmitting, setErrors }) => {
-//   setTimeout(() => {
-//     alert(JSON.stringify(values, null, 2))
-//     // console.log('User has been successfully saved!', values)
-//     setSubmitting(false)
-//   }, 2000)
-// }
-
-// const findFirstError = (formName, hasError) => {
-//   const form = document.forms[formName]
-//   for (let i = 0; i < form.length; i++) {
-//     if (hasError(form[i].name)) {
-//       form[i].focus()
-//       break
-//     }
-//   }
-// }
 
 
 
@@ -125,7 +108,7 @@ const ValidationForms = () => {
     })
     // console.log("This ", nnnn)
     const data = { ...initialValues, assignTo: arry, startDate: today }
-    console.log("this is data", data);
+    // console.log("this is data", data);
     dispatch(addProject({ data, history, setSubmitting }));
   }
   return (

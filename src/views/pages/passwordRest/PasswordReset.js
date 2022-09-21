@@ -76,9 +76,9 @@ const PasswordReset = () => {
   const { isLoading } = useSelector((state) => state.login);
   const dispatch = useDispatch();
   const history = useHistory();
-  const onSubmit = (values) => {
+  const onSubmit = (values, { setSubmitting, setErrors }) => {
     values["id"] = userId;
-    dispatch(PasswordRest({ values, history }));
+    dispatch(PasswordRest({ values, history, setSubmitting, setErrors }));
   };
   if (isLoading) {
     return (

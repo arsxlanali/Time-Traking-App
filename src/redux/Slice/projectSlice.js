@@ -157,7 +157,6 @@ export const editProject = createAsyncThunk(
       return res?.data;
     } catch (error) {
       setSubmitting(false);
-      setSubmitting(false);
       if (error.response.data == 'Unauthorized') {
 
         // setTimeout(history.push('/login'), 2000)

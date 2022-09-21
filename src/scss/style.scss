@@ -16,9 +16,27 @@
 //   background-color: #2b2c30;
 //   color: #2b2c30;
 // }
+// .form-control{
+//   border: #30343c;
+// }
 nav > .pagination {
   justify-content: center !important;
 }
+.form-control.is-valid {
+  background: none;
+  // border: none;
+}
+.was-validated {
+  border: none;
+}
+// .form-control:valid{
+//   // border: none;
+//   border-color: blue;
+// }
+// .form-control:valid {
+//   border-color: none;
+// }
+
 .swal-button {
   padding: 7px 19px;
   border-radius: 2px;
