@@ -167,7 +167,7 @@ function LoginApp() {
                           {/* <CCol xs="6" className="text-right">
                             <CButton color="link" className="px-0">Forgot password?</CButton>
                           </CCol> */}
-                          <CButton onClick={() => addToast(exampleToast)}>Send a toast</CButton>
+                          {/* <CButton onClick={() => addToast(exampleToast)}>Send a toast</CButton> */}
                           {/* <CToaster ref={toaster} push={toast} placement="top-end" /> */}
                         </CRow>
                       </CForm>
