@@ -159,6 +159,8 @@ const EditTask = ({ flag, onClose, date, task }) => {
             initialValues={initialValues}
             validate={validate(validationSchema)}
             onSubmit={onSubmit1}
+            validateOnMount
+
           >
             {
               ({

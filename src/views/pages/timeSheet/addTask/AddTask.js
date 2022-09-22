@@ -106,6 +106,8 @@ const AddTask = ({ flag, onClose, date }) => {
             initialValues={initialValues}
             validate={validate(validationSchema)}
             onSubmit={onSubmit}
+            validateOnMount
+
           >
             {
               ({

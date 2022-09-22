@@ -124,6 +124,8 @@ const ValidationForms = () => {
               initialValues={initialValues}
               validate={validate(validationSchema)}
               onSubmit={onSubmit}
+              validateOnMount
+
             >
               {
                 ({

@@ -113,7 +113,10 @@ const ValidationForms = () => {
   };
   const darkMode = useSelector((state) => state?.slideBar?.darkMode);
   const role = localStorage.getItem("Role")
-
+  const flag = true;
+  if (role == "MANAGEMENT") {
+    flag = false;
+  }
   return (
     <CRow className={"d-flex justify-content-center"}>
       <CCol lg={8}>
@@ -124,6 +127,7 @@ const ValidationForms = () => {
               initialValues={initialValues}
               validate={validate(validationSchema)}
               onSubmit={onSubmit}
+              validateOnMount
             >
               {({
                 values,
@@ -149,9 +153,7 @@ const ValidationForms = () => {
                           placeholder="Name"
                           valid={!errors.name}
                           autoComplete="off"
-
                           invalid={touched.name && !!errors.name}
-                          autoFocus={true}
                           required
                           onChange={handleChange}
                           onBlur={handleBlur}
@@ -166,9 +168,8 @@ const ValidationForms = () => {
                           name="email"
                           id="email"
                           autoComplete="off"
-
                           placeholder="Email"
-                          valid={!errors.eautoCompletemail}
+                          valid={!errors.email}
                           invalid={touched.email && !!errors.email}
                           required
                           onChange={handleChange}
@@ -185,8 +186,6 @@ const ValidationForms = () => {
                           id="phone"
                           placeholder="Phone"
                           autoComplete="off"
-                          // maxLength="11"
-                          // max="11"
                           valid={!errors.phone}
                           invalid={touched.phone && !!errors.phone}
                           required
@@ -210,13 +209,11 @@ const ValidationForms = () => {
                             id="department"
                             required
                             autoComplete="off"
-
                             valid={!errors.department}
                             invalid={touched.department && !!errors.department}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.department}
-
                           >
                             <option value="" defaultValue disabled hidden>Please select</option>
                             <option value="HR">HR</option>
@@ -268,7 +265,7 @@ const ValidationForms = () => {
                             required
                           >
                             <option value="" defaultValue disabled hidden>Please select</option>
-                            {role == 'MANAGEMENT' && <option value="MANAGEMENT">Management</option>}
+                            {flag && <option value="MANAGEMENT">Management</option>}
                             <option value="EMPLOYEE">Employee</option>
                           </CSelect>
                         </CCol>

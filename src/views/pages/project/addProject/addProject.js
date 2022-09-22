@@ -122,6 +122,8 @@ const ValidationForms = () => {
               initialValues={initialValues}
               validate={validate(validationSchema)}
               onSubmit={onSubmit}
+              validateOnMount
+
             >
               {
                 ({
@@ -133,6 +135,7 @@ const ValidationForms = () => {
                   handleSubmit,
                   isSubmitting,
                   isValid,
+
                 }) => (
                   <CRow >
                     <CCol>

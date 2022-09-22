@@ -47,11 +47,9 @@ const validate = (getValidationSchema) => {
     }
   };
 };
-var count = 0;
 const getErrorsFromValidationError = (validationError) => {
-  count++;
   const FIRST_ERROR = 0;
-  console.log("Hay this is validation", FIRST_ERROR)
+  // console.log("Hay this is validation", FIRST_ERROR)
   return validationError.inner.reduce((errors, error) => {
     return {
       ...errors,
@@ -109,6 +107,7 @@ function LoginApp() {
                 initialValues={initialValues}
                 validate={validate(validationSchema)}
                 onSubmit={onSubmit}
+                validateOnMount
               >
                 {({
                   values,

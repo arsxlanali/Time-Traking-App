@@ -120,6 +120,11 @@ const EditEmployee = ({ match }) => {
     accept: false,
   };
   const role = localStorage.getItem("Role")
+
+  const flag = true;
+  if (role == "MANAGEMENT") {
+    flag = false;
+  }
   return (
     <CRow className={"d-flex justify-content-center"}>
       <CCol lg={8}>
@@ -130,6 +135,8 @@ const EditEmployee = ({ match }) => {
               initialValues={initialValues}
               validate={validate(validationSchema)}
               onSubmit={onSubmit}
+              validateOnMount
+
             >
               {({
                 values,
@@ -173,7 +180,6 @@ const EditEmployee = ({ match }) => {
                           id="email"
                           placeholder="Email"
                           autoComplete="off"
-
                           valid={!errors.email}
                           invalid={touched.email && !!errors.email}
                           required
@@ -192,7 +198,6 @@ const EditEmployee = ({ match }) => {
                           id="phone"
                           placeholder="Phone"
                           autoComplete="off"
-
                           valid={!errors.phone}
                           invalid={touched.phone && !!errors.phone}
                           required
@@ -271,7 +276,7 @@ const EditEmployee = ({ match }) => {
                             required
                           >
                             <option value="">Please select</option>
-                            <option value="MANAGEMENT">Management</option>
+                            {flag && <option value="MANAGEMENT">Management</option>}
                             <option value="EMPLOYEE">Employee</option>
                           </CSelect>
                         </CCol>
