@@ -172,7 +172,7 @@ const routes = [
 
   {
     path: "/addemployee",
-    name: "Add Eployees",
+    name: "Add Employee",
     component: addEmployee,
     exact: true,
   },

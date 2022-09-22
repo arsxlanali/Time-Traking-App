@@ -115,6 +115,7 @@ const PasswordReset = () => {
                 initialValues={initialValues}
                 validate={validate(validationSchema)}
                 onSubmit={onSubmit}
+                validateOnMount
               >
                 {({
                   values,
