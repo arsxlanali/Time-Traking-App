@@ -1,6 +1,6 @@
 import Loader from "../../loader/Loader";
 import React, { useState } from "react";
-import { viewTimeSheet, deleteTask, submitTasks, checkSubmit } from "src/redux/Slice/viewTimeSheetSlice";
+import { viewTimeSheet, deleteTask, submitTasks, checkSubmit, checkPending } from "src/redux/Slice/viewTimeSheetSlice";
 import AddTask from "../addTask/AddTask";
 import EditTask from "../editTask/editTask";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,14 +34,14 @@ const SheetTable = () => {
   const [model, setModel] = useState(false);
   const UserId = localStorage.getItem('key');
   const dispatch = useDispatch();
-  const { timeSheet, loading, submitted } = useSelector((state) => state.viewTimeSheet);
+  const { timeSheet, loading, submitted, pending } = useSelector((state) => state.viewTimeSheet);
   const { projects } = useSelector((state) => state.viewProjects);
   const [taskId, setTaskId] = useState(undefined);
   const [submitting, setSubmitting] = useState(false);
   const [submit, setSubmit] = useState(false)
   const [focused, setFocused] = useState();
   const [date1, setDate1] = useState({ date: moment() });
-  // var today = date1.date._d;
+  const [disable, setDisable] = useState(false);
   var today = dateGetter(new Date(), 0);
   const [date, setDate] = useState(today)
   // console.log("they this is date", date)
@@ -63,9 +63,16 @@ const SheetTable = () => {
   })
   // console.log("this is array", finalData)
   useEffect(() => {
+    if (finalData.length == 0) {
+      setDisable(true);
+    }
+    else {
+      setDisable(false);
+    }
     dispatch(checkSubmit({ UserId, date }));
     dispatch(viewTimeSheet({ UserId, date }));
-  }, [dispatch, date, submit])
+    dispatch(checkPending({ UserId }))
+  }, [dispatch, date, submit, finalData.length])
   const fields = [
     { key: "type", _style: { width: "17%" } },
     { key: "description", _style: { width: "35%" } },
@@ -80,6 +87,7 @@ const SheetTable = () => {
   if (submitted) {
     fields.pop();
   }
+
   const handleChange = event => {
     // setMessage(event.target.value);
     const date = dateGetter(event._d, 0);
@@ -87,15 +95,8 @@ const SheetTable = () => {
     dispatch(viewTimeSheet({ UserId, date }));
     // console.log('value is:fjd', event.target.value);
   };
-  var count = 0;
-  var array1 = [true, true, true, true, true, true, true, true, true, true, false, true, true, true, true, true, true, true, true, true, true, false,
-    true, true, true, true, true, true, true, true, true, true, false, true, true, true, true, true, true, true, true, true, true, false,
-    true, true, true, true, true, true, true, true, true, true, false,
-    true, true, true, true, true, true, true, true, true, true, false,
-    true, true, true, true, true, true, true, true, true, true, false,
-    true, true, true, true, true, true, true, true, true, true, false,
-    true, true, true, true]
-  // timeSheet.forEach((sheet) => { console.log("This is sheet", sheet.description) })
+  var count = -32;
+  // console.log("This is pending", pending)
   return (
     <>
 
@@ -120,24 +121,34 @@ const SheetTable = () => {
             numberOfMonths={1}
             block={true}
             onNextMonthClick={(e) => {
-              count = 0;
+              count = -1;
             }
             }
             onPrevMonthClick={(e) => {
-              count = 0;
+              count = -1;
             }}
-            isDayHighlighted={() => {
-              count++;
-              return array1[count]
+            isDayHighlighted={(e) => {
+              const date = dateGetter(e._d, 0);
+              const today = dateGetter(new Date(), 0);
+              const previous30 = dateGetter(new Date(new Date().setDate(new Date().getDate() - 30)), 0)
+              if (count == 30)
+                count = -1;
+              if (previous30 <= date && today >= date) {
+                console.log("This is count", count);
+                count++;
+                return pending[count]?.isSubmit
+              }
+              else {
+                return false;
+              }
             }}
             focused={focused} // PropTypes.bool
             onFocusChange={() => setFocused(true)} // PropTypes.func.isRequired
             isOutsideRange={(e) => {
-              var today = dateGetter(new Date(), 1);
-              today = new Date(today);
-              var previous = dateGetter(e._d, 0)
-              previous = new Date(previous)
-              return previous >= today;
+              var today = dateGetter(new Date(), 0);
+              var date = dateGetter(e._d, 0)
+              var previous30 = dateGetter(new Date(new Date().setDate(new Date().getDate() - 30)), 0)
+              return date > today || previous30 >= date;
             }}
             // withPortal
             displayFormat="Y MMM D"
@@ -211,6 +222,7 @@ const SheetTable = () => {
       <div className="mb-4">
         <CButton color="primary" className={"float-right mr-4"}
           hidden={submitted}
+          disabled={disable}
           onClick={() => {
             setSubmit(true);
             dispatch(submitTasks({ date, setSubmit }))

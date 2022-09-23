@@ -29,23 +29,13 @@ export const viewProjects = createAsyncThunk(
             Authorization: `Bearer ${localStorage.getItem("Token")}`,
           }
         });
-      // console.log("This is project data", res.data)
       return res.data;
 
     } catch (error) {
-      if (error.response.data == 'Unauthorized') {
-
-        setTimeout(history.push('/login'), 2000)
-        swal("Opps!", "Session Expired", "error")
-        localStorage.clear();
-        thunkAPI.dispatch(clearEmployee())
-        thunkAPI.dispatch(clearProjects())
-        thunkAPI.dispatch(clearLogin())
-        thunkAPI.dispatch(clearTimeSheet())
-      }
-      else {
-        swal("Opps!", error.response.data.message, "error")
-
+      if (error.code == "ERR_NETWORK") {
+        swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
+      } else {
+        swal("Opps!", error.response.data.message, { icon: "error", timer: 1500, buttons: false })
       }
     }
   }
@@ -70,19 +60,10 @@ export const deleteProject = createAsyncThunk(
       return res?.data;
     } catch (error) {
       setSubmitting(false);
-      if (error.response.data == 'Unauthorized') {
-
-        setTimeout(history.push('/login'), 2000)
-        swal("Opps!", "Session Expired", "error")
-        localStorage.clear();
-        thunkAPI.dispatch(clearEmployee())
-        thunkAPI.dispatch(clearProjects())
-        thunkAPI.dispatch(clearLogin())
-        thunkAPI.dispatch(clearTimeSheet())
-      }
-      else {
-        swal("Opps!", error.response.data.message, "error")
-
+      if (error.code == "ERR_NETWORK") {
+        swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
+      } else {
+        swal("Opps!", error.response.data.message, { icon: "error", timer: 1500, buttons: false })
       }
     }
   }
@@ -111,19 +92,10 @@ export const addProject = createAsyncThunk(
       return res?.data;
     } catch (error) {
       setSubmitting(false);
-      if (error.response.data == 'Unauthorized') {
-
-        setTimeout(history.push('/login'), 2000)
-        swal("Opps!", "Session Expired", "error")
-        localStorage.clear();
-        thunkAPI.dispatch(clearEmployee())
-        thunkAPI.dispatch(clearProjects())
-        thunkAPI.dispatch(clearLogin())
-        thunkAPI.dispatch(clearTimeSheet())
-      }
-      else {
-        swal("Opps!", error.response.data.message, "error")
-
+      if (error.code == "ERR_NETWORK") {
+        swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
+      } else {
+        swal("Opps!", error.response.data.message, { icon: "error", timer: 1500, buttons: false })
       }
     }
   }
@@ -133,13 +105,9 @@ export const editProject = createAsyncThunk(
   "projects/update",
 
   async ({ data, id, setSubmitting, history }, thunkAPI) => {
-    // const projectInfo = data();
     const assignBy = data['assignBy']
     delete data["assignBy"]
     const id1 = id[0]
-    // data.assignBy = assignBy[0];
-    // console.log("this is edit project", values)
-    // console.log("projectInfo: ", data, id1)
     try {
       const res = await axios.patch(
         `${baseURL}/projects/update/${id1}`,
@@ -157,19 +125,15 @@ export const editProject = createAsyncThunk(
       return res?.data;
     } catch (error) {
       setSubmitting(false);
-      if (error.response.data == 'Unauthorized') {
-
-        // setTimeout(history.push('/login'), 2000)
-        swal("Opps!", "Session Expired", "error")
+      if (error.code == "ERR_NETWORK") {
+        swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
+      } else {
         localStorage.clear();
         thunkAPI.dispatch(clearEmployee())
         thunkAPI.dispatch(clearProjects())
         thunkAPI.dispatch(clearLogin())
         thunkAPI.dispatch(clearTimeSheet())
-      }
-      else {
-        swal("Opps!", error.response.data.message, "error")
-
+        swal("Opps!", error.response.data.message, { icon: "error", timer: 1500, buttons: false }).then(() => history.push('/'))
       }
     }
   }

@@ -84,6 +84,10 @@ const AddTask = ({ flag, onClose, date }) => {
       ...values, date, projectId: value.value, type: task.value,
       duration: { hours: parseInt(duration / 60), minutes: parseInt(duration % 60) }
     };
+    setTask([])
+    setValue([])
+    setDuration(0);
+    setDurationInput('');
     dispatch(addTask({ data, setSubmitting, resetForm }));
   }
 
