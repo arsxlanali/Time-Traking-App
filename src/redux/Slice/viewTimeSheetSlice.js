@@ -11,6 +11,7 @@ import { authLink } from "./auth";
 const baseURL = "https://time-tracking-app-backend.herokuapp.com";
 const initialState = {
   timeSheet: [],
+  pending: [],
   loading: false,
   submitted: false,
 }
@@ -31,25 +32,12 @@ export const viewTimeSheet = createAsyncThunk(
       return res.data;
     }
     catch (error) {
-      if (error.response.data == 'Unauthorized') {
-
-        // setTimeout(history.push('/login'), 2000)
-        swal("Opps!", "Session Expired", "error")
-        localStorage.clear();
-        thunkAPI.dispatch(clearEmployee())
-        thunkAPI.dispatch(clearProjects())
-        thunkAPI.dispatch(clearLogin())
-        thunkAPI.dispatch(clearTimeSheet())
+      if (error.code == "ERR_NETWORK") {
+        swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
+      } else {
+        swal("Opps!", error.response.data.message, { icon: "error", timer: 1500, buttons: false })
       }
-      else {
-        swal("Opps!", error.response.data.message, "error")
-
-      }
-
-      // return thunkAPI.rejectWithValue("Didn't get data");
     }
-
-
   })
 
 
@@ -75,26 +63,10 @@ export const deleteTask = createAsyncThunk(
       return res?.data;
     } catch (error) {
       setSubmitting(false)
-      if (error.response.data == 'Unauthorized') {
-        localStorage.clear();
-        thunkAPI.dispatch(clearEmployee())
-        thunkAPI.dispatch(clearProjects())
-        thunkAPI.dispatch(clearLogin())
-        thunkAPI.dispatch(clearTimeSheet())
-        swal({
-          title: 'Login Success',
-          text: 'Redirecting...',
-          icon: 'success',
-          timer: 2000,
-          buttons: false,
-        })
-          .then(() => {
-            history.push('/login');
-          })
-      }
-      else {
-        swal("Opps!", error.response.data.message, "error")
-
+      if (error.code == "ERR_NETWORK") {
+        swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
+      } else {
+        swal("Opps!", error.response.data.message, { icon: "error", timer: 1500, buttons: false })
       }
     }
   }
@@ -125,19 +97,10 @@ export const addTask = createAsyncThunk(
       return res?.data;
     } catch (error) {
       setSubmitting(false)
-      if (error.response.data == 'Unauthorized') {
-
-        setTimeout(history.push('/login'), 2000)
-        swal("Opps!", "Session Expired", "error")
-        localStorage.clear();
-        thunkAPI.dispatch(clearEmployee())
-        thunkAPI.dispatch(clearProjects())
-        thunkAPI.dispatch(clearLogin())
-        thunkAPI.dispatch(clearTimeSheet())
-      }
-      else {
-        swal("Opps!", error.response.data.message, "error")
-
+      if (error.code == "ERR_NETWORK") {
+        swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
+      } else {
+        swal("Opps!", error.response.data.message, { icon: "error", timer: 1500, buttons: false })
       }
     }
   }
@@ -157,8 +120,6 @@ export const editTask = createAsyncThunk(
           }
         }
       );
-
-      // console.log("This is onClose", onClose);
       onClose();
       setSubmitting(false);
       swal("Updated", { icon: "success", timer: 1500, buttons: false })
@@ -169,19 +130,10 @@ export const editTask = createAsyncThunk(
       return res?.data;
     } catch (error) {
       setSubmitting(false)
-      if (error.response.data == 'Unauthorized') {
-
-        setTimeout(history.push('/login'), 2000)
-        swal("Opps!", "Session Expired", "error")
-        localStorage.clear();
-        thunkAPI.dispatch(clearEmployee())
-        thunkAPI.dispatch(clearProjects())
-        thunkAPI.dispatch(clearLogin())
-        thunkAPI.dispatch(clearTimeSheet())
-      }
-      else {
-        swal("Opps!", error.response.data.message, "error")
-
+      if (error.code == "ERR_NETWORK") {
+        swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
+      } else {
+        swal("Opps!", error.response.data.message, { icon: "error", timer: 1500, buttons: false })
       }
     }
   }
@@ -207,26 +159,17 @@ export const submitTasks = createAsyncThunk(
       return res?.data;
     } catch (error) {
       setSubmit(false)
-      if (error.response.data == 'Unauthorized') {
-
-        setTimeout(history.push('/login'), 2000)
-        swal("Opps!", "Session Expired", "error")
-        localStorage.clear();
-        thunkAPI.dispatch(clearEmployee())
-        thunkAPI.dispatch(clearProjects())
-        thunkAPI.dispatch(clearLogin())
-        thunkAPI.dispatch(clearTimeSheet())
-      }
-      else {
-        swal("Opps!", error.response.data.message, "error")
-
+      if (error.code == "ERR_NETWORK") {
+        swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
+      } else {
+        swal("Opps!", error.response.data.message, { icon: "error", timer: 1500, buttons: false })
       }
     }
   }
 );
 export const checkSubmit = createAsyncThunk(
   'tasks/checkSubmit',
-  async ({ UserId, date }, thunkAPI) => {
+  async ({ UserId, date }) => {
     console.log("checkSubmit", UserId, date);
     try {
       const res = await axios
@@ -239,21 +182,36 @@ export const checkSubmit = createAsyncThunk(
       return res.data;
     }
     catch (error) {
-      if (error.response.data == 'Unauthorized') {
-        // setTimeout(history.push('/login'), 2000)
-        swal("Opps!", "Session Expired", "error")
-        localStorage.clear();
-        thunkAPI.dispatch(clearEmployee())
-        thunkAPI.dispatch(clearProjects())
-        thunkAPI.dispatch(clearLogin())
-        thunkAPI.dispatch(clearTimeSheet())
-      }
-      else {
-        swal("Opps!", error.response.data.message, "error")
+      if (error.code == "ERR_NETWORK") {
+        swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
+      } else {
+        swal("Opps!", error.response.data.message, { icon: "error", timer: 1500, buttons: false })
       }
     }
   })
 
+export const checkPending = createAsyncThunk(
+  'tasks/checkPending',
+  async ({ UserId }) => {
+    // console.log("checkSubmit", UserId, date);
+    try {
+      const res = await axios
+        .get(`${baseURL}/tasks/last30days/user/${UserId}`, {
+          // authLink();
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("Token")}`,
+          }
+        });
+      return res.data;
+    }
+    catch (error) {
+      if (error.code == "ERR_NETWORK") {
+        swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
+      } else {
+        swal("Opps!", error.response.data.message, { icon: "error", timer: 1500, buttons: false })
+      }
+    }
+  })
 
 export const viewTimeSheetSlice = createSlice({
   name: 'viewTimeSheet',
@@ -293,6 +251,15 @@ export const viewTimeSheetSlice = createSlice({
       state.submitted = payload;
     },
     [checkSubmit.rejected]: (state) => {
+      state.submitted = false
+    },
+    [checkPending.pending]: (state) => {
+      state.submitted = false
+    },
+    [checkPending.fulfilled]: (state, { payload }) => {
+      state.pending = payload;
+    },
+    [checkPending.rejected]: (state) => {
       state.submitted = false
     },
 

@@ -157,7 +157,7 @@ const EmployeeTable = () => {
                           onClick={() => {
                             setSubmitting(true)
                             const id = item._id;
-                            dispatch(deleteEmployee({ id, setSubmitting }))
+                            dispatch(deleteEmployee({ id, setSubmitting, setModal }))
 
                           }}>
                           {submitting ? "Wait..." : "Delete"}
