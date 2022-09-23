@@ -50,14 +50,7 @@ export const addEmployee = createAsyncThunk(
     // console.log("this is employee add data", values, setSubmitting);
     try {
       const res = await axios.post(
-        `${baseUrl}/users/admin/addnewuser`,
-        values,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
-        }
-      );
+        `${baseUrl}/users/admin/addnewuser`, values);
       setSubmitting(false);
       history.push('/listemployee')
       swal("Employee Addded", { icon: "success", timer: 1500, buttons: false })
@@ -77,11 +70,7 @@ export const deleteEmployee = createAsyncThunk(
   "employees/deleteEmployee",
   async ({ id, setSubmitting, setModal }, thunkAPI) => {
     try {
-      const res = await axios.delete(`${baseUrl}/users/admin/deleteuser/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("Token")}`,
-        }
-      });
+      const res = await axios.delete(`${baseUrl}/users/admin/deleteuser/${id}`);
       setSubmitting(false);
       setModal(false);
       history.push('/viewemployee')
@@ -113,13 +102,7 @@ export const editEmployee = createAsyncThunk(
     try {
       const res = await axios.patch(
         `${baseUrl}/users/admin/updateuser/${id}`,
-        values,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
-        }
-      );
+        values);
       swal("Employee Update", { icon: "success", timer: 1500, buttons: false })
       history.push('/listemployee')
       thunkAPI.dispatch(getEmployees());
@@ -145,13 +128,7 @@ export const resetPassword = createAsyncThunk(
     try {
       const res = await axios.patch(
         `${baseUrl}/users/admin/updateuser/${id}`,
-        values,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
-        }
-      );
+        values);
       setSubmitting(false);
       swal("Password Update", { icon: "success", timer: 1500, buttons: false })
 

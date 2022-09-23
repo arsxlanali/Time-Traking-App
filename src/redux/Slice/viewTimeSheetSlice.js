@@ -24,10 +24,6 @@ export const viewTimeSheet = createAsyncThunk(
     try {
       const res = await axios
         .get(`${baseURL}/tasks/user/${UserId}/date/${date}`, {
-          // authLink();
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
         });
       return res.data;
     }
@@ -49,12 +45,7 @@ export const deleteTask = createAsyncThunk(
     console.log("taskid", date, id, SubmitEvent);
     try {
       const res = await axios.delete(
-        `${baseURL}/tasks/delete/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
-        }
+        `${baseURL}/tasks/delete/${id}`
       );
       setSubmitting(false)
       swal("Deleted", { icon: "success", timer: 1500, buttons: false })
@@ -80,17 +71,10 @@ export const addTask = createAsyncThunk(
     try {
       const res = await axios.post(
         `${baseURL}/tasks/create`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
-        }
+        data
       );
       setSubmitting(false);
       resetForm();
-      // console.log("task info", taskInfo)
-      // history.push('/')
       const UserId = localStorage.getItem('key');
       const date = data.date;
       thunkAPI.dispatch(viewTimeSheet({ UserId, date }));
@@ -113,12 +97,7 @@ export const editTask = createAsyncThunk(
     try {
       const res = await axios.patch(
         `${baseURL}/tasks/update/${id}`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
-        }
+        data
       );
       onClose();
       setSubmitting(false);
@@ -126,7 +105,6 @@ export const editTask = createAsyncThunk(
       const UserId = localStorage.getItem('key');
       const date = data.date;
       thunkAPI.dispatch(viewTimeSheet({ UserId, date }));
-      // console.log(res.data);
       return res?.data;
     } catch (error) {
       setSubmitting(false)
@@ -146,14 +124,7 @@ export const submitTasks = createAsyncThunk(
     console.log("submitTasks", data, setSubmit);
     try {
       const res = await axios.post(
-        `${baseURL}/tasks/submit`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
-        }
-      );
+        `${baseURL}/tasks/submit`, data);
       setSubmit(false)
       swal("Submmited", { icon: "success", timer: 1500, buttons: false })
       return res?.data;
@@ -173,12 +144,7 @@ export const checkSubmit = createAsyncThunk(
     console.log("checkSubmit", UserId, date);
     try {
       const res = await axios
-        .get(`${baseURL}/tasks/checksubmit/user/${UserId}/date/${date}`, {
-          // authLink();
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
-        });
+        .get(`${baseURL}/tasks/checksubmit/user/${UserId}/date/${date}`);
       return res.data;
     }
     catch (error) {
@@ -193,15 +159,9 @@ export const checkSubmit = createAsyncThunk(
 export const checkPending = createAsyncThunk(
   'tasks/checkPending',
   async ({ UserId }) => {
-    // console.log("checkSubmit", UserId, date);
     try {
       const res = await axios
-        .get(`${baseURL}/tasks/last30days/user/${UserId}`, {
-          // authLink();
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
-        });
+        .get(`${baseURL}/tasks/last30days/user/${UserId}`);
       return res.data;
     }
     catch (error) {

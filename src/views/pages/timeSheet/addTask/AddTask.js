@@ -29,13 +29,14 @@ import { TextMask, InputAdapter } from "react-text-mask-hoc";
 import Select from "react-select";
 import { useEffect } from 'react';
 import { getProjects } from 'src/redux/Slice/projectSlice';
+import { useRef } from 'react';
 import tasks from '../Tasks/Tasks'
-
 const validationSchema = function (values) {
   return Yup.object().shape({
     description: Yup.string()
       .min(5, `Description has to be at least 5 characters`)
       .required('Description is required'),
+    time: Yup.string()
   })
 }
 
@@ -68,8 +69,10 @@ const AddTask = ({ flag, onClose, date }) => {
   const dispatch = useDispatch();
   const [duration, setDuration] = useState(0);
   const [durationInput, setDurationInput] = useState();
+  const [description, setDiscription] = useState('');
   const [value, setValue] = React.useState([]);
   const [task, setTask] = React.useState([])
+  const textareaRef = useRef();
   const projectOptions = [];
   empProject.forEach(emp => {
     const result = (({ _id, name }) => ({ _id, name }))(emp)
@@ -95,6 +98,7 @@ const AddTask = ({ flag, onClose, date }) => {
     type: "",
     description: "",
     projectId: "",
+    time: ""
   };
 
   const handleFocus = (event) => event.target.select();
@@ -123,6 +127,7 @@ const AddTask = ({ flag, onClose, date }) => {
                 handleSubmit,
                 isSubmitting,
                 isValid,
+                setErrors
               }) => (
                 <CRow >
                   <CCol>
@@ -134,14 +139,11 @@ const AddTask = ({ flag, onClose, date }) => {
                           type="type"
                           name="type"
                           id="type"
-
-                          // disabled="disabled" selected="selected"
                           value={task}
                           options={tasks[department]}
                           onChange={setTask}
                           onFocus={handleFocus}
                           onBlur={handleBlur}
-                          // style={{ color: "red" }}
                           theme={(theme) =>
                           ({
                             ...theme,
@@ -165,15 +167,13 @@ const AddTask = ({ flag, onClose, date }) => {
                           id="description"
                           placeholder="Description"
                           autoComplete="off"
-
-                          valid={!errors.description}
                           invalid={touched.description && !!errors.description}
                           required
                           onChange={handleChange}
                           onBlur={handleBlur}
                           onFocus={handleFocus}
                           value={values.description}
-
+                          style={{ borderColor: '#d8dbe0' }}
                         />
                         <CInvalidFeedback>{errors.description}</CInvalidFeedback>
                       </CFormGroup>
@@ -212,22 +212,32 @@ const AddTask = ({ flag, onClose, date }) => {
                           </CInputGroupPrepend>
                           <TextMask
                             mask={[/\d/, ':', /\d/, /\d/]}
+                            ref={textareaRef}
                             Component={InputAdapter}
                             className="form-control"
                             value={durationInput}
                             onFocus={handleFocus}
+                            // onBlur={() => textareaRef.current.setSelectionRange(0, 0)}
+                            style={{ borderColor: '#d8dbe0' }}
                             onChange={(e) => {
+                              console.log(e)
                               if (e.target.value.length <= 4) {
                                 const timeI = e.target.value;
                                 setDurationInput(e.target.value);
                                 const hour = parseInt(timeI.slice(0, 1));
                                 const min = parseInt(timeI.slice(2, 4))
-                                if (hour > 2) {
+                                if (hour > 2 || hour == 2 && min > 0) {
+                                  e.target.selectionStart = 0
+                                  e.target.selectionEnd = 4
+                                  setDurationInput('2:00')
                                   setDuration(2 * 60);
+                                }
+                                else if (min > 59) {
+                                  setDurationInput(`${hour}:59`)
+                                  setDuration(hour * 60 + 59);
                                 }
                                 else if (min) {
                                   setDuration(hour * 60 + min);
-
                                 }
                                 else if (hour) {
                                   setDuration(hour * 60);
@@ -239,6 +249,7 @@ const AddTask = ({ flag, onClose, date }) => {
                             }}
                           />
                         </CInputGroup>
+                        <CInvalidFeedback>{errors.time}</CInvalidFeedback>
                         <CFormText color="muted">
                           ex. 1:23 max 2 hours
                         </CFormText>
@@ -283,7 +294,7 @@ const AddTask = ({ flag, onClose, date }) => {
                               className="mr-1"
                               disabled={isSubmitting || !isValid}
                             >
-                              {isSubmitting ? "Adding..." : "Save & Add"}
+                              {isSubmitting ? "Adding..." : "Add Task"}
                             </CButton>
 
                           </CCol>

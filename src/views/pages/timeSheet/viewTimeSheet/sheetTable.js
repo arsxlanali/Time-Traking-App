@@ -32,6 +32,8 @@ function dateGetter(params, dayAhead) {
 const SheetTable = () => {
   const [details, setDetails] = useState([]);
   const [model, setModel] = useState(false);
+  const [model1, setModel1] = useState(false);
+
   const UserId = localStorage.getItem('key');
   const dispatch = useDispatch();
   const { timeSheet, loading, submitted, pending } = useSelector((state) => state.viewTimeSheet);
@@ -95,14 +97,14 @@ const SheetTable = () => {
     dispatch(viewTimeSheet({ UserId, date }));
     // console.log('value is:fjd', event.target.value);
   };
-  var count = -32;
+  var count = -1;
   // console.log("This is pending", pending)
   return (
     <>
 
       <AddTask flag={model} onClose={() => setModel(!model)} date={date} />
-      {taskId && <EditTask flag={model} onClose={() => {
-        setModel(!model)
+      {taskId && <EditTask flag={model1} onClose={() => {
+        setModel1(!model1)
           ; setTaskId(undefined);
       }} date={date} task={taskId} />}
 
@@ -195,7 +197,7 @@ const SheetTable = () => {
                           className="my-2 float-right"
                           hidden={submitted}
                           onClick={() => {
-                            setModel(true)
+                            setModel1(true)
                             setTaskId(item)
                           }} >
                           {'Update'}

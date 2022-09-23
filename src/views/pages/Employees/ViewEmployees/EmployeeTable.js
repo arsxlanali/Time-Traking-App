@@ -32,9 +32,9 @@ const EmployeeTable = () => {
   const [page, setPage] = useState(currentPage);
   const [pageLength, setPageLength] = useState(1);
 
-  const pageChange = (newPage) => {
-    currentPage !== newPage && history.push(`/listemployee?page=${newPage}`);
-  };
+  // const pageChange = (newPage) => {
+  //   currentPage !== newPage && history.push(`/listemployee?page=${newPage}`);
+  // };
   const token = localStorage.getItem("Token");
   useEffect(() => {
     if (token) {
@@ -44,7 +44,6 @@ const EmployeeTable = () => {
         setPageLength(Math.ceil(employeesView.length / 5));
     }
   }, [setPageLength, currentPage, dispatch, employeesView.length, page, token]);
-  // console.log("this is emp lenght;", employeesView.length, pageLength);
 
   const [modal, setModal] = useState(false);
   const [details, setDetails] = useState([]);
@@ -116,7 +115,7 @@ const EmployeeTable = () => {
                       size="sm"
                       color="info"
                       onClick={() => {
-                        history.push(`/editemployee/${item._id}`, {
+                        history.push(`/editemployee`, {
                           item,
                         });
                       }}
@@ -136,7 +135,7 @@ const EmployeeTable = () => {
                       color="primary"
                       className="ml-1"
                       onClick={() => {
-                        history.push(`/listemployee/${item._id}`, { item });
+                        history.push(`/viewemployee`, { item });
                       }}
                     >
                       View

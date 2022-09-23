@@ -24,11 +24,7 @@ export const viewProjects = createAsyncThunk(
 
     try {
       const res = await axios
-        .get(`${baseURL}/projects/getall`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
-        });
+        .get(`${baseURL}/projects/getall`);
       return res.data;
 
     } catch (error) {
@@ -47,13 +43,7 @@ export const deleteProject = createAsyncThunk(
   async ({ id, setSubmitting }, thunkAPI) => {
     try {
       const res = await axios.delete(
-        `${baseURL}/projects/delete/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
-        }
-      );
+        `${baseURL}/projects/delete/${id}`);
       setSubmitting(false)
       swal("Deleted", { icon: "success" })
       thunkAPI.dispatch(viewProjects());
@@ -73,18 +63,9 @@ export const addProject = createAsyncThunk(
   "projects/create",
 
   async ({ data, history, setSubmitting }, thunkAPI) => {
-    // console.log("project info", data)
     try {
-
       const res = await axios.post(
-        `${baseURL}/projects/create`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
-        },
-      );
+        `${baseURL}/projects/create`, data);
       setSubmitting(false)
       swal("Project Added", { icon: "success" })
       history.push('/viewproject')
@@ -111,13 +92,7 @@ export const editProject = createAsyncThunk(
     try {
       const res = await axios.patch(
         `${baseURL}/projects/update/${id1}`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
-        },
-      );
+        data);
       setSubmitting(false);
       swal("Project Update", { icon: "success" })
       history.push('/viewproject')
@@ -147,13 +122,7 @@ export const getProjects = createAsyncThunk(
     // console.log("this is user id", id);
     try {
       const res = await axios.get(
-        `${baseURL}/projects/findprojectsbyuser/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
-        },
-      );
+        `${baseURL}/projects/findprojectsbyuser/${id}`);
       return res?.data;
     } catch (error) {
       if (error.response.data == 'Unauthorized') {
@@ -188,7 +157,7 @@ export const viewProjectsSlice = createSlice({
     [viewProjects.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.projects = payload;
-      // console.log(payload)
+
     },
     [viewProjects.rejected]: (state) => {
       state.loading = false;

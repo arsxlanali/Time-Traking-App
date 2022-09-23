@@ -214,7 +214,9 @@ const EditTask = ({ flag, onClose, date, task }) => {
                           id="description"
                           placeholder="Description"
                           autoComplete="off"
-                          valid={!errors.description}
+                          // valid={!errors.description}
+                          style={{ borderColor: '#d8dbe0' }}
+
                           invalid={touched.description && !!errors.description}
                           required
                           onChange={handleChange}
@@ -261,14 +263,22 @@ const EditTask = ({ flag, onClose, date, task }) => {
                             className="form-control"
                             value={durationInput}
                             onFocus={handleFocus}
+                            style={{ borderColor: '#d8dbe0' }}
                             onChange={(e) => {
                               if (e.target.value.length <= 4) {
                                 const timeI = e.target.value;
                                 setDurationInput(e.target.value);
                                 const hour = parseInt(timeI.slice(0, 1));
                                 const min = parseInt(timeI.slice(2, 4))
-                                if (hour > 2) {
+                                if (hour > 2 || hour == 2 && min > 0) {
+                                  e.target.selectionStart = 0
+                                  e.target.selectionEnd = 4
+                                  setDurationInput('2:00')
                                   setDuration(2 * 60);
+                                }
+                                else if (min > 59) {
+                                  setDurationInput(`${hour}:59`)
+                                  setDuration(hour * 60 + 59);
                                 }
                                 else if (min) {
                                   setDuration(hour * 60 + min);

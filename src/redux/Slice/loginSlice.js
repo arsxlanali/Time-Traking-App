@@ -55,12 +55,7 @@ export const PasswordRest = createAsyncThunk(
     try {
       const res = await axios.post(
         `${baseURL}/users/resetPassword/${id}`,
-        values,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
-        },
+        values
       );
       setSubmitting(false);
       history.push('/viewsheet');

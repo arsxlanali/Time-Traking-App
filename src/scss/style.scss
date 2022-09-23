@@ -57,9 +57,16 @@ input.form-control[type="date"]::-webkit-calendar-picker-indicator {
 }
 .c-dark-theme{
 .custom-select.is-valid,.custom-select.is-invalid {
+
   background:#30343c;
   color: white;
 }
+// .form-control,.custom-select.is-valid {
+//   border-color:#d8dbe0;
+// }
+// .was-validated .form-control:valid, .form-control.is-valid{
+//   border-color: white;
+// }
 }
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
