@@ -1,13 +1,10 @@
 import React from 'react'
 import {
   CCard,
-  CCardHeader,
   CCol,
   CRow,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import SheetTable from './sheetTable'
-import { DocsLink } from 'src/reusable'
+import SheetTable from './SheetTable'
 
 const TaskSheetTable = () => {
   return (

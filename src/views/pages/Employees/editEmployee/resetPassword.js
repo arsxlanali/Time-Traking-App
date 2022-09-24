@@ -13,7 +13,6 @@ import {
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom";
-import Toaster from "src/views/notifications/toaster/Toaster";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { resetPassword } from "src/redux/Slice/employeesSlice";
@@ -61,10 +60,6 @@ const getErrorsFromValidationError = (validationError) => {
 	}, {});
 };
 
-
-
-
-
 const ResetPassword = () => {
 	const user = useLocation().state.item;
 	const { isScuessfull } = useSelector((state) => state.employees);
@@ -74,7 +69,6 @@ const ResetPassword = () => {
 		values["id"] = user._id;
 		console.log("thiis rest pass", values);
 		dispatch(resetPassword({ values, setSubmitting, history }));
-		// setSubmitting(isSubmitting);
 	};
 	const initialValues = {
 		password: "",
@@ -97,8 +91,6 @@ const ResetPassword = () => {
 				handleSubmit,
 				isSubmitting,
 				isValid,
-				handleReset,
-				setTouched,
 			}) => (
 				<CRow>
 					<CCol>

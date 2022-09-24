@@ -2,31 +2,18 @@ import React, { useState } from 'react'
 import { editTask } from 'src/redux/Slice/viewTimeSheetSlice';
 import {
   CButton,
-  CCard,
   CCardBody,
-  CCardHeader,
   CCol,
   CModal,
   CModalBody,
-  CModalFooter,
   CModalHeader,
   CModalTitle,
   CRow,
-  CSelect,
-  CDropdown,
-  CDropdownDivider,
-  CDropdownHeader,
-  CDropdownItem,
-  CDropdownMenu,
-  CDropdownToggle,
-
   CForm,
   CInvalidFeedback,
-  CInputCheckbox,
   CFormGroup,
   CLabel,
   CInput,
-
   CFormText,
   CInputGroup,
   CInputGroupPrepend,
@@ -39,12 +26,10 @@ import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
 import CIcon from "@coreui/icons-react";
 import { TextMask, InputAdapter } from "react-text-mask-hoc";
-import states from 'src/views/forms/advanced-forms/states';
 import Select from "react-select";
 import { useEffect } from 'react';
 import { getProjects } from 'src/redux/Slice/projectSlice';
 import tasks from '../Tasks/Tasks'
-import { string } from 'prop-types';
 const validationSchema = function (values) {
   return Yup.object().shape({
     // type: Yup.string()
@@ -78,30 +63,18 @@ const getErrorsFromValidationError = (validationError) => {
   }, {});
 };
 
-
-
-
-
-
-const key = localStorage.getItem("key");
-
-
 const EditTask = ({ flag, onClose, date, task }) => {
   const department = localStorage.getItem("Department");
   const dispatch = useDispatch();
   const [duration, setDuration] = useState(task.totalMins);
   const inputH = parseInt(task.totalMins / 60);
   const inputM = parseInt(task.totalMins % 60);
-  // console.log("input d", inputH, inputM)
   const [taskField, setTaskFiled] = React.useState(
     [{ value: task.type, label: task.type }]
   )
   const [durationInput, setDurationInput] = useState(inputH + ':' + inputM);
   const darkMode = useSelector((state) => state?.slideBar?.darkMode);
-  // console.log("this is stask", task);
   const empProject = useSelector((state) => state?.viewProjects?.projects);
-  // console.log("this is projecccts", projectValue)
-  // const timeSheet = useSelector((state) => state?.viewTimeSheet?.timeSheet);
   const projectOptions = [];
   empProject.forEach(emp => {
     const result = (({ _id, name }) => ({ _id, name }))(emp)
@@ -118,21 +91,6 @@ const EditTask = ({ flag, onClose, date, task }) => {
   useEffect(() => {
     dispatch(getProjects());
   }, [dispatch])
-  // useEffect(() => {
-  //   const timeI = durationInput;
-  //   if (typeof timeI == 'string') {
-  //     const hour = parseInt(timeI.slice(0, 1));
-  //     const min = parseInt(timeI.slice(2, 4))
-  //     // setDuration(hour * 60 + min);
-  //     console.log('thisi si time', typeof timeI, timeI)
-  //   }
-  //   const time = duration;
-  //   if (time !== undefined) {
-  //     const hour = parseInt(time / 60);
-  //     const min = parseInt(time % 60);
-  //     setDurationInput(hour + ':' + min);
-  //   }
-  // }, [durationInput, duration]);
   const onSubmit1 = (values, { setSubmitting }) => {
     const data = {
       ...values, date, projectId: projectValue.value, type: taskField.value,
@@ -160,7 +118,6 @@ const EditTask = ({ flag, onClose, date, task }) => {
             validate={validate(validationSchema)}
             onSubmit={onSubmit1}
             validateOnMount
-
           >
             {
               ({
@@ -184,12 +141,9 @@ const EditTask = ({ flag, onClose, date, task }) => {
                           type="type"
                           name="type"
                           id="type"
-                          // placeholder="Project Name"
                           value={taskField}
                           options={tasks[department]}
                           onChange={setTaskFiled}
-                          // invalid={touched.type}
-                          // onBlur={handleBlur}
                           theme={(theme) =>
                           ({
                             ...theme,
@@ -214,7 +168,9 @@ const EditTask = ({ flag, onClose, date, task }) => {
                           id="description"
                           placeholder="Description"
                           autoComplete="off"
-                          valid={!errors.description}
+                          // valid={!errors.description}
+                          style={{ borderColor: '#d8dbe0' }}
+
                           invalid={touched.description && !!errors.description}
                           required
                           onChange={handleChange}
@@ -261,14 +217,22 @@ const EditTask = ({ flag, onClose, date, task }) => {
                             className="form-control"
                             value={durationInput}
                             onFocus={handleFocus}
+                            style={{ borderColor: '#d8dbe0' }}
                             onChange={(e) => {
                               if (e.target.value.length <= 4) {
                                 const timeI = e.target.value;
                                 setDurationInput(e.target.value);
                                 const hour = parseInt(timeI.slice(0, 1));
                                 const min = parseInt(timeI.slice(2, 4))
-                                if (hour > 2) {
+                                if (hour > 2 || hour == 2 && min > 0) {
+                                  e.target.selectionStart = 0
+                                  e.target.selectionEnd = 4
+                                  setDurationInput('2:00')
                                   setDuration(2 * 60);
+                                }
+                                else if (min > 59) {
+                                  setDurationInput(`${hour}:59`)
+                                  setDuration(hour * 60 + 59);
                                 }
                                 else if (min) {
                                   setDuration(hour * 60 + min);

@@ -19,12 +19,11 @@ import {
 import { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import ResetPassword from "./resetPassword";
+import ResetPassword from "./ResetPassword";
 
 import { useLocation, useHistory } from "react-router-dom";
 import { editEmployee } from "src/redux/Slice/employeesSlice";
 import { useDispatch, useSelector } from "react-redux";
-import Toaster from "src/views/notifications/toaster/Toaster";
 const validationSchema = function (values) {
   return Yup.object().shape({
     name: Yup.string()

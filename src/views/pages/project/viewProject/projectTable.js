@@ -151,7 +151,7 @@ const ProjectTable = () => {
                             color="primary"
                             className="ml-1"
                             onClick={() => {
-                              history.push(`/viewproject/${item._id}`, { item });
+                              history.push(`/viewproject`, { item });
                             }}
                           >
                             View

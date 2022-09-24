@@ -1,50 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useHistory } from "react-router-dom";
-// import { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import {
   CCardBody,
   CBadge,
   CButton,
   CCollapse,
   CDataTable,
-  CPagination,
   CModal,
   CModalHeader,
   CModalTitle,
   CModalBody,
   CModalFooter,
 } from "@coreui/react";
-// import usersData from "./Data/UsersData";
 import { useSelector, useDispatch } from "react-redux";
 import {
   deleteEmployee,
   getEmployees,
 } from "../../../../redux/Slice/employeesSlice";
-// import { getEmployee } from "src/redux/Slice/employeeSllice";
 import Loader from "../../loader/Loader";
 const EmployeeTable = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const queryPage = useLocation().search.match(/page=([0-9]+)/, "");
-  const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1);
   const { employeesView, isLoading } = useSelector((state) => state.employees);
   const [submitting, setSubmitting] = useState(false);
-  const [page, setPage] = useState(currentPage);
-  const [pageLength, setPageLength] = useState(1);
-
-  const pageChange = (newPage) => {
-    currentPage !== newPage && history.push(`/listemployee?page=${newPage}`);
-  };
-  const token = localStorage.getItem("Token");
   useEffect(() => {
-    if (token) {
-      currentPage !== page && setPage(currentPage);
-      dispatch(getEmployees());
-      if (employeesView.length > 1)
-        setPageLength(Math.ceil(employeesView.length / 5));
-    }
-  }, [setPageLength, currentPage, dispatch, employeesView.length, page, token]);
-  // console.log("this is emp lenght;", employeesView.length, pageLength);
+    dispatch(getEmployees());
+  }, [dispatch]);
 
   const [modal, setModal] = useState(false);
   const [details, setDetails] = useState([]);
@@ -116,7 +97,7 @@ const EmployeeTable = () => {
                       size="sm"
                       color="info"
                       onClick={() => {
-                        history.push(`/editemployee/${item._id}`, {
+                        history.push(`/editemployee`, {
                           item,
                         });
                       }}
@@ -136,7 +117,7 @@ const EmployeeTable = () => {
                       color="primary"
                       className="ml-1"
                       onClick={() => {
-                        history.push(`/listemployee/${item._id}`, { item });
+                        history.push(`/viewemployee`, { item });
                       }}
                     >
                       View
@@ -177,13 +158,6 @@ const EmployeeTable = () => {
           }}
         />
       )}
-      {/* <CPagination
-        activePage={page}
-        onActivePageChange={pageChange}
-        pages={pageLength}
-        doubleArrows={false}
-        align="center"
-      /> */}
     </CCardBody>
   );
 };

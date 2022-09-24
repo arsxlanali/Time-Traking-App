@@ -2,10 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import swal from 'sweetalert';
 import history from "src/hisotry";
-import { clearProjects } from "./projectSlice";
-import { clearTimeSheet } from "./viewTimeSheetSlice";
-import { clearLogin } from "./loginSlice";
-import DelayRedirect from "./delayRedirect";
 
 const baseUrl = "https://time-tracking-app-backend.herokuapp.com";
 
@@ -16,60 +12,30 @@ const initialState = {
 };
 
 export const getEmployees = createAsyncThunk(
-  //action type string
   "employees/getall",
-  // callback function
-
-  async (thunkAPI) => {
-    try {
-      // console.log('This is getAll Employees', header)
-      const res = await axios(`${baseUrl}/users/getall`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
-        }
-      );
-      return res?.data?.users;
-    } catch (error) {
-      if (error.code == "ERR_NETWORK") {
-        swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
-      } else {
-        swal("Opps!", error.response.data.message, { icon: "error", timer: 1500, buttons: false })
-      }
-    }
+  async () => {
+    const res = await axios(`${baseUrl}/users/getall`);
+    return res?.data?.users;
   }
 );
+
 export const addEmployee = createAsyncThunk(
   "employees/addEmployee",
-  async ({ values, setSubmitting, history }, thunkAPI) => {
+  async ({ values, setSubmitting }, thunkAPI) => {
     delete values["accept"];
     const phone = '0' + values['phone'].toString();
     delete values["phone"];
     values["phone"] = phone;
-    // console.log("this is employee add data", values, setSubmitting);
     try {
       const res = await axios.post(
-        `${baseUrl}/users/admin/addnewuser`,
-        values,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
-        }
-      );
+        `${baseUrl}/users/admin/addnewuser`, values);
       setSubmitting(false);
-      history.push('/listemployee')
+      history.goBack()
       swal("Employee Addded", { icon: "success", timer: 1500, buttons: false })
       thunkAPI.dispatch(getEmployees());
       return res?.data;
     } catch (error) {
       setSubmitting(false);
-      if (error.code == "ERR_NETWORK") {
-        swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
-      } else {
-        swal("Opps!", error.response.data.message, { icon: "error", timer: 1500, buttons: false })
-      }
     }
   }
 );
@@ -77,32 +43,21 @@ export const deleteEmployee = createAsyncThunk(
   "employees/deleteEmployee",
   async ({ id, setSubmitting, setModal }, thunkAPI) => {
     try {
-      const res = await axios.delete(`${baseUrl}/users/admin/deleteuser/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("Token")}`,
-        }
-      });
+      const res = await axios.delete(`${baseUrl}/users/admin/deleteuser/${id}`);
       setSubmitting(false);
       setModal(false);
-      history.push('/viewemployee')
       swal("Deleted", { icon: "success", timer: 1500, buttons: false })
-
       thunkAPI.dispatch(getEmployees());
       return res?.data;
     } catch (error) {
       setSubmitting(false);
       setModal(false);
-      if (error.code == "ERR_NETWORK") {
-        swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
-      } else {
-        swal("Opps!", error.response.data.message, { icon: "error", timer: 1500, buttons: false })
-      }
     }
   }
 );
 export const editEmployee = createAsyncThunk(
   "employees/editEmployee",
-  async ({ values, setSubmitting, history }, thunkAPI) => {
+  async ({ values, setSubmitting }, thunkAPI) => {
     const id = values["id"];
     delete values["id"];
     delete values["accept"];
@@ -113,30 +68,19 @@ export const editEmployee = createAsyncThunk(
     try {
       const res = await axios.patch(
         `${baseUrl}/users/admin/updateuser/${id}`,
-        values,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
-        }
-      );
+        values);
       swal("Employee Update", { icon: "success", timer: 1500, buttons: false })
-      history.push('/listemployee')
+      history.goBack();
       thunkAPI.dispatch(getEmployees());
       return res?.data;
     } catch (error) {
       setSubmitting(false);
-      if (error.code == "ERR_NETWORK") {
-        swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
-      } else {
-        swal("Opps!", error.response.data.message, { icon: "error", timer: 1500, buttons: false })
-      }
     }
   }
 );
 export const resetPassword = createAsyncThunk(
   "employees/resetPassword",
-  async ({ values, setSubmitting, history }, thunkAPI) => {
+  async ({ values, setSubmitting }, thunkAPI) => {
     const id = values["id"];
     delete values["id"];
     delete values["accept1"];
@@ -145,26 +89,14 @@ export const resetPassword = createAsyncThunk(
     try {
       const res = await axios.patch(
         `${baseUrl}/users/admin/updateuser/${id}`,
-        values,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          }
-        }
-      );
+        values);
       setSubmitting(false);
       swal("Password Update", { icon: "success", timer: 1500, buttons: false })
-
-      history.push("/listemployee")
+      history.goBack();
       thunkAPI.dispatch(getEmployees());
       return res?.data;
     } catch (error) {
       setSubmitting(false);
-      if (error.code == "ERR_NETWORK") {
-        swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
-      } else {
-        swal("Opps!", error.response.data.message, { icon: "error", timer: 1500, buttons: false })
-      }
     }
   }
 );

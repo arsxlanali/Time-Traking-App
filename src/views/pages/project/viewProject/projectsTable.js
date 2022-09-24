@@ -4,7 +4,7 @@ import {
   CCol,
   CRow,
 } from '@coreui/react'
-import ProjectTable from './projectTable'
+import ProjectTable from './ProjectTable'
 
 const ProjectsTable = () => {
   return (
