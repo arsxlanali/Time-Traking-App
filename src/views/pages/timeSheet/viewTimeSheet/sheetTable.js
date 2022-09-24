@@ -2,18 +2,16 @@ import Loader from "../../loader/Loader";
 import React, { useState } from "react";
 import { viewTimeSheet, deleteTask, submitTasks, checkSubmit, checkPending } from "src/redux/Slice/viewTimeSheetSlice";
 import AddTask from "../addTask/AddTask";
-import EditTask from "../editTask/editTask";
+import EditTask from "../editTask/EditTask";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import 'spinkit/spinkit.min.css'
 import {
   CCardBody,
-  CInput,
   CButton,
   CDataTable,
   CRow,
   CCol,
-  CButtonGroup,
 } from "@coreui/react";
 import "react-dates/initialize";
 
@@ -30,10 +28,8 @@ function dateGetter(params, dayAhead) {
 
 
 const SheetTable = () => {
-  const [details, setDetails] = useState([]);
   const [model, setModel] = useState(false);
   const [model1, setModel1] = useState(false);
-
   const UserId = localStorage.getItem('key');
   const dispatch = useDispatch();
   const { timeSheet, loading, submitted, pending } = useSelector((state) => state.viewTimeSheet);
@@ -46,7 +42,6 @@ const SheetTable = () => {
   const [disable, setDisable] = useState(false);
   var today = dateGetter(new Date(), 0);
   const [date, setDate] = useState(today)
-  // console.log("they this is date", date)
 
   const newArray = timeSheet.map((sheet) => {
     return {
@@ -63,7 +58,7 @@ const SheetTable = () => {
     const projectName = array.project[index]
     return { ...array, project: projectName }
   })
-  // console.log("this is array", finalData)
+
   useEffect(() => {
     if (finalData.length == 0) {
       setDisable(true);
@@ -82,7 +77,6 @@ const SheetTable = () => {
     { key: "duration", _style: { width: "10%" } },
     {
       key: "Actions",
-      // _style: { float: "right" },
       filter: false,
     },
   ];
@@ -91,14 +85,11 @@ const SheetTable = () => {
   }
 
   const handleChange = event => {
-    // setMessage(event.target.value);
     const date = dateGetter(event._d, 0);
     setDate(date);
     dispatch(viewTimeSheet({ UserId, date }));
-    // console.log('value is:fjd', event.target.value);
   };
   var count = -1;
-  // console.log("This is pending", pending)
   return (
     <>
 

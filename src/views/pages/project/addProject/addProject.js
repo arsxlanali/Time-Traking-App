@@ -21,10 +21,7 @@ import { useSelector } from "react-redux";
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
-import CIcon from "@coreui/icons-react";
-import { TextMask, InputAdapter } from "react-text-mask-hoc";
 import { getEmployees } from 'src/redux/Slice/employeesSlice';
-import states from 'src/views/forms/advanced-forms/states';
 import Select from "react-select";
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';

@@ -15,7 +15,6 @@ import {
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom";
-// import Toaster from "src/views/notifications/toaster/Toaster";
 import Loader from "../loader/Loader";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";

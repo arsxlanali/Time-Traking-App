@@ -2,9 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import swal from 'sweetalert';
 import history from "src/hisotry";
-import { clearProjects } from "./projectSlice";
-import { clearEmployee } from "./employeesSlice";
-import { clearTimeSheet } from "./viewTimeSheetSlice";
+
 const baseURL = "https://time-tracking-app-backend.herokuapp.com";
 
 const initialState = {
@@ -15,7 +13,7 @@ const initialState = {
 
 export const login = createAsyncThunk(
   'users/login',
-  async ({ values, history, setSubmitting, setErrors }) => {
+  async ({ values, setSubmitting, setErrors }) => {
     axios
       .post(`${baseURL}/users/login`, values)
       .then((response) => {
@@ -34,16 +32,13 @@ export const login = createAsyncThunk(
         return response.data;
       }).catch((error) => {
         setSubmitting(false);
-        if (error.code == "ERR_NETWORK") {
-          swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
-        } else {
-          setErrors({ email: error.response.data.message })
-        }
+        setErrors({ email: error.response.data.message })
+
       })
   })
 export const PasswordRest = createAsyncThunk(
   "PasswordRest",
-  async ({ values, history, setSubmitting, setErrors }) => {
+  async ({ values, setSubmitting, setErrors }) => {
 
     const id = values["id"];
     delete values["id"];
@@ -59,15 +54,11 @@ export const PasswordRest = createAsyncThunk(
       );
       setSubmitting(false);
       history.push('/viewsheet');
-      swal("Password Reset", { icon: "success" })
+      swal("Password Reset", { icon: "success", timer: 1500, buttons: false })
       return res?.data;
     } catch (error) {
       setSubmitting(false);
-      if (error.code == "ERR_NETWORK") {
-        swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
-      } else {
-        setErrors({ email: error.response.data.message })
-      }
+      setErrors({ email: error.response.data.message })
     }
   }
 );

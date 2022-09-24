@@ -1,39 +1,38 @@
 import React from "react";
 
 const addEmployee = React.lazy(() =>
-  import("./views/pages/Employees/AddEmployee/addEmployee")
+  import("./views/pages/employees/addEmployee/AddEmployee")
 );
 const listEmployee = React.lazy(() =>
-  import("./views/pages/Employees/ViewEmployees/viewTable")
+  import("./views/pages/employees/viewEmployees/EmployeesTable")
+);
+const employee = React.lazy(() =>
+  import("./views/pages/employees/viewEmployees/Employee")
+);
+const editEmployee = React.lazy(() =>
+  import("./views/pages/employees/editEmployee/EditEmployee")
 );
 const reports = React.lazy(() => import("./views/pages/reports/viewTable"));
 
 const addProject = React.lazy(() =>
-  import("./views/pages/project/addProject/addProject")
+  import("./views/pages/project/addProject/AddProject")
 );
 const editProject = React.lazy(() =>
-  import("./views/pages/project/editProject/editProject")
+  import("./views/pages/project/editProject/EditProject")
 );
 const viewProject = React.lazy(() =>
-  import("./views/pages/project/viewProject/projectsTable")
+  import("./views/pages/project/viewProject/ProjectsTable")
 );
 const Project = React.lazy(() =>
-  import("./views/pages/project/viewProject/project")
+  import("./views/pages/project/viewProject/Project")
 );
 const viewSheet = React.lazy(() =>
   import("./views/pages/timeSheet/viewTimeSheet/TaskSheetTable")
 );
-const employee = React.lazy(() =>
-  import("./views/pages/Employees/ViewEmployees/Employee")
-);
-const editEmployee = React.lazy(() =>
-  import("./views/pages//Employees/editEmployee/editEmployee")
-);
+
 
 
 const routes = [
-  // { path: "/", exact: true, name: "" },
-  // { path: "/dashboard", name: "Dashboard", component: Dashboard },
 
   {
     path: "/addproject",
