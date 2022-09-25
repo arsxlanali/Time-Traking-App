@@ -24,7 +24,6 @@ export const viewTimeSheet = createAsyncThunk(
 export const deleteTask = createAsyncThunk(
   "tasks/delete",
   async ({ id, date, setSubmitting }, thunkAPI) => {
-    console.log("taskid", date, id, SubmitEvent);
     try {
       const res = await axios.delete(
         `${baseURL}/tasks/delete/${id}`
@@ -43,7 +42,7 @@ export const deleteTask = createAsyncThunk(
 export const addTask = createAsyncThunk(
   "tasks/create",
 
-  async ({ data, setSubmitting, resetForm }, thunkAPI) => {
+  async ({ data, setSubmitting, resetForm, setErrors }, thunkAPI) => {
 
     try {
       const res = await axios.post(
@@ -58,6 +57,7 @@ export const addTask = createAsyncThunk(
       return res?.data;
     } catch (error) {
       setSubmitting(false)
+      setErrors({ description: error.response.data.message })
     }
   }
 );
@@ -88,7 +88,6 @@ export const submitTasks = createAsyncThunk(
 
   async ({ date, setSubmit }, thunkAPI) => {
     const data = { date: date }
-    console.log("submitTasks", data, setSubmit);
     try {
       const res = await axios.post(
         `${baseURL}/tasks/submit`, data);

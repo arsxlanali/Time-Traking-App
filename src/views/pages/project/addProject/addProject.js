@@ -12,10 +12,6 @@ import {
   CInput,
   CRow,
   CCardHeader,
-  CFormText,
-  CInputGroup,
-  CInputGroupPrepend,
-  CInputGroupText
 } from '@coreui/react'
 import { useSelector } from "react-redux";
 import { Formik } from 'formik'
@@ -34,6 +30,7 @@ const validationSchema = function (values) {
     description: Yup.string()
       .min(5, `Description has to be at least 5 characters`)
       .required('Description is required'),
+    // assignTo: Yup.array(),
   })
 }
 
@@ -62,15 +59,9 @@ const getErrorsFromValidationError = (validationError) => {
 const initialValues = {
   name: "",
   description: "",
-  // assignToBy: "",
   assignTo: [],
-  // startDate: "",
 
 }
-
-
-
-
 
 const ValidationForms = () => {
 
@@ -88,24 +79,18 @@ const ValidationForms = () => {
   today = yyyy + '-' + mm + '-' + dd;
 
   const allEmployees = useSelector((state) => state?.employees?.employeesView);
-  // console.log("this is all employees", allEmployees);
   const employees = allEmployees.filter(emp => emp['role'] == 'EMPLOYEE');
   const empOptions = [];
   employees.forEach(emp => {
     const result = (({ _id, name }) => ({ _id, name }))(emp)
     empOptions.push({ "value": result._id, "label": result.name });
   })
-  // console.log("this is employees", empOptions)
   const onSubmit = (initialValues, { setSubmitting }) => {
-
-    // const id = localStorage.getItem("key");
     const arry = [];
     value.forEach(val => {
       arry.push(val.value);
     })
-    // console.log("This ", nnnn)
     const data = { ...initialValues, assignTo: arry, startDate: today }
-    // console.log("this is data", data);
     dispatch(addProject({ data, history, setSubmitting }));
   }
   return (
@@ -120,7 +105,6 @@ const ValidationForms = () => {
               validate={validate(validationSchema)}
               onSubmit={onSubmit}
               validateOnMount
-
             >
               {
                 ({
@@ -150,6 +134,8 @@ const ValidationForms = () => {
                             required
                             onChange={handleChange}
                             onBlur={handleBlur}
+                            style={{ borderColor: '#d8dbe0' }}
+
                             value={values.name} />
                           <CInvalidFeedback>{errors.name}</CInvalidFeedback>
                         </CFormGroup>
@@ -165,6 +151,8 @@ const ValidationForms = () => {
                             required
                             onChange={handleChange}
                             onBlur={handleBlur}
+                            style={{ borderColor: '#d8dbe0' }}
+
                             value={values.description} />
                           <CInvalidFeedback>{errors.description}</CInvalidFeedback>
                         </CFormGroup>
@@ -179,11 +167,9 @@ const ValidationForms = () => {
                             options={empOptions}
                             onChange={setValue}
                             isMulti
-                            // required
-                            // valid={!errors.assignTo}
+                            required
                             invalid={touched.assignTo}
                             onBlur={handleBlur}
-                            // theme={(e) => console.log(e)}
                             theme={(theme) => ({
                               ...theme,
                               colors: {

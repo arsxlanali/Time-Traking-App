@@ -103,7 +103,6 @@ const ValidationForms = () => {
       selectedEmp.push(val.value);
     })
     const data = { ...values, assignTo: selectedEmp }
-    // console.log("this is data", data);
 
 
     dispatch(editProject({ data, id, setSubmitting, history }));
@@ -155,6 +154,8 @@ const ValidationForms = () => {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             onFocus={handleFocus}
+                            style={{ borderColor: '#d8dbe0' }}
+
                             value={values.name} />
                           <CInvalidFeedback>{errors.name}</CInvalidFeedback>
                         </CFormGroup>
@@ -171,6 +172,8 @@ const ValidationForms = () => {
                             required
                             onChange={handleChange}
                             onBlur={handleBlur}
+                            style={{ borderColor: '#d8dbe0' }}
+
                             onFocus={handleFocus}
                             value={values.description} />
                           <CInvalidFeedback>{errors.description}</CInvalidFeedback>
@@ -200,7 +203,7 @@ const ValidationForms = () => {
                                 primary75: darkMode ? "rgba(255, 255, 0, 0.20)" : theme.colors.primary75,
                                 dangerLight: darkMode ? "#484c54" : theme.colors.dangerLight,
                                 neutral0: darkMode ? "#30343c" : theme.colors.neutral0,
-                                neutral30: darkMode ? "green" : theme.colors.neutral30, //hover
+                                // neutral30: darkMode ? "green" : theme.colors.neutral30, //hover
                                 neutral10: darkMode ? "gray" : theme.colors.neutral10,// selected boxes
                                 neutral80: darkMode ? "white" : theme.colors.neutral80, //boxt text
                               },

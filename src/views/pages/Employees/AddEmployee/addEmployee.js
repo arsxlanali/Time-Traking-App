@@ -18,18 +18,32 @@ import {
 
 import { Formik } from "formik";
 import * as Yup from "yup";
-// import { addEmployee } from "../../../../redux/Slice/employeesSlice";
+
 import { addEmployee } from "src/redux/Slice/employeesSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import MaskedInput from "react-text-mask";
+import { Field } from "formik";
+const phoneNumberMask = [
+  /[0-9]/,
+  /\d/,
+  /\d/,
+  /\d/,
+  "-",
+  /\d/,
+  /\d/,
+  /\d/,
+  /\d/,
+  /\d/,
+  /\d/,
+  /\d/
+];
 const validationSchema = function (values) {
   return Yup.object().shape({
     name: Yup.string()
       .min(2, `Name has to be at least 2 characters`)
       .required("Name is required"),
     phone: Yup.string()
-      .min(11, `Phone has to be at least 11 characters`)
-      .max(11, `Phone cannot exceed 11 characters`)
       .required("phone is required"),
     email: Yup.string()
       .email("Invalid email address")
@@ -108,12 +122,11 @@ const ValidationForms = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const onSubmit = (values, { setSubmitting }) => {
-    console.log("this is vlue", values)
     dispatch(addEmployee({ values, setSubmitting, history }));
   };
   const darkMode = useSelector((state) => state?.slideBar?.darkMode);
   const role = localStorage.getItem("Role")
-  const flag = true;
+  var flag = true;
   if (role == "MANAGEMENT") {
     flag = false;
   }
@@ -180,23 +193,28 @@ const ValidationForms = () => {
                       </CFormGroup>
                       <CFormGroup>
                         <CLabel htmlFor="phone">Phone</CLabel>
-                        <CInput
-                          type="number"
+                        <Field
                           name="phone"
-                          id="phone"
-                          placeholder="Phone"
-                          autoComplete="off"
-                          valid={!errors.phone}
-                          invalid={touched.phone && !!errors.phone}
-                          required
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.phone}
+                          render={({ field }) => (
+                            <MaskedInput
+                              {...field}
+                              mask={phoneNumberMask}
+                              id="phone"
+                              placeholder="Phone"
+                              type="text"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              class={`form-control ${!errors.phone && "is-valid"}
+                              ${touched.phone && errors.phone && "is-invalid"}`}
+                            />
+                          )}
                         />
                         <CFormText color="muted">
-                          ex. (92) 300-12345678
+                          ex. 0300-12345678
                         </CFormText>
-                        <CInvalidFeedback>{errors.phone}</CInvalidFeedback>
+                        {errors.phone && touched.phone && (
+                          <div className="invalid-feedback">{errors.phone}</div>
+                        )}
                       </CFormGroup>
                       <CFormGroup row>
                         <CCol md="12">

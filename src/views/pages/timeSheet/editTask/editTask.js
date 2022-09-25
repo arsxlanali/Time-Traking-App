@@ -285,7 +285,6 @@ const EditTask = ({ flag, onClose, date, task }) => {
                       </CFormGroup>
                       <CFormGroup>
                         <CButton type="submit" color="primary" className="mr-1"
-                          // onClick={() => console.log("isSubmmmitng", isSubmitting)}
                           disabled={isSubmitting || !isValid}
                         >{isSubmitting ? "Wait..." : "Update"}</CButton>
                       </CFormGroup>

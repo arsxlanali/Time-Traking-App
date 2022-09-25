@@ -127,7 +127,6 @@ const SheetTable = () => {
               if (count == 30)
                 count = -1;
               if (previous30 <= date && today >= date) {
-                console.log("This is count", count);
                 count++;
                 return pending[count]?.isSubmit
               }
@@ -145,7 +144,7 @@ const SheetTable = () => {
             }}
             // withPortal
             displayFormat="Y MMM D"
-            showDefaultInputIcon
+            // showDefaultInputIcon
             inputIconPosition="after"
             small
             hideKeyboardShortcutsPanel

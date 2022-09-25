@@ -62,12 +62,10 @@ const getErrorsFromValidationError = (validationError) => {
 
 const ResetPassword = () => {
 	const user = useLocation().state.item;
-	const { isScuessfull } = useSelector((state) => state.employees);
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const onSubmit = (values, { setSubmitting }) => {
 		values["id"] = user._id;
-		console.log("thiis rest pass", values);
 		dispatch(resetPassword({ values, setSubmitting, history }));
 	};
 	const initialValues = {

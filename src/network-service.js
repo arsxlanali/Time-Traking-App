@@ -5,7 +5,7 @@ import { clearLogin } from './redux/Slice/loginSlice';
 import { clearTimeSheet } from './redux/Slice/viewTimeSheetSlice';
 import swal from 'sweetalert';
 
-export default {
+const NetworkService = {
     setupInterceptorsRequest: () => {
         axios.interceptors.request.use(request => {
             request.headers.Authorization = `Bearer ${localStorage.getItem("Token")}`;
@@ -16,11 +16,11 @@ export default {
         axios.interceptors.response.use(response => {
             return response;
         }, error => {
-            if (error.code == "ERR_NETWORK") {
+            if (error.code === "ERR_NETWORK") {
                 swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
             }
             else if (error.response.status === 401) {
-                if (error.response.data.message != 'Please check your login credentials') {
+                if (error.response.data.message !== 'Please check your login credentials') {
                     swal('Login Again', 'Your session is out', { timer: 4000, buttons: false })
                     setTimeout(() => {
                         localStorage.clear();
@@ -39,3 +39,5 @@ export default {
         });
     },
 };
+
+export default NetworkService;
