@@ -25,16 +25,17 @@ export const login = createAsyncThunk(
         localStorage.setItem("Department", response.data.data.department)
         localStorage.setItem("isDefualt", response.data.data.isDefault)
         if (response?.data?.data?.isDefault) {
-          setTimeout(() => { history.push('/passwordrest', response?.data?.data?._id) }, 2000)
+          setTimeout(() => { history.push('/passwordrest', response?.data?.data?._id) }, 1000)
         }
         else {
-          setTimeout(() => { history.push('/viewsheet') }, 2000)
+          setTimeout(() => { history.push('/viewsheet') }, 1000)
         }
-        toast.success(response.data.message);
-        return response.data;
+        toast.success(response?.data?.message);
+        return response?.data;
       }).catch((error) => {
         setSubmitting(false);
-        setErrors({ email: error.response.data.message })
+        // console.log("this is error", error)
+        setErrors({ email: "Ivalid credentials" })
 
       })
   })

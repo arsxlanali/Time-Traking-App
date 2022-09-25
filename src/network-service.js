@@ -4,7 +4,6 @@ import { clearEmployee } from './redux/Slice/employeesSlice';
 import { clearProjects } from './redux/Slice/projectSlice';
 import { clearLogin } from './redux/Slice/loginSlice';
 import { clearTimeSheet } from './redux/Slice/viewTimeSheetSlice';
-import swal from 'sweetalert';
 
 const NetworkService = {
     setupInterceptorsRequest: () => {
@@ -21,7 +20,7 @@ const NetworkService = {
                 toast.error(error.message)
             }
             else if (error.response.status === 401) {
-                if (error.response.data.message !== 'Please check your login credentials') {
+                if (error?.response?.data?.message !== 'Please check your login credentials') {
                     toast.error("Your session is expired!")
                     setTimeout(() => {
                         localStorage.clear();
@@ -32,12 +31,19 @@ const NetworkService = {
                         history.push('/login')
                     }, 4000)
                 }
+                else {
+                    // setErrors({ email: error.response.data.message })
+
+                    toast.error(error?.response?.data?.message)
+
+                }
+
             }
             else {
-                // console.log("this is ", error.response.data.message)
-                toast.error(error.response.data.message[0])
+                // console.log("this is ", error)
+                toast.error(error?.response?.data?.message[0])
             }
-            // return Promise.reject(error);
+            return Promise.reject(error);
         });
     },
 };
