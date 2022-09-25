@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from "react-toastify";
 import { clearEmployee } from './redux/Slice/employeesSlice';
 import { clearProjects } from './redux/Slice/projectSlice';
 import { clearLogin } from './redux/Slice/loginSlice';
@@ -17,11 +18,11 @@ const NetworkService = {
             return response;
         }, error => {
             if (error.code === "ERR_NETWORK") {
-                swal("Opps!", error.message, { icon: "error", timer: 1500, buttons: false })
+                toast.error(error.message)
             }
             else if (error.response.status === 401) {
                 if (error.response.data.message !== 'Please check your login credentials') {
-                    swal('Login Again', 'Your session is out', { timer: 4000, buttons: false })
+                    toast.error("Your session is expired!")
                     setTimeout(() => {
                         localStorage.clear();
                         store.dispatch(clearEmployee())
@@ -33,9 +34,10 @@ const NetworkService = {
                 }
             }
             else {
-                swal("Opps!", error.response.data.message, { icon: "error", timer: 1500, buttons: false })
+                // console.log("this is ", error.response.data.message)
+                toast.error(error.response.data.message[0])
             }
-            return Promise.reject(error);
+            // return Promise.reject(error);
         });
     },
 };

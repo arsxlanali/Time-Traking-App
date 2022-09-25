@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import axios from "axios";
-import swal from 'sweetalert';
-import history from "src/hisotry";
+
 
 const baseURL = "https://time-tracking-app-backend.herokuapp.com";
 const initialState = {
@@ -29,7 +29,7 @@ export const deleteTask = createAsyncThunk(
         `${baseURL}/tasks/delete/${id}`
       );
       setSubmitting(false)
-      swal("Deleted", { icon: "success", timer: 1500, buttons: false })
+      toast.success(res.data.message);
       const UserId = localStorage.getItem('key');
       thunkAPI.dispatch(viewTimeSheet({ UserId, date }));
       return res?.data;
@@ -42,7 +42,7 @@ export const deleteTask = createAsyncThunk(
 export const addTask = createAsyncThunk(
   "tasks/create",
 
-  async ({ data, setSubmitting, resetForm, setErrors }, thunkAPI) => {
+  async ({ data, setSubmitting, resetForm }, thunkAPI) => {
 
     try {
       const res = await axios.post(
@@ -54,10 +54,10 @@ export const addTask = createAsyncThunk(
       const UserId = localStorage.getItem('key');
       const date = data.date;
       thunkAPI.dispatch(viewTimeSheet({ UserId, date }));
+      toast.success(res.data.message);
       return res?.data;
     } catch (error) {
       setSubmitting(false)
-      setErrors({ description: error.response.data.message })
     }
   }
 );
@@ -73,10 +73,10 @@ export const editTask = createAsyncThunk(
       );
       onClose();
       setSubmitting(false);
-      swal("Updated", { icon: "success", timer: 1500, buttons: false })
       const UserId = localStorage.getItem('key');
       const date = data.date;
       thunkAPI.dispatch(viewTimeSheet({ UserId, date }));
+      toast.success(res.data.message);
       return res?.data;
     } catch (error) {
       setSubmitting(false)
@@ -86,13 +86,13 @@ export const editTask = createAsyncThunk(
 export const submitTasks = createAsyncThunk(
   "tasks/submitTasks",
 
-  async ({ date, setSubmit }, thunkAPI) => {
+  async ({ date, setSubmit }) => {
     const data = { date: date }
     try {
       const res = await axios.post(
         `${baseURL}/tasks/submit`, data);
       setSubmit(false)
-      swal("Submmited", { icon: "success", timer: 1500, buttons: false })
+      toast.success(res.data.message);
       return res?.data;
     } catch (error) {
       setSubmit(false)

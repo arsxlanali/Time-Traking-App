@@ -1,31 +1,29 @@
-import React from "react";
-import {
-    CToast,
-    CToastBody,
-    CToastHeader,
-} from "@coreui/react";
+// import React, { useState } from 'react';
+// import Button from 'react-bootstrap/Button';
+// import Col from 'react-bootstrap/Col';
+// import Row from 'react-bootstrap/Row';
+// import Toast from 'react-bootstrap/Toast';
 
+// function Toast({ show }) {
+//     return (
+//         <Row>
+//             <Col>
+//                 <Toast show={show} delay={3000} style={{ position: 'absolute' }} autohide>
+//                     <Toast.Header>
+//                         <img
+//                             src="holder.js/20x20?text=%20"
+//                             className="rounded me-2"
+//                             alt=""
+//                         />
+//                         <strong className="me-auto">Bootstrap</strong>
+//                         <small>11 mins ago</small>
+//                     </Toast.Header>
+//                     <Toast.Body>Woohoo, you're reading this text in a Toast!</Toast.Body>
+//                 </Toast>
+//             </Col>
+//         </Row>
+//     );
+// }
 
-const exampleToast = (
-    <CToast>
-        <CToastHeader closeButton>
-            <svg
-                className="rounded me-2"
-                width="20"
-                height="20"
-                xmlns="http://www.w3.org/2000/svg"
-                preserveAspectRatio="xMidYMid slice"
-                focusable="false"
-                role="img"
-            >
-                <rect width="100%" height="100%" fill="#007aff"></rect>
-            </svg>
-            <strong className="me-auto">CoreUI for React.js</strong>
-            <small>7 min ago</small>
-        </CToastHeader>
-        <CToastBody>Hello, world! This is a toast message.</CToastBody>
-    </CToast>
-)
-
-export default exampleToast;
+// export default Toast;
 
