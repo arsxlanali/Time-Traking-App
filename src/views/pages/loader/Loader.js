@@ -1,13 +1,7 @@
 import React from "react";
 import {
-  CRow,
-  CCol,
-  CCard,
-  CCardHeader,
   CCardBody,
-  CSpinner,
 } from "@coreui/react";
-// import { ProBadge, DocsLink } from "src/reusable";
 
 import "spinkit/spinkit.min.css";
 

@@ -2,7 +2,6 @@ import React, { Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { CContainer, CFade } from "@coreui/react";
 
-// routes config
 import routes from "../routes";
 
 const loading = (
@@ -13,14 +12,19 @@ const loading = (
 
 const TheContent = () => {
   const role = localStorage.getItem("Role");
-  if (role == "EMPLOYEE") {
-    // console.log("this is routes", routes);
-    var filteredRoutes = routes.filter((obj) => {
-      return (obj.path == "/viewsheet" || obj.path == "/reports");
+  var filteredRoutes = {};
+  if (role === "EMPLOYEE") {
+    filteredRoutes = routes.filter((obj) => {
+      return (obj.path === "/viewsheet" || obj.path === "/reports");
+    })
+  }
+  else if (role === "MANAGEMENT") {
+    filteredRoutes = routes.filter((obj) => {
+      return (obj.path !== "/editemployee" && obj.path !== "/addemployee");
     })
   }
   else {
-    var filteredRoutes = routes.slice();
+    filteredRoutes = routes.slice();
   }
   return (
     <main className="c-main">

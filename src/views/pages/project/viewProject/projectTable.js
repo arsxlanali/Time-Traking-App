@@ -127,9 +127,6 @@ const ProjectTable = () => {
                               var [project] = projects.filter((obj) => {
                                 return (obj._id == item._id);
                               })
-                              // var [projectOj] = project;
-                              // console.log("this is projejct", project)
-
                               history.push('/editProject', project);
                             }
                           }>

@@ -1,6 +1,6 @@
 import React from "react";
 import { CCard, CCardBody, CCardHeader, CCol, CRow } from "@coreui/react";
-// import CIcon from "@coreui/icons-react";
+
 import { useLocation } from "react-router-dom";
 
 const Employee = ({ match }) => {

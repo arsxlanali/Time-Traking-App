@@ -15,11 +15,8 @@ import {
   CFormGroup,
   CLabel,
   CRow,
-  CToaster
 } from "@coreui/react";
 import { useState } from "react";
-import { useRef } from "react";
-import exampleToast from "../toast/Toast";
 const validationSchema = function (values) {
   return Yup.object().shape({
     email: Yup.string()
@@ -49,7 +46,6 @@ const validate = (getValidationSchema) => {
 };
 const getErrorsFromValidationError = (validationError) => {
   const FIRST_ERROR = 0;
-  // console.log("Hay this is validation", FIRST_ERROR)
   return validationError.inner.reduce((errors, error) => {
     return {
       ...errors,
@@ -69,7 +65,6 @@ function LoginApp() {
     initialValues.email = values.email;
     initialValues.password = values.password;
     dispatch(login({ values, history, setSubmitting, setErrors }));
-    // setSubmitting(isLoading);
   };
   const initialValues = {
     email: "",
@@ -89,12 +84,6 @@ function LoginApp() {
       , color: "white"
     }
   }
-  // useEffect(() => {
-  //   if (count == 0)
-  //     inputColor['border'] = 'none';
-  //   else
-  //     inputColor['border'] = 'green';
-  // }, [count])
   return (
     <div className={`c-app c-default-layout flex-row align-items-center ${text}`}
       style={backgorund} >
@@ -132,7 +121,6 @@ function LoginApp() {
                             id="email"
                             placeholder="Email"
                             autoComplete="email"
-
                             valid={!errors.email}
                             invalid={touched.email && !!errors.email}
                             required
@@ -150,7 +138,7 @@ function LoginApp() {
                             name="password"
                             id="password"
                             placeholder="Password"
-                            autoComplete="new-password"
+                            autoComplete="password"
                             valid={!errors.password}
                             invalid={touched.password && !!errors.password}
                             required

@@ -21,7 +21,6 @@ import {
 
 const TheHeader = () => {
   const dispatch = useDispatch()
-  const asideShow = useSelector(state => state?.slideBar?.asideShow)
   const darkMode = useSelector(state => state?.slideBar?.darkMode)
   const sidebarShow = useSelector(state => state?.slideBar?.sidebarShow)
 
@@ -39,16 +38,20 @@ const TheHeader = () => {
     dispatch({ type: "set", sidebarShow: val });
   };
   const role = localStorage.getItem("Role");
-  if (role == "EMPLOYEE") {
-    // console.log("this is routes", routes);
-    var filteredRoutes = routes.filter((obj) => {
-      return (obj.path == "/viewsheet" || obj.path == "/reports");
+  var filteredRoutes = {}
+  if (role === "EMPLOYEE") {
+    filteredRoutes = routes.filter((obj) => {
+      return (obj.path === "/viewsheet" || obj.path === "/reports");
+    })
+  }
+  else if (role === "MANAGEMENT") {
+    filteredRoutes = routes.filter((obj) => {
+      return (obj.path !== "/editemployee" && obj.path !== "/addemployee");
     })
   }
   else {
-    var filteredRoutes = routes.slice();
+    filteredRoutes = routes.slice();
   }
-  // console.log("this is filtered routes", filteredRoutes);
   return (
     <CHeader withSubheader>
       <CToggler

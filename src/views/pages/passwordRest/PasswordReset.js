@@ -18,7 +18,6 @@ import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom";
 import Loader from "../loader/Loader";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-// import { useLocation } from "react-router-dom";
 import { PasswordRest } from "src/redux/Slice/loginSlice";
 const validationSchema = function (values) {
   return Yup.object().shape({
@@ -65,12 +64,8 @@ const getErrorsFromValidationError = (validationError) => {
 };
 
 
-
-
-
 const PasswordReset = () => {
   const userId = useLocation().state;
-  // console.log("this is user", userId);
   const darkMode = useSelector((state) => state?.slideBar?.darkMode);
   const { isLoading } = useSelector((state) => state.login);
   const dispatch = useDispatch();
@@ -125,8 +120,6 @@ const PasswordReset = () => {
                   handleSubmit,
                   isValid,
                   isSubmitting,
-                  // handleReset,
-                  // setTouched,
                 }) => (
                   <CRow>
                     <CCol>

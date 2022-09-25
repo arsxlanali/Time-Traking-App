@@ -36,7 +36,7 @@ const validationSchema = function (values) {
     description: Yup.string()
       .min(5, `Description has to be at least 5 characters`)
       .required('Description is required'),
-    time: Yup.string()
+    projectId: Yup.string().min(0, `project has to be at least 5 characters`)
   })
 }
 
@@ -82,16 +82,25 @@ const AddTask = ({ flag, onClose, date }) => {
     dispatch(getProjects());
   }, [dispatch])
 
-  const onSubmit = (values, { setSubmitting, resetForm }) => {
+  const onSubmit = (values, { setSubmitting, resetForm, setErrors }) => {
+    // console.log("Thisshishs", value.value == 'undefined')
+    // if (typeof value.value === 'undefined') {
+    //   setErrors({ projectId: "Please add project" })
+    //   setSubmitting(false)
+    // }
+    // else {
+
     const data = {
       ...values, date, projectId: value.value, type: task.value,
       duration: { hours: parseInt(duration / 60), minutes: parseInt(duration % 60) }
     };
+    dispatch(addTask({ data, setSubmitting, resetForm, setErrors }));
     setTask([])
     setValue([])
     setDuration(0);
     setDurationInput('');
-    dispatch(addTask({ data, setSubmitting, resetForm }));
+    // }
+
   }
 
   const initialValues = {
@@ -127,7 +136,6 @@ const AddTask = ({ flag, onClose, date }) => {
                 handleSubmit,
                 isSubmitting,
                 isValid,
-                setErrors
               }) => (
                 <CRow >
                   <CCol>
@@ -187,7 +195,8 @@ const AddTask = ({ flag, onClose, date }) => {
                           value={value}
                           options={projectOptions}
                           onChange={setValue}
-                          invalid={touched.projectId}
+                          isValid={errors.projectId}
+                          invalid={touched.projectId && !!errors.projectId}
                           onBlur={handleBlur}
                           onFocus={handleFocus}
                           theme={(theme) => ({
@@ -217,10 +226,8 @@ const AddTask = ({ flag, onClose, date }) => {
                             className="form-control"
                             value={durationInput}
                             onFocus={handleFocus}
-                            // onBlur={() => textareaRef.current.setSelectionRange(0, 0)}
                             style={{ borderColor: '#d8dbe0' }}
                             onChange={(e) => {
-                              console.log(e)
                               if (e.target.value.length <= 4) {
                                 const timeI = e.target.value;
                                 setDurationInput(e.target.value);

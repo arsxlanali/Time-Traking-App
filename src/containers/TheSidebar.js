@@ -7,8 +7,6 @@ import {
   CSidebarNav,
   CSidebarNavDivider,
   CSidebarNavTitle,
-  //  CNavItem,
-  //  CProgress,
   CSidebarMinimizer,
   CSidebarNavDropdown,
   CSidebarNavItem,
@@ -18,23 +16,30 @@ import icon from '../assets/icons/icon1.png'
 import icon2 from '../assets/icons/icon2.png'
 // sidebar nav config
 import navigation from "./_nav";
+import { _nav1 } from "./_nav";
 
 const TheSidebar = () => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state?.slideBar?.sidebarShow);
   const role = localStorage.getItem("Role");
-  if (role == "EMPLOYEE") {
-    // console.log("this is nav");
+  Object.filter = (obj, predicate) =>
+    Object.keys(obj)
+      .filter(key => predicate(obj[key]))
+      .reduce((res, key) => (res[key] = obj[key], res), {});
+  var filteredNav = {}
+  if (role === "EMPLOYEE") {
     navigation = navigation.filter((obj) => {
       return (obj.name !== "Projects" && obj.name !== "Employee");
     })
-    var filteredNav = navigation.slice();
-    // console.log("this is nav", navigation)
+    filteredNav = navigation.slice();
+  }
+  else if (role === "MANAGEMENT") {
+
+    filteredNav = _nav1.slice();
   }
   else {
-    var filteredNav = navigation.slice();
+    filteredNav = navigation.slice();
   }
-  // console.log("this is employee nav", navigation);
   return (
     <CSidebar
       show={show}

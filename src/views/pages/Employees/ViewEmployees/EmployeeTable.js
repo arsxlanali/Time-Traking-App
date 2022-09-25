@@ -52,6 +52,11 @@ const EmployeeTable = () => {
       filter: false,
     },
   ];
+  const role = localStorage.getItem('Role');
+  var flag1 = true;
+  if (role === 'MANAGEMENT') {
+    flag1 = false;
+  }
   return (
     <CCardBody>
       {isLoading ? (
@@ -75,7 +80,7 @@ const EmployeeTable = () => {
             show_details: (item) => {
               return (
                 <td className="py-2">
-                  <CButton
+                  {flag1 ? <CButton
                     color="primary"
                     variant="outline"
                     shape="square"
@@ -85,7 +90,16 @@ const EmployeeTable = () => {
                     }}
                   >
                     {details.includes(item._id) ? "Actions" : "Actions"}
-                  </CButton>
+                  </CButton> : <CButton
+                    size="sm"
+                    color="primary"
+                    className="ml-1"
+                    onClick={() => {
+                      history.push(`/viewemployee`, { item });
+                    }}
+                  >
+                    View
+                  </CButton>}
                 </td>
               );
             },

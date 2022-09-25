@@ -16,8 +16,6 @@ const Project = ({ match }) => {
 	delete project['__v'];
 	const projectDetails = project ? Object.entries(project) :
 		[['id', (<span><CIcon className="text-muted" name="cui-icon-ban" /> Not found</span>)]]
-	console.log("this is id", projectDetails);
-	// console.log("this is projectsssss", projectDetails);
 	return (
 		<CRow className={"d-flex justify-content-center table-responsive"}>
 			<CCol lg={8}>
@@ -38,8 +36,6 @@ const Project = ({ match }) => {
 													</tr>
 													{
 														value.slice(1).map((val, idx) => {
-															// idx = 
-															// console.log("this is key", idx)
 															return (
 																<tr key={idx + '$'}>
 																	<td key={idx + '$s'}><strong>{val}</strong></td>
