@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import swal from 'sweetalert';
+import { toast } from "react-toastify";
+// import swal from 'sweetalert';
 import history from "src/hisotry";
 
 const baseUrl = "https://time-tracking-app-backend.herokuapp.com";
@@ -15,6 +16,7 @@ export const getEmployees = createAsyncThunk(
   "employees/getall",
   async () => {
     const res = await axios(`${baseUrl}/users/getall`);
+    // toast.success(res.data.message);
     return res?.data?.users;
   }
 );
@@ -28,7 +30,8 @@ export const addEmployee = createAsyncThunk(
         `${baseUrl}/users/admin/addnewuser`, values);
       setSubmitting(false);
       history.goBack()
-      swal("Employee Addded", { icon: "success", timer: 1500, buttons: false })
+      toast.success(res.data.message);
+      // swal("Employee Addded", { icon: "success", timer: 1500, buttons: false })
       thunkAPI.dispatch(getEmployees());
       return res?.data;
     } catch (error) {
@@ -43,7 +46,8 @@ export const deleteEmployee = createAsyncThunk(
       const res = await axios.delete(`${baseUrl}/users/admin/deleteuser/${id}`);
       setSubmitting(false);
       setModal(false);
-      swal("Deleted", { icon: "success", timer: 1500, buttons: false })
+      toast.success(res.data.message);
+      // swal("Deleted", { icon: "success", timer: 1500, buttons: false })
       thunkAPI.dispatch(getEmployees());
       return res?.data;
     } catch (error) {
@@ -63,7 +67,8 @@ export const editEmployee = createAsyncThunk(
       const res = await axios.patch(
         `${baseUrl}/users/admin/updateuser/${id}`,
         values);
-      swal("Employee Update", { icon: "success", timer: 1500, buttons: false })
+      toast.success(res.data.message);
+      // swal("Employee Update", { icon: "success", timer: 1500, buttons: false })
       history.goBack();
       thunkAPI.dispatch(getEmployees());
       return res?.data;
@@ -84,7 +89,8 @@ export const resetPassword = createAsyncThunk(
         `${baseUrl}/users/admin/updateuser/${id}`,
         values);
       setSubmitting(false);
-      swal("Password Update", { icon: "success", timer: 1500, buttons: false })
+      toast.success(res.data.message);
+      // swal("Password Update", { icon: "success", timer: 1500, buttons: false })
       history.goBack();
       thunkAPI.dispatch(getEmployees());
       return res?.data;

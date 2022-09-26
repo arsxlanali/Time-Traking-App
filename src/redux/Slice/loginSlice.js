@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import axios from "axios";
-import swal from 'sweetalert';
+// import swal from 'sweetalert';
 import history from "src/hisotry";
 
 const baseURL = "https://time-tracking-app-backend.herokuapp.com";
@@ -24,15 +25,17 @@ export const login = createAsyncThunk(
         localStorage.setItem("Department", response.data.data.department)
         localStorage.setItem("isDefualt", response.data.data.isDefault)
         if (response?.data?.data?.isDefault) {
-          history.push('/passwordrest', response?.data?.data?._id)
+          setTimeout(() => { history.push('/passwordrest', response?.data?.data?._id) }, 1000)
         }
         else {
-          history.push('/viewsheet')
+          setTimeout(() => { history.push('/viewsheet') }, 1000)
         }
-        return response.data;
+        toast.success(response?.data?.message);
+        return response?.data;
       }).catch((error) => {
         setSubmitting(false);
-        setErrors({ email: error.response.data.message })
+        // console.log("this is error", error)
+        setErrors({ email: "Ivalid credentials" })
 
       })
   })
@@ -53,8 +56,9 @@ export const PasswordRest = createAsyncThunk(
         values
       );
       setSubmitting(false);
-      history.push('/viewsheet');
-      swal("Password Reset", { icon: "success", timer: 1500, buttons: false })
+      setTimeout(() => { history.push('/viewsheet') }, 3000)
+      toast.success(res.data.message);
+      // swal("Password Reset", { icon: "success", timer: 1500, buttons: false })
       return res?.data;
     } catch (error) {
       setSubmitting(false);

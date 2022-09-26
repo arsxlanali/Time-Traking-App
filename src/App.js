@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Route, Switch, Router } from "react-router-dom";
 import "./scss/style.scss";
 import history from "./hisotry";
@@ -25,36 +27,40 @@ function App() {
     </div>
   );
   return (
-    <Router history={history}>
-      <React.Suspense fallback={loading}>
-        <Switch>
-          <ProtectedRouteForLogin exact path="/login" name="Login" render={props => <Login {...props} />} />
-          <Route
-            exact
-            path="/passwordrest"
-            name="Rest Password"
-            render={(props) => <PaaswordRest {...props} />}
-          />
-          <Route
-            exact
-            path=".404"
-            name="Page 404"
-            render={(props) => <Page404 {...props} />}
-          />
-          <Route
-            exact
-            path="/500"
-            name="Page 500"
-            render={(props) => <Page500 {...props} />}
-          />
-          <ProtectedRoute
-            path="/"
-            name="Home"
-            render={(props) => <TheLayout {...props} />}
-          />
-        </Switch>
-      </React.Suspense>
-    </Router>
+    <>
+      <Router history={history}>
+        <React.Suspense fallback={loading}>
+          <Switch>
+            <ProtectedRouteForLogin exact path="/login" name="Login" render={props => <Login {...props} />} />
+            <Route
+              exact
+              path="/passwordrest"
+              name="Rest Password"
+              render={(props) => <PaaswordRest {...props} />}
+            />
+            <Route
+              exact
+              path=".404"
+              name="Page 404"
+              render={(props) => <Page404 {...props} />}
+            />
+            <Route
+              exact
+              path="/500"
+              name="Page 500"
+              render={(props) => <Page500 {...props} />}
+            />
+            <ProtectedRoute
+              path="/"
+              name="Home"
+              render={(props) => <TheLayout {...props} />}
+            />
+          </Switch>
+        </React.Suspense>
+      </Router>
+      <ToastContainer autoClose={4000} limit={1} />
+
+    </>
   );
 }
 

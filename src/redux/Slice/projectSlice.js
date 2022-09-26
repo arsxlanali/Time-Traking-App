@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import swal from 'sweetalert';
+import { toast } from "react-toastify";
+
+// import swal from 'sweetalert';
 import history from "src/hisotry";
 
 const baseURL = "https://time-tracking-app-backend.herokuapp.com";
@@ -26,7 +28,8 @@ export const deleteProject = createAsyncThunk(
       const res = await axios.delete(
         `${baseURL}/projects/delete/${id}`);
       setSubmitting(false)
-      swal("Deleted", { icon: "success", timer: 1500, buttons: false })
+      toast.success(res.data.message);
+      // swal("Deleted", { icon: "success", timer: 1500, buttons: false })
       thunkAPI.dispatch(viewProjects());
       return res?.data;
     } catch (error) {
@@ -42,7 +45,9 @@ export const addProject = createAsyncThunk(
       const res = await axios.post(
         `${baseURL}/projects/create`, data);
       setSubmitting(false)
-      swal("Project Added", { icon: "success", timer: 1500, buttons: false })
+      toast.success(res.data.message);
+
+      // swal("Project Added", { icon: "success", timer: 1500, buttons: false })
       history.push('/listprojects')
       thunkAPI.dispatch(viewProjects());
       return res?.data;
@@ -64,7 +69,8 @@ export const editProject = createAsyncThunk(
         `${baseURL}/projects/update/${id1}`,
         data);
       setSubmitting(false);
-      swal("Project Update", { icon: "success", timer: 1500, buttons: false })
+      toast.success(res.data.message);
+      // swal("Project Update", { icon: "success", timer: 1500, buttons: false })
       history.goBack();
       thunkAPI.dispatch(viewProjects());
       return res?.data;
@@ -76,7 +82,7 @@ export const editProject = createAsyncThunk(
 
 export const getProjects = createAsyncThunk(
   "tasks/getProjects",
-  async (thunkAPI) => {
+  async () => {
     const id = localStorage.getItem('key')
     const res = await axios.get(
       `${baseURL}/projects/findprojectsbyuser/${id}`);
