@@ -46,8 +46,16 @@ const SheetTable = () => {
   const [date, setDate] = useState(today)
 
   const newArray = timeSheet.map((sheet) => {
+    var min = ''
+    // console.log("HAy", sheet?.duration?.minutes.toString().length)
+    if (sheet?.duration?.minutes.toString().length === 1) {
+      min = '0' + sheet?.duration?.minutes;
+    }
+    else {
+      min = sheet?.duration?.minutes;
+    }
     return {
-      ...sheet, duration: `${sheet?.duration?.hours}:${sheet?.duration?.minutes} mins`, totalMins: sheet?.duration?.hours * 60 + sheet?.duration?.minutes
+      ...sheet, duration: `${sheet?.duration?.hours}:${min} mins`, totalMins: sheet?.duration?.hours * 60 + sheet?.duration?.minutes
       , project: projects.map((project) => {
         if (project._id == sheet.projectId) {
           return project.name;

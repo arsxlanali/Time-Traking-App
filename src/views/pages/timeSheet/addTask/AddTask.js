@@ -69,11 +69,11 @@ const AddTask = ({ flag, onClose, date }) => {
   const dispatch = useDispatch();
   const [duration, setDuration] = useState(0);
   const [durationInput, setDurationInput] = useState();
-  const [description, setDiscription] = useState('');
-  const [value, setValue] = React.useState([]);
-  const [task, setTask] = React.useState([])
+  const [value, setValue] = React.useState([{ value: '63247bd626cbc0fdc51c3cda', label: 'Miscellaneous' }]);
+  const [task, setTask] = React.useState([{ value: 'Miscellaneous', label: 'Miscellaneous' }])
   const textareaRef = useRef();
   const projectOptions = [];
+  // console.log("dfsakfjkas", empProject, value)
   empProject.forEach(emp => {
     const result = (({ _id, name }) => ({ _id, name }))(emp)
     projectOptions.push({ "value": result._id, "label": result.name });
