@@ -72,7 +72,7 @@ const EditTask = ({ flag, onClose, date, task }) => {
   const [taskField, setTaskFiled] = React.useState(
     [{ value: task.type, label: task.type }]
   )
-  const [durationInput, setDurationInput] = useState(inputH + ':' + inputM);
+  const [durationInput, setDurationInput] = useState(task.duration.substring(0, 4));
   const darkMode = useSelector((state) => state?.slideBar?.darkMode);
   const empProject = useSelector((state) => state?.viewProjects?.projects);
   const projectOptions = [];

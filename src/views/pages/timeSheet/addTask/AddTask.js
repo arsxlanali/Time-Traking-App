@@ -69,18 +69,22 @@ const AddTask = ({ flag, onClose, date }) => {
   const dispatch = useDispatch();
   const [duration, setDuration] = useState(0);
   const [durationInput, setDurationInput] = useState();
-  const [value, setValue] = React.useState([{ value: '63247bd626cbc0fdc51c3cda', label: 'Miscellaneous' }]);
-  const [task, setTask] = React.useState([{ value: 'Miscellaneous', label: 'Miscellaneous' }])
+  const [value, setValue] = React.useState({ value: '63247bd626cbc0fdc51c3cda', label: 'Miscellaneous' });
+  const [task, setTask] = React.useState({ value: 'Miscellaneous', label: 'Miscellaneous' })
   const textareaRef = useRef();
   const projectOptions = [];
   // console.log("dfsakfjkas", empProject, value)
+  const [timeDisable, setTimeDisable] = useState(true);
   empProject.forEach(emp => {
     const result = (({ _id, name }) => ({ _id, name }))(emp)
     projectOptions.push({ "value": result._id, "label": result.name });
   })
   useEffect(() => {
     dispatch(getProjects());
-  }, [dispatch])
+    if (duration !== 0) {
+      setTimeDisable(false);
+    }
+  }, [dispatch, duration])
 
   const onSubmit = (values, { setSubmitting, resetForm, setErrors }) => {
     // console.log("Thisshishs", value.value == 'undefined')
@@ -95,8 +99,8 @@ const AddTask = ({ flag, onClose, date }) => {
       duration: { hours: parseInt(duration / 60), minutes: parseInt(duration % 60) }
     };
     dispatch(addTask({ data, setSubmitting, resetForm, setErrors }));
-    setTask([])
-    setValue([])
+    // setTask([])
+    // setValue([])
     setDuration(0);
     setDurationInput('');
     // }
@@ -299,7 +303,7 @@ const AddTask = ({ flag, onClose, date }) => {
                               type="submit"
                               color="primary"
                               className="mr-1"
-                              disabled={isSubmitting || !isValid}
+                              disabled={isSubmitting || !isValid || timeDisable}
                             >
                               {isSubmitting ? "Adding..." : "Add Task"}
                             </CButton>
