@@ -28,7 +28,7 @@ const ProjectTable = () => {
 
   const projectsArray = projects.map(project => {
     return {
-      ...project, assignTo: project['assignTo'].map((assign) => { return assign.name }), assignBy: project['assignBy'].name
+      ...project, assignTo: project['assignTo'].map((assign) => { return assign?.name }), assignBy: project['assignBy']?.name
     }
   })
 
