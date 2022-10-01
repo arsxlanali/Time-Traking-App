@@ -31,13 +31,13 @@ const validationSchema = function (values) {
     confirmPassword: Yup.string()
       .oneOf([values.newPassword], "Passwords must match")
       .required("Password confirmation is required"),
-    accept2: Yup.bool()
-      .required("* required")
-      .test(
-        "accept2",
-        "You have to check the box!",
-        (value) => value === true
-      ),
+    // accept2: Yup.bool()
+    //   .required("* required")
+    //   .test(
+    //     "accept2",
+    //     "You have to check the box!",
+    //     (value) => value === true
+    //   ),
   });
 };
 
@@ -82,7 +82,7 @@ const PasswordReset = () => {
   const initialValues = {
     newPassword: "",
     confirmPassword: "",
-    accept2: false,
+    // accept2: false,
   };
   if (darkMode) {
     var text = "text-white c-dark-theme"
@@ -145,7 +145,7 @@ const PasswordReset = () => {
                           <CInvalidFeedback>{errors.newPassword}</CInvalidFeedback>
                         </CFormGroup>
                         <CFormGroup>
-                          <CLabel htmlFor="confirmPassword">Password</CLabel>
+                          <CLabel htmlFor="confirmPassword">Confirm Password</CLabel>
                           <CInput
                             type="password"
                             name="confirmPassword"
@@ -166,7 +166,7 @@ const PasswordReset = () => {
                             {errors.confirmPassword}
                           </CInvalidFeedback>
                         </CFormGroup>
-                        <CFormGroup variant="custom-checkbox" className="pb-3">
+                        {/* <CFormGroup variant="custom-checkbox" className="pb-3">
                           <CInputCheckbox
                             custom
                             id="accept2"
@@ -180,7 +180,7 @@ const PasswordReset = () => {
                             Confirm?
                           </CLabel>
                           <CInvalidFeedback>{errors.accept2}</CInvalidFeedback>
-                        </CFormGroup>
+                        </CFormGroup> */}
                         <CFormGroup>
                           <CButton
                             type="submit"
