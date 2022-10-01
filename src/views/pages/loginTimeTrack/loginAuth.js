@@ -2,6 +2,8 @@ import { Route, Redirect } from "react-router-dom";
 
 export const ProtectedRoute = ({ path, component: Component, render, ...rest }) => {
   const auth = localStorage.getItem('Token');
+  const isDefualt = localStorage.getItem('isDefualt');
+  console.log('this is is defuaolt', isDefualt == 'true')
   return (
     <Route
       {...rest}
@@ -17,6 +19,16 @@ export const ProtectedRoute = ({ path, component: Component, render, ...rest }) 
           );
         }
         else {
+          if (isDefualt == 'true') {
+            return (
+              <Redirect
+                to={{
+                  pathname: "/passwordrest",
+                  state: { from: props.location }
+                }}
+              />
+            );
+          }
           return Component ? <Component {...props} /> : render(props);
         }
       }}

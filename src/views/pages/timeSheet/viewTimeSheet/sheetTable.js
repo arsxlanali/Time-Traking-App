@@ -137,6 +137,7 @@ const SheetTable = () => {
                 count = -1;
               if (previous30 <= date && today >= date) {
                 count++;
+                console.log("ddddd", date, pending[count]?.isSubmit)
                 return pending[count]?.isSubmit
               }
               else {
@@ -144,7 +145,10 @@ const SheetTable = () => {
               }
             }}
             focused={focused} // PropTypes.bool
-            onFocusChange={() => setFocused(true)} // PropTypes.func.isRequired
+            onFocusChange={(e) => {
+              // console.log("this is ", e)
+              setFocused(e.focused)
+            }} // PropTypes.func.isRequired
             isOutsideRange={(e) => {
               var today = dateGetter(new Date(), 0);
               var date = dateGetter(e._d, 0)

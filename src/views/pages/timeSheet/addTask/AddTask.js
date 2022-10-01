@@ -87,13 +87,6 @@ const AddTask = ({ flag, onClose, date }) => {
   }, [dispatch, duration])
 
   const onSubmit = (values, { setSubmitting, resetForm, setErrors }) => {
-    // console.log("Thisshishs", value.value == 'undefined')
-    // if (typeof value.value === 'undefined') {
-    //   setErrors({ projectId: "Please add project" })
-    //   setSubmitting(false)
-    // }
-    // else {
-
     const data = {
       ...values, date, projectId: value.value, type: task.value,
       duration: { hours: parseInt(duration / 60), minutes: parseInt(duration % 60) }
@@ -101,9 +94,9 @@ const AddTask = ({ flag, onClose, date }) => {
     dispatch(addTask({ data, setSubmitting, resetForm, setErrors }));
     // setTask([])
     // setValue([])
+    setTimeDisable(true);
     setDuration(0);
     setDurationInput('');
-    // }
 
   }
 
@@ -309,19 +302,6 @@ const AddTask = ({ flag, onClose, date }) => {
                             </CButton>
 
                           </CCol>
-                          {/* <CCol xs="4" className="flex-d justify-center">
-                            <CButton
-                              type="submit"
-                              color="primary"
-                              className="mr-1"
-                              disabled={isSubmitting || !isValid}
-                            >
-                              {isSubmitting ? "Adding..." : "Save & Close"}
-                            </CButton>
-                          </CCol>
-                          <CCol xs="4" className="text-right">
-                            <CButton color="secondary" className="mr-1" onClick={onClose}>Close</CButton>
-                          </CCol> */}
                         </CRow>
                       </CFormGroup>
                     </CForm>

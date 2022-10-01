@@ -29,9 +29,8 @@ export const addEmployee = createAsyncThunk(
       const res = await axios.post(
         `${baseUrl}/users/admin/addnewuser`, values);
       setSubmitting(false);
-      history.goBack()
+      history.push('/listemployees')
       toast.success(res.data.message);
-      // swal("Employee Addded", { icon: "success", timer: 1500, buttons: false })
       thunkAPI.dispatch(getEmployees());
       return res?.data;
     } catch (error) {

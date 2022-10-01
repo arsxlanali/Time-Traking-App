@@ -45,16 +45,18 @@ export const PasswordRest = createAsyncThunk(
 
     const id = values["id"];
     delete values["id"];
-    delete values["accept2"];
+    // delete values["accept2"];
     const isDefault = localStorage.getItem("isDefualt");
     if (isDefault) {
       values["oldPassword"] = "tdc@1234";
     }
+    console.log("This is pass", values)
     try {
       const res = await axios.post(
         `${baseURL}/users/resetPassword/${id}`,
         values
       );
+      localStorage.setItem('isDefualt', false)
       setSubmitting(false);
       setTimeout(() => { history.push('/viewsheet') }, 3000)
       toast.success(res.data.message);
