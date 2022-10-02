@@ -64,7 +64,7 @@ const getErrorsFromValidationError = (validationError) => {
 };
 
 const EditTask = ({ flag, onClose, date, task }) => {
-  const department = localStorage.getItem("Department");
+  // const department = localStorage.getItem("Department");
   const dispatch = useDispatch();
   const [duration, setDuration] = useState(task.totalMins);
   const inputH = parseInt(task.totalMins / 60);
@@ -142,7 +142,7 @@ const EditTask = ({ flag, onClose, date, task }) => {
                           name="type"
                           id="type"
                           value={taskField}
-                          options={tasks[department]}
+                          options={tasks}
                           onChange={setTaskFiled}
                           theme={(theme) =>
                           ({

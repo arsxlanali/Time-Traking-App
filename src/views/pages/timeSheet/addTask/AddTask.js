@@ -65,7 +65,7 @@ const getErrorsFromValidationError = (validationError) => {
 const AddTask = ({ flag, onClose, date }) => {
   const empProject = useSelector((state) => state?.viewProjects?.projects);
   const darkMode = useSelector((state) => state?.slideBar?.darkMode);
-  const department = localStorage.getItem("Department");
+  // const department = localStorage.getItem("Department");
   const dispatch = useDispatch();
   const [duration, setDuration] = useState(0);
   const [durationInput, setDurationInput] = useState();
@@ -145,7 +145,7 @@ const AddTask = ({ flag, onClose, date }) => {
                           name="type"
                           id="type"
                           value={task}
-                          options={tasks[department]}
+                          options={tasks}
                           onChange={setTask}
                           onFocus={handleFocus}
                           onBlur={handleBlur}
