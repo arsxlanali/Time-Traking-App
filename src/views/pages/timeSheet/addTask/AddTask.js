@@ -69,7 +69,7 @@ const AddTask = ({ flag, onClose, date }) => {
   const dispatch = useDispatch();
   const [duration, setDuration] = useState(0);
   const [durationInput, setDurationInput] = useState();
-  const [value, setValue] = React.useState({ value: '63247bd626cbc0fdc51c3cda', label: 'Miscellaneous' });
+  const [value, setValue] = React.useState({ value: '633a947d3e9b7e27f1aecc8e', label: 'Miscellaneous' });
   const [task, setTask] = React.useState({ value: 'Miscellaneous', label: 'Miscellaneous' })
   const textareaRef = useRef();
   const projectOptions = [];
