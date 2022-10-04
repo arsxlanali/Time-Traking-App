@@ -35,7 +35,7 @@ export const login = createAsyncThunk(
       }).catch((error) => {
         setSubmitting(false);
         // console.log("this is error", error)
-        setErrors({ email: "Ivalid credentials" })
+        setErrors({ email: "Invalid credentials" })
 
       })
   })
@@ -64,7 +64,7 @@ export const PasswordRest = createAsyncThunk(
       return res?.data;
     } catch (error) {
       setSubmitting(false);
-      setErrors({ email: error.response.data.message })
+      // setErrors({ email: error.response.data.message })
     }
   }
 );

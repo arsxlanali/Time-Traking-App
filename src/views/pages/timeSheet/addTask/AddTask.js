@@ -81,9 +81,13 @@ const AddTask = ({ flag, onClose, date }) => {
   })
   useEffect(() => {
     dispatch(getProjects());
-    if (duration !== 0) {
+    if (duration !== '0') {
       setTimeDisable(false);
     }
+    else {
+      setTimeDisable(true);
+    }
+    console.log("This is app", duration)
   }, [dispatch, duration])
 
   const onSubmit = (values, { setSubmitting, resetForm, setErrors }) => {
@@ -92,8 +96,8 @@ const AddTask = ({ flag, onClose, date }) => {
       duration: { hours: parseInt(duration / 60), minutes: parseInt(duration % 60) }
     };
     dispatch(addTask({ data, setSubmitting, resetForm, setErrors }));
-    // setTask([])
-    // setValue([])
+    setTask({ value: 'Miscellaneous', label: 'Miscellaneous' })
+    setValue({ value: '633a947d3e9b7e27f1aecc8e', label: 'Miscellaneous' })
     setTimeDisable(true);
     setDuration(0);
     setDurationInput('');
