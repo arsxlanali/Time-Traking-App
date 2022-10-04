@@ -9,7 +9,7 @@ const Employee = ({ match }) => {
     <CRow className={"d-flex justify-content-center"}>
       <CCol lg={8}>
         <CCard>
-          <CCardHeader>Employee id: {userDetails?._id}</CCardHeader>
+          <CCardHeader>Employee</CCardHeader>
           <CCardBody>
             <table className="table table-hover">
               <tbody>
