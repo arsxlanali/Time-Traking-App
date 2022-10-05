@@ -41,7 +41,7 @@ const NetworkService = {
             }
             else {
                 // console.log("this is ", error)
-                toast.error(error?.response?.data?.message[0])
+                toast.error(error?.response?.data?.message)
             }
             return Promise.reject(error);
         });

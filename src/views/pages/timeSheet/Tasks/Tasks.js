@@ -3,7 +3,7 @@ const _tasks = [
     { value: 'Administration-Missed Times', label: 'Administration-Missed Times' },
     { value: 'Administration-Admin Support', label: 'Administration-Admin Support' },
     { value: 'Finance-Billing and Sending Invoices', label: 'Finance-Billing and Sending Invoices' },
-    { value: 'Finance-Cash ManagementFinance-Employees Salaries', label: 'Finance-Cash ManagementFinance-Employees Salaries' },
+    { value: 'Finance-Cash Management', label: 'Finance-Cash Management' },
     { value: 'Finance-Employees Salaries', label: 'Finance-Employees Salaries' },
     { value: 'Finance-Financial Reporting', label: 'Finance-Financial Reporting' },
     { value: 'HR-Appointment Letter ', label: 'HR-Appointment Letter ' },
