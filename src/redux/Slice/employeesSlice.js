@@ -7,7 +7,7 @@ import history from "src/hisotry";
 const baseUrl = "https://time-tracking-app-backend.herokuapp.com";
 
 const initialState = {
-  employeesView: [1],
+  employeesView: [],
   isLoading: false,
   isScuessfull: false,
 };

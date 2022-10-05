@@ -67,7 +67,7 @@ const AddTask = ({ flag, onClose, date }) => {
   const darkMode = useSelector((state) => state?.slideBar?.darkMode);
   // const department = localStorage.getItem("Department");
   const dispatch = useDispatch();
-  const [duration, setDuration] = useState(0);
+  const [duration, setDuration] = useState('0');
   const [durationInput, setDurationInput] = useState();
   const [value, setValue] = React.useState({ value: '633a947d3e9b7e27f1aecc8e', label: 'Miscellaneous' });
   const [task, setTask] = React.useState({ value: 'Miscellaneous', label: 'Miscellaneous' })
@@ -81,13 +81,13 @@ const AddTask = ({ flag, onClose, date }) => {
   })
   useEffect(() => {
     dispatch(getProjects());
-    if (duration !== '0') {
-      setTimeDisable(false);
-    }
-    else {
+    if (duration == '0') {
       setTimeDisable(true);
     }
-    console.log("This is app", duration)
+    else {
+      setTimeDisable(false);
+    }
+    console.log("This is app", duration !== '0')
   }, [dispatch, duration])
 
   const onSubmit = (values, { setSubmitting, resetForm, setErrors }) => {
@@ -95,6 +95,7 @@ const AddTask = ({ flag, onClose, date }) => {
       ...values, date, projectId: value.value, type: task.value,
       duration: { hours: parseInt(duration / 60), minutes: parseInt(duration % 60) }
     };
+    console.log("this is data", data)
     dispatch(addTask({ data, setSubmitting, resetForm, setErrors }));
     setTask({ value: 'Miscellaneous', label: 'Miscellaneous' })
     setValue({ value: '633a947d3e9b7e27f1aecc8e', label: 'Miscellaneous' })
