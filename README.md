@@ -1,160 +1,142 @@
-[![@coreui coreui](https://img.shields.io/badge/@coreui%20-coreui-lightgrey.svg?style=flat-square)](https://github.com/coreui/coreui)
-[![npm package][npm-coreui-badge]][npm-coreui]
-[![NPM downloads][npm-coreui-download]][npm-coreui]  
-[![@coreui react](https://img.shields.io/badge/@coreui%20-react-lightgrey.svg?style=flat-square)](https://github.com/coreui/react)
-[![npm package][npm-coreui-react-badge]][npm-coreui-react]
-[![NPM downloads][npm-coreui-react-download]][npm-coreui-react]  
-[![npm next][npm-next]][npm]
+![](RackMultipart20221007-1-a893kq_html_e529ac4f467da965.png)
 
-[npm-coreui]: https://www.npmjs.com/package/@coreui/coreui
-[npm-coreui-badge]: https://img.shields.io/npm/v/@coreui/coreui.png?style=flat-square
-[npm-coreui-download]: https://img.shields.io/npm/dm/@coreui/coreui.svg?style=flat-square
-[npm-coreui-react]: https://www.npmjs.com/package/@coreui/react
-[npm-coreui-react-badge]: https://img.shields.io/npm/v/@coreui/react.png?style=flat-square
-[npm-coreui-react-download]: https://img.shields.io/npm/dm/@coreui/react.svg?style=flat-square
-[npm-next]: https://img.shields.io/npm/v/@coreui/react/next.png?style=flat-square
-[npm]: https://www.npmjs.com/package/@coreui/react
+### **SCOPE DOCUMENT FOR Time Tracking**
 
-# CoreUI Pro v3 React Admin Template
+**Table of Contents**
 
-CoreUI is meant to be the UX game changer. Pure & transparent code is devoid of redundant components, so the app is light enough to offer ultimate user experience. This means mobile devices also, where the navigation is just as easy and intuitive as on a desktop or laptop. The CoreUI Layout API lets you customize your project for almost any device – be it Mobile, Web or WebApp – CoreUI covers them all!
+Purpose of Time Tracking………………………………………………………………………………. 1
 
-## Table of Contents
+Types of Users…………………………………………………………………………………………….1
 
-* [Versions](#versions)
-* [CoreUI Pro](#coreui-pro)
-* [Installation](#installation)
-* [Basic usage](#create-react-app)
-* [What's included](#whats-included)
-* [Documentation](#documentation)
-* [Versioning](#versioning)
-* [Creators](#creators)
-* [Community](#community)
-* [Copyright and License](#copyright-and-license)
+User Stories……………………………………………………………………………………………….1
 
-## Versions
+Main feature - 1…………………………………………………………………………………..1
 
-**Only customers with [Membership Plan](https://coreui.io/pro/#buy) have access to private github repositories.**
+US - 01 Login……………………………………………………………………………1
 
-* [CoreUI Pro Bootstrap Admin Template](https://github.com/coreui/coreui-pro-bootstrap-admin-template)
-* [CoreUI Pro Angular 2+ Admin Template](https://github.com/coreui/coreui-pro-angular-admin-template)
-* [CoreUI Pro React.js Admin Template](https://github.com/coreui/coreui-pro-react-admin-template)
-* [CoreUI Pro Vue.js Admin Template](https://github.com/coreui/coreui-pro-vue-admin-template)
+US - 02 Timesheet……………………………………………………………………….1
 
+US - 03 Add Employee………………………………………………………………….1
 
-## CoreUI Pro
+US - 04 View Employee………………………………………………………………....2
 
-* 💪  [CoreUI v3 Pro Bootstrap Admin Template](https://coreui.io/pro/)
-* 💪  [CoreUI v2 Pro Angular Admin Template](https://coreui.io/pro/angular)
-* 💪  [CoreUI v3 Pro React Admin Template](https://coreui.io/pro/react)
-* 💪  [CoreUI v3 Pro Vue Admin Template](https://coreui.io/pro/vue)
+US - 05 Add Projects…………………………………………………………………….2
 
-## Installation
+US - 06 View Projects…………………………………………………………………....2
 
-### Clone repo
+US - 07 TimeSheet Add………………………………………………………………….2
 
-**Only customers with [Membership Plan](https://coreui.io/pro/#buy) have access to private github repository.**
+US - 08 TimeSheet End My Day……………………………………………………...…3
 
-``` bash
-# clone the repo
-$ git clone https://github.com/coreui/coreui-pro-react-admin-template.git my-project
+System Stories………………………………………………………………………………….....3
 
-# go into app's directory
-$ cd my-project
+Multi-Tenancy……………………………………………………………………..……..3
 
-# install app's dependencies
-$ npm install
-```
+Platforms…………………………………………………………………………………3
 
-### Copy and Paste
+Responsiveness……………………………………………………………………….….3
 
-Copy all your files to your project folder and then,
+Users and Load……………………………………………………………………….….3
 
-``` bash
-# go into app's directory
-$ cd my-project
+Modular Design……………………………………………………………………….…3
 
-# install app's dependencies
-$ npm install
-```
+### **Purpose:**
 
-## Create React App
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app)
+The purpose of the project is to make efficient use of time. By tracking our day-to-day tasks we hold ourselves accountable when we see some unfinished tasks on our lists. This helps us to be more productive in our work environment and helps us achieve our daily goals. For this purpose, we were using **Google Sheets** to track our time, as we know that maintaining a sheet is a time-consuming task which requires a lot of effort. As we know that it takes a lot of effort to maintain **Google Sheets** for management and also account for privacy. Management has to maintain several links for individual employees. To **solve this problem** we came up with the solution of creating an application in which we can efficiently use our time. This helps us to be more productive.
 
-see also:
-[CRA docs](https://create-react-app.dev/docs/getting-started)
+### **Types of Users:**
 
-### Basic usage
+1. Admin
+2. Management
+3. Employees
 
-``` bash
-# dev server  with hot reload at http://localhost:3000
-$ npm start
-```
+### **User Stories:**
 
-Navigate to [http://localhost:3000](http://localhost:3000). The app will automatically reload if you change any of the source files.
+US - 01 Login
 
-### Build
+- Users: All Users
+- Description: The user first lands on the login page, after that he/she enters the credentials on
 
-Run `build` to build the project. The build artifacts will be stored in the `build/` directory.
+the login screen.
 
-```bash
-# build for production with minification
-$ npm run build
-```
+US - 02 Timesheet
 
-## What's included
+- Users: All Users
+- Description: After login, the user will land on the timesheet module and will see today's date
 
-Within the download you'll find the following directories and files, logically grouping common assets and providing both compiled and minified variations. You'll see something like this:
+selected in the timesheet.
 
-```
-CoreUI-React#v3.0.0
-├── public/          #static files
-│   └── index.html   #html template
-│
-├── src/             #project root
-│   ├── assets/      #assets - js icons object
-│   ├── containers/  #container source - template layout
-|   │   ├── _nav.js  #sidebar config
-|   │   └── ...      
-│   ├── scss/        #user scss/css source
-│   ├── views/       #views source
-│   ├── App.js
-│   ├── App.test.js
-│   ├── polyfill.js
-│   ├── index.js
-│   ├── routes.js    #routes config
-│   └── store.js     #template state example 
-│
-└── package.json
-```
+US - 03 Add Employee
 
-## Documentation
+- Users: Management, Admin
+- Description: Management and admin can see the Employee module in which he/she can add
 
-The documentation for the CoreUI Admin Template is hosted at our website [CoreUI for React](https://coreui.io/react/)
+new employee information such as name, email, number, position, designation, and role. After clicking the add button the user will be redirected to the view employee page with a list of all employees.
 
+US - 04 View Employee
 
-## Versioning
+- Users: Management, Admin
+- Description: Management and admin can see the view employee module with a list of all
 
-For transparency into our release cycle and in striving to maintain backward compatibility, CoreUI Pro Admin Template is maintained under [the Semantic Versioning guidelines](http://semver.org/).
+employees in pagination, with one action button on the respective employee list. When the user clicks that button he/she can see the three options Edit, Delete and View. By clicking the edit button, users can land on the edit page with employee information already added to the input boxes. Users can change that information. By clicking the delete button the user will be shown the confirmation dialogue box and can delete the employee or cancel the action. The view employee button will land on the view table with all the information about the employee.
 
-See [the Releases section of our project](https://github.com/coreui/coreui-pro-react-admin-template/releases) for changelogs for each release version.
+US - 05 Add Projects
 
-## Creators
+- Users: Management, Admin
+- Description: Management and admin can see the Add project section in which he/she can add
 
-***Łukasz Holeczek***
-* <https://twitter.com/lukaszholeczek>
-* <https://github.com/coreui>
+new project information such as name, description and assigned fields. Users can assign multiple employees to a single project. After clicking the add button the user will be redirected to the view project page with a list of all projects.
 
-**CoreUI Team**
-* <https://github.com/orgs/coreui/people>
+US - 06 View Projects
 
-## Community
+- Users: Management, Admin
+- Description: Management and admin can see the view project module with a list of all
 
-Get updates on CoreUI's development and chat with the project maintainers and community members.
+projects, with one action button on the respective project list. When the user clicks that button he/she can see the three options Edit, Delete and View. Users can land on the edit page with respective project information already added to the input boxes by clicking the edit button. Users can change that information. By clicking the delete button the user can delete the project and see the waiting of the action. The view button will land on the view table with all the project information.
 
-- Follow [@core_ui on Twitter](https://twitter.com/core_ui).
-- Read and subscribe to [CoreUI Blog](https://coreui.ui/blog/).
+US - 07 TimeSheet Add
 
+- Users: All Users
+- Description: Users can see the Add Task and End My Day button. Users will be able to select
 
-## Copyright and License
-copyright 2020 creativeLabs Łukasz Holeczek 
+today or previous dates. By clicking the Add task button the user will see the model with the input form. Users can add information like Task Type, description, project and duration. Two input fields are given for users' preferences. Users can add the task and see the background of the dialogue box updating after the successful addition. Users can add multiple tasks and can close the model. After closing the model, the user can see the saved information before the adding button is clicked. Users can see the Actions button and by clicking it users will see the two options of edit and delete. Users will be able to delete the task by clicking the delete button. And can edit the task by clicking the edit button.
+
+US - 08 TimeSheet End My Day
+
+- Users: All Users
+- Description: The user will be able to see the End My Day button by clicking this will empty
+
+the task nothing will happen. When we click it with one or more tasks the user will see that every button is gone and now the user cannot edit delta and add new tasks. The day will end on the respective selected dates.
+
+### **System Stories**
+
+-
+#### **Multi-Tenancy:**
+
+The multi-tenancy is applicable in this application. Some users like Admin and Management have some special privileges. The system will not allow other users to access the link of the other groups unless it is logged in.
+
+-
+#### **Platform:**
+
+Web-based system.
+
+Chrome and Firefox compatibility.
+
+Windows and Mac compatibility.
+
+All web browsers
+
+-
+#### **Responsiveness:**
+
+The system is fully responsive which uses the bootstrap for its responsiveness
+
+-
+#### **Users and Load:**
+
+This application will be able to handle 1000 requests per second. Note that it's 1000 requests per second, not clients connected simultaneously. It can handle 10000 simultaneous clients without any issue.
+
+-
+#### **Modular Design:**
+
+This application uses the modular design pattern by separating the redux and views module on the different directories. The icon and index js are on the other directories.
