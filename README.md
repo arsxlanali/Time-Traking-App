@@ -1,4 +1,4 @@
-![](RackMultipart20221007-1-a893kq_html_e529ac4f467da965.png)
+
 
 ### **SCOPE DOCUMENT FOR Time Tracking**
 
