@@ -10,7 +10,7 @@
 
 [User Stories](#3)
 
-### Main features
+**Main features**
 
 [US - 01 Login](#4)
 
