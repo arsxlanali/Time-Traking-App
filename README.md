@@ -4,41 +4,41 @@
 
 **Table of Contents**
 
-Purpose of Time Tracking………………………………………………………………………………. 1
+[Purpose of Time Tracking](#1)
 
-Types of Users…………………………………………………………………………………………….1
+[Types of Users](#2)
 
-User Stories……………………………………………………………………………………………….1
+[User Stories](#3)
 
-Main feature - 1…………………………………………………………………………………..1
+### Main features
 
-US - 01 Login……………………………………………………………………………1
+[US - 01 Login](#4)
 
-US - 02 Timesheet……………………………………………………………………….1
+[US - 02 Timesheet](#6)
 
-US - 03 Add Employee………………………………………………………………….1
+[US - 03 Add Employee](#7)
 
-US - 04 View Employee………………………………………………………………....2
+[US - 04 View Employee](#8)
 
-US - 05 Add Projects…………………………………………………………………….2
+[US - 05 Add Projects](#9)
 
-US - 06 View Projects…………………………………………………………………....2
+[US - 06 View Projects](#10)
 
-US - 07 TimeSheet Add………………………………………………………………….2
+[US - 07 TimeSheet Add](#11)
 
-US - 08 TimeSheet End My Day……………………………………………………...…3
+[US - 08 TimeSheet End My Day](#12)
 
-System Stories………………………………………………………………………………….....3
+[System Stories](#13)
 
-Multi-Tenancy……………………………………………………………………..……..3
+[Multi-Tenancy](#14)
 
-Platforms…………………………………………………………………………………3
+[Platforms](#15)
 
-Responsiveness……………………………………………………………………….….3
+[Responsiveness](#16)
 
-Users and Load……………………………………………………………………….….3
+[Users and Load](#17)
 
-Modular Design……………………………………………………………………….…3
+[Modular Design](#18)
 
 ### **Purpose:**
 
