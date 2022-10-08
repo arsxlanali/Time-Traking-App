@@ -12,21 +12,21 @@
 
 **Main features**
 
-[- US - 01 Login](#4)
+- [US - 01 Login](#4)
 
-[- US - 02 Timesheet](#6)
+- [US - 02 Timesheet](#6)
 
-[- US - 03 Add Employee](#7)
+- [US - 03 Add Employee](#7)
 
-[- US - 04 View Employee](#8)
+- [US - 04 View Employee](#8)
 
-[- US - 05 Add Projects](#9)
+- [US - 05 Add Projects](#9)
 
-[- US - 06 View Projects](#10)
+- [US - 06 View Projects](#10)
 
-[- US - 07 TimeSheet Add](#11)
+- [US - 07 TimeSheet Add](#11)
 
-[- US - 08 TimeSheet End My Day](#12)
+- [US - 08 TimeSheet End My Day](#12)
 
 [System Stories](#13)
 
