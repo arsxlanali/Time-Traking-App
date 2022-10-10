@@ -39,7 +39,7 @@
 [Users and Load](#17)
 
 [Modular Design](#18)
-
+<a id="1"></a>
 ### **Purpose:**
 
 The purpose of the project is to make efficient use of time. By tracking our day-to-day tasks we hold ourselves accountable when we see some unfinished tasks on our lists. This helps us to be more productive in our work environment and helps us achieve our daily goals. For this purpose, we were using **Google Sheets** to track our time, as we know that maintaining a sheet is a time-consuming task which requires a lot of effort. As we know that it takes a lot of effort to maintain **Google Sheets** for management and also account for privacy. Management has to maintain several links for individual employees. To **solve this problem** we came up with the solution of creating an application in which we can efficiently use our time. This helps us to be more productive.
