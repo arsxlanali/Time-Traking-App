@@ -26,15 +26,15 @@
 
 - [US - 08 TimeSheet End My Day](#11)
 
-[System Stories](#12)
+4. [System Stories](#12)
 
-[Multi-Tenancy](#13)
+- [Multi-Tenancy](#13)
 
-[Platforms](#14)
+- [Platforms](#14)
 
-[Responsiveness](#15)
+- [Responsiveness](#15)
 
-[Users and Load](#16)
+- [Users and Load](#16)
 
 [Modular Design](#17)
 <a id="1"></a>
@@ -106,16 +106,19 @@ US - 08 TimeSheet End My Day
 
 the task nothing will happen. When we click it with one or more tasks the user will see that every button is gone and now the user cannot edit delta and add new tasks. The day will end on the respective selected dates.
 <a id="12"></a>
+-
 ### **System Stories**
 
--
+
 <a id="13"></a>
+-
 #### **Multi-Tenancy:**
 
 The multi-tenancy is applicable in this application. Some users like Admin and Management have some special privileges. The system will not allow other users to access the link of the other groups unless it is logged in.
 
--
+
 <a id="14"></a>
+-
 #### **Platform:**
 
 Web-based system.
@@ -126,20 +129,23 @@ Windows and Mac compatibility.
 
 All web browsers
 
--
+
 <a id="15"></a>
+-
 #### **Responsiveness:**
 
 The system is fully responsive which uses the bootstrap for its responsiveness
 
--
+
 <a id="16"></a>
+-
 #### **Users and Load:**
 
 This application will be able to handle 1000 requests per second. Note that it's 1000 requests per second, not clients connected simultaneously. It can handle 10000 simultaneous clients without any issue.
 
--
+
 <a id="17"></a>
+-
 #### **Modular Design:**
 
 This application uses the modular design pattern by separating the redux and views module on the different directories. The icon and index js are on the other directories.
