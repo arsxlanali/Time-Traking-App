@@ -27,15 +27,15 @@
 
 4. [System Stories](#12)
 
-- [Multi-Tenancy](#13)
+     - [Multi-Tenancy](#13)
 
-- [Platforms](#14)
+     - [Platforms](#14)
 
-- [Responsiveness](#15)
+     - [Responsiveness](#15)
 
-- [Users and Load](#16)
+     - [Users and Load](#16)
 
-[Modular Design](#17)
+     - [Modular Design](#17)
 <a id="1"></a>
 ### **Purpose:**
 
