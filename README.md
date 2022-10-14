@@ -101,9 +101,7 @@ today or previous dates. By clicking the Add task button the user will see the m
 US - 08 TimeSheet End My Day
 
 - Users: All Users
-- Description: The user will be able to see the End My Day button by clicking this will empty
-
-the task nothing will happen. When we click it with one or more tasks the user will see that every button is gone and now the user cannot edit delta and add new tasks. The day will end on the respective selected dates.
+- Description: The user will be able to see the End My Day button by clicking this will empty the task nothing will happen. When we click it with one or more tasks the user will see that every button is gone and now the user cannot edit delta and add new tasks. The day will end on the respective selected dates.
 <a id="12"></a>
 -
 ### **System Stories**
