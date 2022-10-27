@@ -146,3 +146,6 @@ This application will be able to handle 1000 requests per second. Note that it's
 #### **Modular Design:**
 
 This application uses the modular design pattern by separating the redux and views module on the different directories. The icon and index js are on the other directories.
+
+## Deployed Link
+[Netlify Link](https://time-tacking.netlify.app)
